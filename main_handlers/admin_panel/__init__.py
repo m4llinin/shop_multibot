@@ -1,0 +1,56 @@
+__all__ = ['register_handlers_admin_panel']
+
+import asyncio
+
+from aiogram import Router, F
+
+from utils import load_texts
+from states.main_bot import AddCategory, AddSubcategory, AddGoods, EditCount
+
+from .admin import admin_panel, admin_panel_clb
+
+from .view_category import view_category, view_subcategory, view_good_list, view_good
+from .add_category import add_category, get_name_category, get_description_category
+from .add_subcategory import add_subcategory, insert_subcategory, get_name_subcategory, get_description_subcategory
+from .add_good import (add_good, insert_good, insert_subcat, get_good_name, get_good_description, get_good_price,
+                       get_good_count, get_product)
+
+from .delete import delete_good, delete_subcategory, delete_category
+from .edit_good_count import edit_good_count, get_count
+
+texts: dict = asyncio.run(load_texts())
+
+
+def register_handlers_admin_panel(router: Router):
+    router.message.register(admin_panel, F.text == texts['admin_panel_btn'])
+    router.callback_query.register(admin_panel_clb, F.data == "admin_panel")
+
+    router.callback_query.register(view_category, F.data == "view_category")
+    router.callback_query.register(view_subcategory, lambda x: x.data.startswith("category_"))
+    router.callback_query.register(view_good_list, lambda x: x.data.startswith("subcategory_"))
+    router.callback_query.register(view_good, lambda x: x.data.startswith("good_"))
+
+    router.callback_query.register(add_category, F.data == "add_category")
+    router.message.register(get_name_category, F.text, AddCategory.name)
+    router.message.register(get_description_category, F.text, AddCategory.description)
+
+    router.callback_query.register(add_subcategory, F.data == "add_subcategory")
+    router.callback_query.register(insert_subcategory, lambda x: x.data.startswith("insert_subcategory_"))
+    router.message.register(get_name_subcategory, F.text, AddSubcategory.name)
+    router.message.register(get_description_subcategory, F.text, AddSubcategory.description)
+
+    router.callback_query.register(add_good, F.data == "add_good")
+    router.callback_query.register(insert_subcat, lambda x: x.data.startswith("insert_subcat_"))
+    router.callback_query.register(insert_good, lambda x: x.data.startswith("insert_good_"))
+    router.message.register(get_good_name, F.text, AddGoods.name)
+    router.message.register(get_good_description, F.text, AddGoods.description)
+    router.message.register(get_good_price, F.text, AddGoods.price)
+    router.message.register(get_good_count, F.text, AddGoods.count)
+    router.message.register(get_product, F.text, AddGoods.product)
+
+    router.callback_query.register(delete_good, lambda x: x.data.startswith("delete_good_"))
+    router.callback_query.register(delete_subcategory, lambda x: x.data.startswith("delete_subcategory_"))
+    router.callback_query.register(delete_category, lambda x: x.data.startswith("delete_category_"))
+
+    router.callback_query.register(edit_good_count, lambda x: x.data.startswith("edit_good_"))
+    router.message.register(get_count, F.text, EditCount.amount)
