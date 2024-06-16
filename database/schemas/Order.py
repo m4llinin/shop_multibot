@@ -5,8 +5,8 @@ from sqlalchemy import Integer, String, Column, sql, ForeignKey, BigInteger
 class Order(TimedBaseModel):
     __tablename__ = "orders"
     id = Column(BigInteger, primary_key=True, autoincrement=True)
-    shop_id = Column(BigInteger, ForeignKey("shops.id"), nullable=False)
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    shop_id = Column(BigInteger, nullable=False)
+    user_id = Column(Integer, nullable=False)
     good_id = Column(Integer)
     good_name = Column(String)
     count = Column(Integer, default=1)

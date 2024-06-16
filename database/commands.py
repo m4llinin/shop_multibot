@@ -2,7 +2,7 @@ import logging
 from typing import Any
 
 from aiohttp import web
-from config.config import POSTGRES_URL
+from config.config import POSTGRES_URL, MAIN_BOT_ID, MAIN_BOT_TOKEN
 from .db_gino import db
 
 from .schemas.UserMainBot import UserMainBot
@@ -13,6 +13,8 @@ from .schemas.Good import Good
 from .schemas.Order import Order
 from .schemas.UserShopBot import UserShopBot
 from .schemas.Support import Support
+from .schemas.Payment import Payment
+from .schemas.Request import Request
 
 logger = logging.getLogger(__name__)
 
@@ -34,6 +36,7 @@ class Database:
     @classmethod
     async def _on_disconnect(cls, application: web.Application):
         if db is not None:
+            logger.info("Database was disconnected")
             await db.pop_bind().close()
 
     class MainBot:
@@ -42,10 +45,10 @@ class Database:
             return await UserMainBot.query.where(UserMainBot.id == user_id).gino.first()
 
         @classmethod
-        async def insert_user(cls, user_id: int) -> Any:
+        async def insert_user(cls, user_id: int, username: str, referral_id: int | None = None) -> Any:
             data = await cls.get_user(user_id)
             if not data:
-                return await UserMainBot(id=user_id).create()
+                return await UserMainBot(id=user_id, username=username, referral_id=referral_id).create()
 
         @classmethod
         async def update_shops(cls, user_id: int, shop: int):
@@ -125,6 +128,133 @@ class Database:
         async def delete_subcategory(cls, subcategory_id: int) -> Any:
             return await Subcategory.delete.where(Subcategory.id == subcategory_id).gino.status()
 
+        @classmethod
+        async def get_shops(cls, user_id: int) -> Any:
+            return await Shop.query.where(Shop.owner_id == user_id).gino.all()
+
+        @classmethod
+        async def update_is_on(cls, status: bool, shop_id):
+            return await Shop.update.values(is_on=status).where(Shop.id == shop_id).gino.status()
+
+        @classmethod
+        async def get_profit(cls, shop_id: int, start: int = None, end: int = None) -> Any:
+            if start and end:
+                orders = await Order.query.where(Order.shop_id == shop_id).where(Order.created_at >= start).where(
+                    Order.created_at <= end).where(Order.status == "paid").gino.all()
+                if orders:
+                    return sum([order.total_price for order in orders])
+            else:
+                orders = await Order.query.where(Order.shop_id == shop_id).where(Order.status == "paid").gino.all()
+                if orders:
+                    return sum([order.total_price for order in orders])
+            return 0.0
+
+        @classmethod
+        async def get_sales(cls, shop_id: int, start: int = None, end: int = None):
+            if start and end:
+                orders = await Order.query.where(Order.shop_id == shop_id).where(Order.created_at >= start).where(
+                    Order.created_at <= end).where(Order.status == "paid").gino.all()
+                if orders:
+                    return len(orders)
+            else:
+                orders = await Order.query.where(Order.shop_id == shop_id).where(Order.status == "paid").gino.all()
+                if orders:
+                    return len(orders)
+            return 0
+
+        @classmethod
+        async def get_users_shop(cls, shop_id: int, start: int = None, end: int = None):
+            if start and end:
+                users = await UserShopBot.query.where(UserShopBot.shop_id == shop_id).where(
+                    UserShopBot.created_at >= start).where(UserShopBot.created_at <= end).gino.all()
+                if users:
+                    return len(users)
+            else:
+                users = await UserShopBot.query.where(UserShopBot.shop_id == shop_id).gino.all()
+                if users:
+                    return len(users)
+            return 0
+
+        @classmethod
+        async def change_notification(cls, shop_id: int, notification: bool) -> Any:
+            return await Shop.update.values(notifications=notification).where(Shop.id == shop_id).gino.status()
+
+        @classmethod
+        async def change_extra_charge(cls, shop_id: int, extra_charge: int) -> Any:
+            return await Shop.update.values(extra_charge=extra_charge).where(Shop.id == shop_id).gino.status()
+
+        @classmethod
+        async def change_channel(cls, shop_id: int, channel_id: str | None) -> Any:
+            return await Shop.update.values(channel=channel_id).where(Shop.id == shop_id).gino.status()
+
+        @classmethod
+        async def update_token(cls, shop_id: int, token: str) -> Any:
+            return await Shop.update.values(token=token).where(Shop.id == shop_id).gino.status()
+
+        @classmethod
+        async def delete_shop(cls, shop_id: int) -> Any:
+            shop = await cls.get_shop(shop_id)
+            user = await cls.get_user(shop.owner_id)
+            user.shops.remove(shop.id)
+            await UserMainBot.update.values(shops=user.shops).where(UserMainBot.id == user.id).gino.status()
+            return await shop.delete()
+
+        @classmethod
+        async def get_users_shop_list(cls, shop_id: int) -> list[UserShopBot]:
+            return await UserShopBot.query.where(UserShopBot.shop_id == shop_id).gino.all()
+
+        @classmethod
+        async def get_admin(cls) -> UserMainBot:
+            admin = await UserMainBot.query.where(UserMainBot.status == "admin").gino.first()
+            if admin:
+                return admin
+            return await UserMainBot.query.where(UserMainBot.status == "main_admin").gino.first()
+
+        @classmethod
+        async def insert_payment(cls, user_id: int, cart: str, amount: int):
+            return await Payment(user_id=user_id, cart=cart, amount=amount).create()
+
+        @classmethod
+        async def get_last_payment(cls) -> Payment:
+            return await Payment.query.order_by(Payment.id.desc()).gino.first()
+
+        @classmethod
+        async def update_is_paid(cls, payment_id: int, is_paid: bool) -> Any:
+            return await Payment.update.values(is_paid=is_paid).where(Payment.id == payment_id).gino.status()
+
+        @classmethod
+        async def get_payment(cls, payment_id: int):
+            return await Payment.query.where(Payment.id == payment_id).gino.first()
+
+        @classmethod
+        async def update_user_balance(cls, user_id: int, balance: int | float):
+            return await UserMainBot.update.values(balance=balance).where(UserMainBot.id == user_id).gino.status()
+
+        @classmethod
+        async def get_subpartners(cls, user_id: int):
+            return len(await UserMainBot.query.where(UserMainBot.referral_id == user_id).gino.all())
+
+        @classmethod
+        async def insert_request(cls, user_id: int, source: str, experience: str, platform: str):
+            return await Request(user_id=user_id, source=source, experience=experience, platform=platform).create()
+
+        @classmethod
+        async def get_last_request(cls) -> Payment:
+            return await Request.query.order_by(Request.id.desc()).gino.first()
+
+        @classmethod
+        async def update_status_request(cls, request_id: int, admin_id: int, status: str) -> Any:
+            return await Request.update.values(status=status, admin_id=admin_id).where(
+                Request.id == request_id).gino.status()
+
+        @classmethod
+        async def get_request(cls, request_id: int):
+            return await Request.query.where(Request.id == request_id).gino.first()
+
+        @classmethod
+        async def update_user_status(cls, user_id: int, status: str):
+            return await UserMainBot.update.values(status=status).where(UserMainBot.id == user_id).gino.status()
+
     class ShopBot:
         @classmethod
         async def get_categories(cls):
@@ -174,9 +304,9 @@ class Database:
             return await UserShopBot.query.where(UserShopBot.id == user_id).gino.first()
 
         @classmethod
-        async def insert_user(cls, user_id: int, referral_id: int | None = None):
+        async def insert_user(cls, user_id: int, shop_id: int, referral_id: int | None = None):
             if not (await cls.get_user(user_id)):
-                return await UserShopBot(id=user_id, referral_id=referral_id).create()
+                return await UserShopBot(id=user_id, shop_id=shop_id, referral_id=referral_id).create()
 
         @classmethod
         async def get_partner_balance(cls, user_id: int) -> int:

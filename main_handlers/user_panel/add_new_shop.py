@@ -1,14 +1,13 @@
 from aiogram import Bot
 from aiogram.exceptions import TelegramUnauthorizedError
 from aiogram.fsm.context import FSMContext
-from aiogram.types import CallbackQuery, Message, User, BotCommand
+from aiogram.types import CallbackQuery, Message, BotCommand
 
-from database.commands import Database
-from utils import load_texts, is_bot_token
-from keyboards import InlineKeyboardMain
-
-from states.main_bot import AddShop
 from config.config import main_bot, OTHER_BOTS_URL
+from database.commands import Database
+from keyboards import InlineKeyboardMain
+from states.main_bot import AddShop
+from utils import load_texts, is_bot_token
 
 
 async def add_new_shop(callback: CallbackQuery, state: FSMContext):
@@ -22,20 +21,18 @@ async def add_new_shop(callback: CallbackQuery, state: FSMContext):
 async def new_shop(message: Message, state: FSMContext):
     texts = await load_texts()
     if not (await is_bot_token(message.text)):
-        await message.answer(text=texts['error_add_new_shop'])
-        return
+        return await message.answer(text=texts['error_add_new_shop'])
 
     new_bot = Bot(token=message.text, session=main_bot.session)
 
     try:
         bot_user = await new_bot.get_me()
     except TelegramUnauthorizedError:
-        return message.answer(text=texts['error_add_new_shop'])
+        return await message.answer(text=texts['error_add_new_shop'])
 
     bot = await Database.MainBot.get_shop(bot_user.id)
     if bot:
-        await message.answer(text=texts['has_bot'])
-        return
+        return await message.answer(text=texts['has_bot'])
 
     commands = [BotCommand(command="start", description="♻️ ВЫЗВАТЬ МЕНЮ ♻️")]
     await new_bot.set_my_commands(commands=commands)

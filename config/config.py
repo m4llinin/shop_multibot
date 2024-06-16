@@ -21,6 +21,8 @@ DATABASE_NAME = os.getenv("DATABASE_NAME")
 
 BASE_URL = os.getenv("BASE_URL")
 MAIN_BOT_TOKEN = os.getenv("MAIN_BOT_TOKEN")
+MAIN_BOT_ID = os.getenv("MAIN_BOT_ID")
+MAIN_BOT_LINK = os.getenv("MAIN_BOT_LINK")
 
 PRODAMUS_API = os.getenv("PRODAMUS_API")
 PRODAMUS_LINK = os.getenv("PRODAMUS_LINK")

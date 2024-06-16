@@ -9,8 +9,9 @@ from database.commands import Database
 async def constructor(message: Message):
     texts = await load_texts()
     user = await Database.MainBot.get_user(message.chat.id)
-    return await message.answer(text=texts['constructor'].format(level=user.loyalty_level, balance=user.balance),
-                                reply_markup=await InlineKeyboardMain.menu_kb(len(user.shops)))
+    return await message.answer(
+        text=texts['constructor'].format(id=user.id, level=user.loyalty_level, balance=user.balance),
+        reply_markup=await InlineKeyboardMain.menu_kb(len(user.shops)))
 
 
 async def constructor_clb(callback: CallbackQuery, state: FSMContext):
@@ -20,5 +21,5 @@ async def constructor_clb(callback: CallbackQuery, state: FSMContext):
     await state.set_state(None)
     await callback.message.delete()
     return await callback.message.answer(
-        text=texts['constructor'].format(level=user.loyalty_level, balance=user.balance),
+        text=texts['constructor'].format(id=user.id, level=user.loyalty_level, balance=user.balance),
         reply_markup=await InlineKeyboardMain.menu_kb(len(user.shops)))

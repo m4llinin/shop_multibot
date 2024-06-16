@@ -25,3 +25,26 @@ class AddGoods(StatesGroup):
 
 class EditCount(StatesGroup):
     amount = State()
+
+
+class AddUsersDB(StatesGroup):
+    db = State()
+
+
+class LinkChannel(StatesGroup):
+    channel = State()
+
+
+class EditToken(StatesGroup):
+    token = State()
+
+
+class WithdrawFunds(StatesGroup):
+    payment = State()
+    Amount = State()
+
+
+class SubmitApp(StatesGroup):
+    source = State()
+    experience = State()
+    platform = State()

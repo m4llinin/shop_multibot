@@ -188,7 +188,7 @@ class InlineKeyboardShop:
     @classmethod
     async def subscribe(cls, channel: str):
         keyboard = [
-            [InlineKeyboardButton(text=cls.texts['subscribe'], url=f"https://t.me/{channel}")],
-            [InlineKeyboardButton(text=cls.texts['check'], callback_data="check")],
+            [InlineKeyboardButton(text=cls.texts['subscribe'], url=f"{channel}")],
+            [InlineKeyboardButton(text=cls.texts['check'], callback_data="start")],
         ]
         return InlineKeyboardMarkup(inline_keyboard=keyboard)

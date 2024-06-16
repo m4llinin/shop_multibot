@@ -4,8 +4,11 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 from database.schemas.Category import Category
 from database.schemas.Good import Good
+from database.schemas.Shop import Shop
 from database.schemas.Subcategory import Subcategory
 from utils import load_texts
+
+from config.config import MAIN_BOT_LINK
 
 
 class InlineKeyboardMain:
@@ -24,9 +27,9 @@ class InlineKeyboardMain:
             [InlineKeyboardButton(text=cls.texts['create_shop'], callback_data='create_shop')],
             [InlineKeyboardButton(text=cls.texts['my_shops_menu'].format(count), callback_data='my_shops')],
             [InlineKeyboardButton(text=cls.texts['mailing_lists'], callback_data='mailing_lists')],
-            [InlineKeyboardButton(text=cls.texts['statistics'], callback_data='statistics')],
+            [InlineKeyboardButton(text=cls.texts['all_statistics'], callback_data='allStatistics_1')],
             [InlineKeyboardButton(text=cls.texts['withdraw_funds'], callback_data='withdraw_funds')],
-            [InlineKeyboardButton(text=cls.texts['subpartnership'], callback_data='subpartnership')],
+            [InlineKeyboardButton(text=cls.texts['subpartnership'], callback_data='subpartner')],
         ]
         return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
@@ -53,14 +56,15 @@ class InlineKeyboardMain:
         return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
     @classmethod
-    async def admin_kb(cls):
+    async def admin_kb(cls, main_admin: bool):
         keyboard = [
-            [InlineKeyboardButton(text=cls.texts['view_category'], callback_data='view_category')],
-            [InlineKeyboardButton(text=cls.texts['add_category'], callback_data='add_category')],
-            [InlineKeyboardButton(text=cls.texts['add_subcategory'], callback_data='add_subcategory')],
-            [InlineKeyboardButton(text=cls.texts['add_good'], callback_data='add_good')],
-            [InlineKeyboardButton(text=cls.texts['statistics'], callback_data='statistics')],
+            [InlineKeyboardButton(text=cls.texts['all_statistics'], callback_data='all_statistics')],
         ]
+        if main_admin:
+            keyboard.append([InlineKeyboardButton(text=cls.texts['view_category'], callback_data='view_category')])
+            keyboard.append([InlineKeyboardButton(text=cls.texts['add_category'], callback_data='add_category')])
+            keyboard.append([InlineKeyboardButton(text=cls.texts['add_subcategory'], callback_data='add_subcategory')])
+            keyboard.append([InlineKeyboardButton(text=cls.texts['add_good'], callback_data='add_good')])
         return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
     @classmethod
@@ -111,4 +115,155 @@ class InlineKeyboardMain:
                                       callback_data=f"{callback}_{good.id}")])
 
         keyboard.append([InlineKeyboardButton(text=cls.texts['back'], callback_data=data)])
+        return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+    @classmethod
+    async def my_shops(cls, shops: list[Shop]):
+        keyboard = [
+            [InlineKeyboardButton(text=cls.texts['get_shops_list_btn'], callback_data="get_shops_list")]
+        ]
+        for shop in shops:
+            keyboard.append([InlineKeyboardButton(text=shop.username, callback_data=f"shop_{shop.id}")])
+        keyboard.append([InlineKeyboardButton(text=cls.texts['back'], callback_data="constructor")])
+        return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+    @classmethod
+    async def shop_profile(cls, shop_id: int, shop_on: bool):
+        text = cls.texts['shop_on'] if shop_on else cls.texts['shop_off']
+        callback_data = f"off_{shop_id}" if shop_on else f"on_{shop_id}"
+        keyboard = [
+            [InlineKeyboardButton(text=text, callback_data=callback_data),
+             InlineKeyboardButton(text=cls.texts['statistics'], callback_data=f"statistics_1_{shop_id}")],
+            [InlineKeyboardButton(text=cls.texts['mailing'], callback_data=f"mailing_{shop_id}"),
+             InlineKeyboardButton(text=cls.texts['settings'], callback_data=f"settings_{shop_id}")],
+            [InlineKeyboardButton(text=cls.texts['back'], callback_data="my_shops")]
+        ]
+        return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+    @classmethod
+    async def statistics(cls, shop_id: int, period: int):
+        keyboard = [
+            [InlineKeyboardButton(text=cls.texts['period_1'], callback_data=f"statistics_1_{shop_id}"),
+             InlineKeyboardButton(text=cls.texts['period_2'], callback_data=f"statistics_2_{shop_id}")],
+            [InlineKeyboardButton(text=cls.texts['period_3'], callback_data=f"statistics_3_{shop_id}"),
+             InlineKeyboardButton(text=cls.texts['period_4'], callback_data=f"statistics_4_{shop_id}")],
+            [InlineKeyboardButton(text=cls.texts['period_5'], callback_data=f"statistics_5_{shop_id}")],
+            [InlineKeyboardButton(text=cls.texts['back'], callback_data=f"shop_{shop_id}")]
+        ]
+
+        if period == 1:
+            keyboard[0][0].text = "✅" + cls.texts["period_1"]
+        elif period == 2:
+            keyboard[0][1].text = "✅" + cls.texts["period_2"]
+        elif period == 3:
+            keyboard[1][0].text = "✅" + cls.texts["period_3"]
+        elif period == 4:
+            keyboard[1][1].text = "✅" + cls.texts["period_4"]
+        elif period == 5:
+            keyboard[2][0].text = "✅" + cls.texts["period_5"]
+
+        return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+    @classmethod
+    async def settings_list(cls, shop_id: int, notification: bool, count_users: int, channel: str = None):
+        status = "Вкл" if notification else "Выкл"
+        channel_btn = cls.texts['link_btn'] if channel is None else cls.texts['unlink_btn']
+        keyboard = [
+            [InlineKeyboardButton(text=cls.texts['notification_btn'].format(status),
+                                  callback_data=f"notification_{shop_id}")],
+            [InlineKeyboardButton(text=cls.texts['users_btn'].format(count_users), callback_data=f"users_{shop_id}")],
+            [InlineKeyboardButton(text=cls.texts['change_extra_charge_btn'], callback_data=f"extra_charge_{shop_id}")],
+            [InlineKeyboardButton(text=channel_btn, callback_data=f"link_{shop_id}")],
+            [InlineKeyboardButton(text=cls.texts['change_token_btn'], callback_data=f"change_token_{shop_id}")],
+            [InlineKeyboardButton(text=cls.texts['delete_shop_btn'], callback_data=f"delete_shop_{shop_id}")],
+            [InlineKeyboardButton(text=cls.texts['back'], callback_data=f"shop_{shop_id}")]
+        ]
+        return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+    @classmethod
+    async def extra_charge(cls, shop_id: int):
+        keyboard = []
+        percent = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 200, 300, 400, 500]
+        for i in range(len(percent)):
+            if i % 4 == 0:
+                keyboard.append(
+                    [InlineKeyboardButton(text=f"{percent[i]}%", callback_data=f"percent_{percent[i]}_{shop_id}")])
+            else:
+                keyboard[-1].append(
+                    InlineKeyboardButton(text=f"{percent[i]}%", callback_data=f"percent_{percent[i]}_{shop_id}"))
+        keyboard.append([InlineKeyboardButton(text=cls.texts['back'], callback_data=f"settings_{shop_id}")])
+        return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+    @classmethod
+    async def all_statistics(cls, period: int):
+        keyboard = [
+            [InlineKeyboardButton(text=cls.texts['period_1'], callback_data=f"allStatistics_1"),
+             InlineKeyboardButton(text=cls.texts['period_2'], callback_data=f"allStatistics_2")],
+            [InlineKeyboardButton(text=cls.texts['period_3'], callback_data=f"allStatistics_3"),
+             InlineKeyboardButton(text=cls.texts['period_4'], callback_data=f"allStatistics_4")],
+            [InlineKeyboardButton(text=cls.texts['period_5'], callback_data=f"allStatistics_5")],
+            [InlineKeyboardButton(text=cls.texts['back'], callback_data=f"constructor")]
+        ]
+
+        if period == 1:
+            keyboard[0][0].text = "✅" + cls.texts["period_1"]
+        elif period == 2:
+            keyboard[0][1].text = "✅" + cls.texts["period_2"]
+        elif period == 3:
+            keyboard[1][0].text = "✅" + cls.texts["period_3"]
+        elif period == 4:
+            keyboard[1][1].text = "✅" + cls.texts["period_4"]
+        elif period == 5:
+            keyboard[2][0].text = "✅" + cls.texts["period_5"]
+
+        return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+    @classmethod
+    async def users_db(cls, shop_id: int):
+        keyboard = [
+            [InlineKeyboardButton(text=cls.texts['get_users_btn'], callback_data=f"get_users_{shop_id}")],
+            [InlineKeyboardButton(text=cls.texts['back'], callback_data=f"settings_{shop_id}")],
+        ]
+        return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+    @classmethod
+    async def solution_admin_funds(cls, funds_id: int):
+        keyboard = [
+            [InlineKeyboardButton(text=cls.texts['successful_payments'],
+                                  callback_data=f"successful_payments_{funds_id}"),
+             InlineKeyboardButton(text=cls.texts['bad_payments'], callback_data=f"bad_payments_{funds_id}")]
+        ]
+        return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+    @classmethod
+    async def subscribe(cls, channel: str):
+        keyboard = [
+            [InlineKeyboardButton(text=cls.texts['subscribe'], url=f"{channel}")],
+            [InlineKeyboardButton(text=cls.texts['check'], callback_data="start")],
+        ]
+        return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+    @classmethod
+    async def subpartner(cls, is_partner: bool, user_id: int = None):
+        if is_partner:
+            keyboard = [
+                [InlineKeyboardButton(text=cls.texts['share_frens'],
+                                      url=f"https://t.me/share/url?url=https://t.me/{MAIN_BOT_LINK}?start={user_id}")]
+            ]
+        else:
+            keyboard = [
+                [InlineKeyboardButton(text=cls.texts['submit_app_btn'], callback_data="submit_app")],
+            ]
+
+        keyboard.append([InlineKeyboardButton(text=cls.texts['back'], callback_data="constructor")])
+        return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+    @classmethod
+    async def solution_admin_subpartner(cls, request_id: int, username: str):
+        keyboard = [
+            [InlineKeyboardButton(text=cls.texts['successful_payments'],
+                                  callback_data=f"successful_request_{request_id}"),
+             InlineKeyboardButton(text=cls.texts['bad_payments'], callback_data=f"bad_request_{request_id}")],
+            [InlineKeyboardButton(text=cls.texts['link_with_user'], url=f"t.me/{username}")]
+        ]
         return InlineKeyboardMarkup(inline_keyboard=keyboard)

@@ -5,8 +5,8 @@ from sqlalchemy import Integer, String, Column, sql, ForeignKey, BigInteger
 class Support(TimedBaseModel):
     __tablename__ = 'supports'
     id = Column(Integer, primary_key=True, autoincrement=True)
-    shop_id = Column(BigInteger, ForeignKey('shops.id'), nullable=False)
-    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    shop_id = Column(BigInteger, nullable=False)
+    user_id = Column(Integer, nullable=False)
     theme = Column(String, nullable=False)
     text = Column(String, nullable=False)
     solution = Column(String)
