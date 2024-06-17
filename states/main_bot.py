@@ -48,3 +48,15 @@ class SubmitApp(StatesGroup):
     source = State()
     experience = State()
     platform = State()
+
+
+class AddMail(StatesGroup):
+    text = State()
+    date = State()
+    button = State()
+
+
+class AddAllMail(StatesGroup):
+    text = State()
+    date = State()
+    button = State()

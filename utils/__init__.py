@@ -4,6 +4,7 @@ from .create_pay_links import create_pay_link, create_pay_link_balance
 from .Cart import Cart
 from .MyOrder import MyOrder
 from .prodamus_request import handler_prodamus_request, handler_prodamus_update_balance
+from .MyMail import MyMail
 
 __all__ = ['load_texts', 'is_bot_token', 'Cart', 'create_pay_link', "MyOrder", 'handler_prodamus_request',
-           "handler_prodamus_update_balance", 'create_pay_link_balance', 'load_settings', 'write_settings']
+           "handler_prodamus_update_balance", 'create_pay_link_balance', 'load_settings', 'write_settings', 'MyMail']

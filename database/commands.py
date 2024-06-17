@@ -1,5 +1,6 @@
 import logging
-from typing import Any
+from datetime import datetime
+from typing import Any, List
 
 from aiohttp import web
 from config.config import POSTGRES_URL, MAIN_BOT_ID, MAIN_BOT_TOKEN
@@ -15,6 +16,7 @@ from .schemas.UserShopBot import UserShopBot
 from .schemas.Support import Support
 from .schemas.Payment import Payment
 from .schemas.Request import Request
+from .schemas.Mail import Mail
 
 logger = logging.getLogger(__name__)
 
@@ -39,7 +41,48 @@ class Database:
             logger.info("Database was disconnected")
             await db.pop_bind().close()
 
+    class Mail:
+        @classmethod
+        async def get_all_user_mails(cls, user_id: int) -> List[Mail]:
+            data = await Mail.query.where(Mail.user_id == user_id).gino.all()
+            data.reverse()
+            return data
+
+        @classmethod
+        async def get_all_mails(cls, shop_id: int) -> List[Mail]:
+            all_mails = await Mail.query.gino.all()
+            output = []
+            for mail in all_mails:
+                if shop_id in mail.shop_id:
+                    output.append(mail)
+            output.reverse()
+            return output
+
+        @classmethod
+        async def insert_mail(cls, user_id: int, shop_id: list[int], mail):
+            return await Mail(user_id=user_id, shop_id=shop_id, text=mail.text, photo=mail.photo,
+                              keyboard=mail.keyboard, wait_date=mail.date).create()
+
+        @classmethod
+        async def get_mail(cls, mail_id: int) -> Mail:
+            return await Mail.query.where(Mail.id == mail_id).gino.first()
+
+        @classmethod
+        async def update_status(cls, mail_id: int, status: str, send: int = 0, fail: int = 0, all_send: int = 0,
+                                real_date: datetime = None):
+            return await (Mail.update.values(status=status, failed_send=fail, successful_send=send,
+                                             all_send=all_send, real_date=real_date).where(Mail.id == mail_id).
+                          gino.first())
+
+        @classmethod
+        async def get_last_mail(cls):
+            return await Mail.query.order_by(Mail.id.desc()).gino.first()
+
     class MainBot:
+        @classmethod
+        async def get_all_users_of_shop(cls, shop_id: int):
+            return await UserShopBot.query.where(UserShopBot.shop_id == shop_id).gino.all()
+
         @classmethod
         async def get_user(cls, user_id: int) -> UserMainBot:
             return await UserMainBot.query.where(UserMainBot.id == user_id).gino.first()

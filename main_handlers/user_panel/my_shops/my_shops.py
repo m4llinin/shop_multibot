@@ -27,6 +27,7 @@ async def my_shops_list(callback: CallbackQuery):
 async def shop_profile(callback: CallbackQuery, state: FSMContext):
     texts = await load_texts()
     shop = await Database.MainBot.get_shop(int(callback.data.split("_")[1]))
+    await state.clear()
     await state.update_data(shop=shop)
 
     await callback.message.delete()

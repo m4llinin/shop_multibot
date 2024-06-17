@@ -8,6 +8,7 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.client.session.aiohttp import AiohttpSession
 from aiogram.enums import ParseMode
 from aiogram.fsm.storage.memory import MemoryStorage
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 from dotenv import load_dotenv
 
@@ -38,9 +39,11 @@ session = AiohttpSession()
 main_bot = Bot(token=MAIN_BOT_TOKEN, session=session, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 
 storage = MemoryStorage()
-main_dispatcher = Dispatcher(storage=storage)
-multibot_dispatcher = Dispatcher(storage=storage)
+main_dispatcher = Dispatcher()
+multibot_dispatcher = Dispatcher()
 
 POSTGRES_URL = f"postgresql://{DATABASE_USER}:{DATABASE_PASS}@{DATABASE_HOST}/{DATABASE_NAME}"
 
 TZ = pytz.timezone(os.getenv("TZ"))
+
+schedular = AsyncIOScheduler()

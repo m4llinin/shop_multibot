@@ -7,7 +7,7 @@ from aiogram.webhook.aiohttp_server import SimpleRequestHandler, TokenBasedReque
 from aiohttp import web
 
 from config.config import (BASE_URL, MAIN_BOT_PATH, main_dispatcher, multibot_dispatcher, main_bot, session,
-                           OTHER_BOTS_PATH, WEB_SERVER_HOST, WEB_SERVER_PORT)
+                           OTHER_BOTS_PATH, WEB_SERVER_HOST, WEB_SERVER_PORT, schedular)
 from shop_handlers import register_shop_handler
 from main_handlers import register_main_handler
 
@@ -19,6 +19,7 @@ logger = logging.getLogger(__name__)
 
 async def on_startup(dispatcher: Dispatcher, bot: Bot):
     await bot.set_webhook(f"{BASE_URL}{MAIN_BOT_PATH}", drop_pending_updates=True)
+    schedular.start()
 
 
 async def on_shutdown(dispatcher: Dispatcher, bot: Bot):

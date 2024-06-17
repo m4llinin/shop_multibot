@@ -4,11 +4,13 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 from database.schemas.Category import Category
 from database.schemas.Good import Good
+from database.schemas.Mail import Mail
 from database.schemas.Shop import Shop
 from database.schemas.Subcategory import Subcategory
 from utils import load_texts
 
 from config.config import MAIN_BOT_LINK
+from utils import MyMail
 
 
 class InlineKeyboardMain:
@@ -26,7 +28,7 @@ class InlineKeyboardMain:
         keyboard = [
             [InlineKeyboardButton(text=cls.texts['create_shop'], callback_data='create_shop')],
             [InlineKeyboardButton(text=cls.texts['my_shops_menu'].format(count), callback_data='my_shops')],
-            [InlineKeyboardButton(text=cls.texts['mailing_lists'], callback_data='mailing_lists')],
+            [InlineKeyboardButton(text=cls.texts['mailing_lists'], callback_data='all_mailing_list')],
             [InlineKeyboardButton(text=cls.texts['all_statistics'], callback_data='allStatistics_1')],
             [InlineKeyboardButton(text=cls.texts['withdraw_funds'], callback_data='withdraw_funds')],
             [InlineKeyboardButton(text=cls.texts['subpartnership'], callback_data='subpartner')],
@@ -267,3 +269,141 @@ class InlineKeyboardMain:
             [InlineKeyboardButton(text=cls.texts['link_with_user'], url=f"t.me/{username}")]
         ]
         return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+    @classmethod
+    async def mailing_list(cls, shop_id: int, my_mail: MyMail):
+        keyboard = [
+            [InlineKeyboardButton(text=cls.texts['add_mail_btn'], callback_data=f"add_mail")],
+        ]
+
+        for i in range(my_mail.cur_page * 5, my_mail.cur_page * 5 + 5):
+            try:
+                if my_mail.mails[i].status == "wait":
+                    emoji = "🟠"
+                elif my_mail.mails[i].status == "done":
+                    emoji = "🟢"
+                else:
+                    emoji = "🔴"
+
+                try:
+                    keyboard.append([InlineKeyboardButton(
+                        text=cls.texts["schedule_mail_btn"].format(emoji, my_mail.mails[i].id,
+                                                                   my_mail.mails[i].real_date.strftime(
+                                                                       "%d.%m.%Y %H:%M")),
+                        callback_data=f"mail_{my_mail.mails[i].id}")])
+                except AttributeError:
+                    keyboard.append([InlineKeyboardButton(
+                        text=cls.texts["schedule_mail_btn"].format(emoji, my_mail.mails[i].id,
+                                                                   my_mail.mails[i].wait_date.strftime(
+                                                                       "%d.%m.%Y %H:%M")),
+                        callback_data=f"mail_{my_mail.mails[i].id}")])
+            except IndexError:
+                pass
+
+        if my_mail.mails:
+            keyboard.append([InlineKeyboardButton(text=cls.texts["<"], callback_data="back_page_mail"),
+                             InlineKeyboardButton(
+                                 text=cls.texts["page"].format(my_mail.cur_page + 1, my_mail.all_pages),
+                                 callback_data="just_page"),
+                             InlineKeyboardButton(text=cls.texts['>'], callback_data="next_page_mail")])
+
+        keyboard.append([InlineKeyboardButton(text=cls.texts['back'], callback_data=f"shop_{shop_id}")])
+        return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+    @classmethod
+    async def all_mailing_list(cls, my_mail: MyMail):
+        keyboard = [
+            [InlineKeyboardButton(text=cls.texts['add_mail_btn'], callback_data=f"add_all_mail")],
+        ]
+
+        for i in range(my_mail.cur_page * 5, my_mail.cur_page * 5 + 5):
+            try:
+                if my_mail.mails[i].status == "wait":
+                    emoji = "🟠"
+                elif my_mail.mails[i].status == "done":
+                    emoji = "🟢"
+                else:
+                    emoji = "🔴"
+
+                try:
+                    keyboard.append([InlineKeyboardButton(
+                        text=cls.texts["schedule_mail_btn"].format(emoji, my_mail.mails[i].id,
+                                                                   my_mail.mails[i].real_date.strftime(
+                                                                       "%d.%m.%Y %H:%M")),
+                        callback_data=f"all_mail_{my_mail.mails[i].id}")])
+                except AttributeError:
+                    keyboard.append([InlineKeyboardButton(
+                        text=cls.texts["schedule_mail_btn"].format(emoji, my_mail.mails[i].id,
+                                                                   my_mail.mails[i].wait_date.strftime(
+                                                                       "%d.%m.%Y %H:%M")),
+                        callback_data=f"all_mail_{my_mail.mails[i].id}")])
+            except IndexError:
+                pass
+
+        if my_mail.mails:
+            keyboard.append([InlineKeyboardButton(text=cls.texts["<"], callback_data="back_page_all_mail"),
+                             InlineKeyboardButton(
+                                 text=cls.texts["page"].format(my_mail.cur_page + 1, my_mail.all_pages),
+                                 callback_data="just_page"),
+                             InlineKeyboardButton(text=cls.texts['>'], callback_data="next_page_all_mail")])
+
+        keyboard.append([InlineKeyboardButton(text=cls.texts['back'], callback_data="constructor")])
+        return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+    @classmethod
+    async def add_mail_kb(cls, shop_id: int, date: str = None):
+        date = date if date else "Сейчас"
+        keyboard = [
+            [InlineKeyboardButton(text=cls.texts['date_btn'].format(date), callback_data=f"date")],
+            [InlineKeyboardButton(text=cls.texts['add_btn'], callback_data=f"add_btn")],
+            [InlineKeyboardButton(text=cls.texts['save_btn'], callback_data=f"save_btn")],
+            [InlineKeyboardButton(text=cls.texts['cancel'], callback_data=f"shop_{shop_id}")]
+        ]
+        return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+    @classmethod
+    async def add_all_mail_kb(cls, date: str = None):
+        date = date if date else "Сейчас"
+        keyboard = [
+            [InlineKeyboardButton(text=cls.texts['date_btn'].format(date), callback_data=f"all_date")],
+            [InlineKeyboardButton(text=cls.texts['add_btn'], callback_data=f"all_add_btn")],
+            [InlineKeyboardButton(text=cls.texts['save_btn'], callback_data=f"all_save_btn")],
+            [InlineKeyboardButton(text=cls.texts['cancel'], callback_data=f"constructor")]
+        ]
+        return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+    @classmethod
+    async def mail_profile_kb(cls, deleted: bool):
+        if not deleted:
+            keyboard = [
+                [InlineKeyboardButton(text=cls.texts['delete_mail'], callback_data=f"delete_mail")],
+            ]
+        else:
+            keyboard = []
+
+        keyboard.append([InlineKeyboardButton(text=cls.texts['view_mail'], callback_data=f"view_mail")])
+        keyboard.append([InlineKeyboardButton(text=cls.texts['back'], callback_data=f"mailing_")])
+
+        return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+    @classmethod
+    async def all_mail_profile_kb(cls, deleted: bool):
+        if not deleted:
+            keyboard = [
+                [InlineKeyboardButton(text=cls.texts['delete_mail'], callback_data=f"all_delete_mail")],
+            ]
+        else:
+            keyboard = []
+
+        keyboard.append([InlineKeyboardButton(text=cls.texts['view_mail'], callback_data=f"all_view_mail")])
+        keyboard.append([InlineKeyboardButton(text=cls.texts['back'], callback_data=f"all_mailing_list")])
+
+        return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+    @classmethod
+    async def generate_keyboard(cls, text: str | None, url_l: str | None):
+        if text and url_l:
+            keyboard = [
+                [InlineKeyboardButton(text=text, url=url_l)]
+            ]
+            return InlineKeyboardMarkup(inline_keyboard=keyboard)
