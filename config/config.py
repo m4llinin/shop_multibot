@@ -15,6 +15,8 @@ from dotenv import load_dotenv
 load_dotenv()
 bl.basic_colorized_config(level=logging.INFO)
 
+ADMIN_ID = int(os.getenv('ADMIN_ID'))
+
 DATABASE_USER = os.getenv("DATABASE_USER")
 DATABASE_PASS = os.getenv("DATABASE_PASS")
 DATABASE_HOST = os.getenv("DATABASE_HOST")
@@ -24,6 +26,7 @@ BASE_URL = os.getenv("BASE_URL")
 MAIN_BOT_TOKEN = os.getenv("MAIN_BOT_TOKEN")
 MAIN_BOT_ID = os.getenv("MAIN_BOT_ID")
 MAIN_BOT_LINK = os.getenv("MAIN_BOT_LINK")
+PAYMENT_CHANNEL_ID = int(os.getenv("PAYMENT_CHANNEL_ID"))
 
 PRODAMUS_API = os.getenv("PRODAMUS_API")
 PRODAMUS_LINK = os.getenv("PRODAMUS_LINK")

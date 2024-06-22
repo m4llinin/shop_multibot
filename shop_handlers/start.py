@@ -21,7 +21,7 @@ async def start(message: Message, state: FSMContext):
 
     if shop.channel:
         status_channel = await message.bot.get_chat_member(chat_id=int(shop.channel), user_id=user_id)
-        if status_channel.status == "left":
+        if status_channel.status == "left" or status_channel.status == "kicked":
             channel = await message.bot.get_chat(shop.channel)
             await state.update_data(referral_id=referral_id)
             return message.answer_photo(photo=FSInputFile("./photos/hello_shop_bot.jpeg"),
@@ -60,7 +60,7 @@ async def start_clb(callback: CallbackQuery, state: FSMContext):
 
     if shop.channel:
         status_channel = await callback.message.bot.get_chat_member(chat_id=shop.channel, user_id=user_id)
-        if status_channel.status == "left":
+        if status_channel.status == "left" or status_channel.status == "kicked":
             channel = await callback.bot.get_chat(shop.channel)
             return callback.message.answer_photo(photo=FSInputFile("./photos/hello_shop_bot.jpeg"),
                                                  caption=texts['subscribe_channel'],

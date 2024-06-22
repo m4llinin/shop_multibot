@@ -1,0 +1,38 @@
+version: '3.7'
+
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: 8377
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: on-failure
+    ports:
+      - "5432:5432"
+    network_mode: host
+
+  bot:
+    stop_signal: SIGINT
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    env_file:
+      - ./config/.env
+    depends_on:
+      - nginx
+      - db
+
+  nginx:
+    image: nginx
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+
+volumes:
+  pgdata:

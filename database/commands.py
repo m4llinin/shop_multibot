@@ -3,7 +3,7 @@ from datetime import datetime
 from typing import Any, List
 
 from aiohttp import web
-from config.config import POSTGRES_URL, MAIN_BOT_ID, MAIN_BOT_TOKEN
+from config.config import POSTGRES_URL, main_bot, ADMIN_ID
 from .db_gino import db
 
 from .schemas.UserMainBot import UserMainBot
@@ -17,6 +17,8 @@ from .schemas.Support import Support
 from .schemas.Payment import Payment
 from .schemas.Request import Request
 from .schemas.Mail import Mail
+
+from utils import load_settings, load_texts
 
 logger = logging.getLogger(__name__)
 
@@ -80,18 +82,56 @@ class Database:
 
     class MainBot:
         @classmethod
+        async def get_all_shops(cls):
+            return await Shop.query.gino.all()
+
+        @classmethod
+        async def statistics_users(cls):
+            partners = await UserMainBot.query.where(UserMainBot.referral_id.is_(None)).gino.all()
+            subpartners = await UserMainBot.query.where(UserMainBot.referral_id.isnot(None)).gino.all()
+            return len(partners), len(subpartners)
+
+        @classmethod
+        async def update_owner_balance(cls, user_id: int, amount_purchase: int):
+            user: UserMainBot = await UserMainBot.query.where(UserMainBot.id == user_id).gino.first()
+            value = int(amount_purchase * (user.loyalty_level / 100))
+            await UserMainBot.update.values(balance=user.balance + value).where(UserMainBot.id == user_id).gino.status()
+
+            if user.referral_id:
+                referral: UserMainBot = await UserMainBot.query.where(UserMainBot.id == user.referral_id).gino.first()
+                return await UserMainBot.update.values(balance=int(referral.balance + value * 0.25)).where(
+                    UserMainBot.id == referral.id).gino.status()
+
+        @classmethod
         async def get_all_users_of_shop(cls, shop_id: int):
             return await UserShopBot.query.where(UserShopBot.shop_id == shop_id).gino.all()
 
         @classmethod
-        async def get_user(cls, user_id: int) -> UserMainBot:
-            return await UserMainBot.query.where(UserMainBot.id == user_id).gino.first()
+        async def get_user(cls, user_id: int | str) -> UserMainBot:
+            if isinstance(user_id, int):
+                return await UserMainBot.query.where(UserMainBot.id == user_id).gino.first()
+            return await UserMainBot.query.where(UserMainBot.username == user_id).gino.first()
 
         @classmethod
         async def insert_user(cls, user_id: int, username: str, referral_id: int | None = None) -> Any:
             data = await cls.get_user(user_id)
             if not data:
-                return await UserMainBot(id=user_id, username=username, referral_id=referral_id).create()
+                shop = await load_settings()
+
+                if shop.get("notifications", "false") == "true":
+                    texts = await load_texts()
+
+                    try:
+                        admin = (await UserMainBot.query.where(UserMainBot.status == "main_admin").gino.first()).id
+                    except AttributeError:
+                        admin = ADMIN_ID
+
+                    await main_bot.send_message(chat_id=admin, text=texts['new_user'].format(username))
+
+                if referral_id:
+                    return await UserMainBot(id=user_id, username=username, referral_id=referral_id,
+                                             loyalty_level=45).create()
+                return await UserMainBot(id=user_id, username=username).create()
 
         @classmethod
         async def update_shops(cls, user_id: int, shop: int):
@@ -104,8 +144,10 @@ class Database:
             return await Shop(id=shop_id, owner_id=user_id, token=token, username=username, name=name).create()
 
         @classmethod
-        async def get_shop(cls, shop_id: int) -> Any:
-            return await Shop.query.where(Shop.id == shop_id).gino.first()
+        async def get_shop(cls, shop_id: int | str) -> Any:
+            if isinstance(shop_id, int):
+                return await Shop.query.where(Shop.id == shop_id).gino.first()
+            return await Shop.query.where(Shop.username == shop_id).gino.first()
 
         @classmethod
         async def insert_category(cls, category_name: str) -> Any:
@@ -180,7 +222,7 @@ class Database:
             return await Shop.update.values(is_on=status).where(Shop.id == shop_id).gino.status()
 
         @classmethod
-        async def get_profit(cls, shop_id: int, start: int = None, end: int = None) -> Any:
+        async def get_profit(cls, shop_id: int, start: int | datetime = None, end: int | datetime = None) -> Any:
             if start and end:
                 orders = await Order.query.where(Order.shop_id == shop_id).where(Order.created_at >= start).where(
                     Order.created_at <= end).where(Order.status == "paid").gino.all()
@@ -193,7 +235,7 @@ class Database:
             return 0.0
 
         @classmethod
-        async def get_sales(cls, shop_id: int, start: int = None, end: int = None):
+        async def get_sales(cls, shop_id: int, start: int | datetime = None, end: int | datetime = None):
             if start and end:
                 orders = await Order.query.where(Order.shop_id == shop_id).where(Order.created_at >= start).where(
                     Order.created_at <= end).where(Order.status == "paid").gino.all()
@@ -206,7 +248,7 @@ class Database:
             return 0
 
         @classmethod
-        async def get_users_shop(cls, shop_id: int, start: int = None, end: int = None):
+        async def get_users_shop(cls, shop_id: int, start: int | datetime = None, end: int | datetime = None):
             if start and end:
                 users = await UserShopBot.query.where(UserShopBot.shop_id == shop_id).where(
                     UserShopBot.created_at >= start).where(UserShopBot.created_at <= end).gino.all()
@@ -295,8 +337,10 @@ class Database:
             return await Request.query.where(Request.id == request_id).gino.first()
 
         @classmethod
-        async def update_user_status(cls, user_id: int, status: str):
-            return await UserMainBot.update.values(status=status).where(UserMainBot.id == user_id).gino.status()
+        async def update_user_status(cls, user_id: int | str, status: str):
+            if isinstance(user_id, int):
+                return await UserMainBot.update.values(status=status).where(UserMainBot.id == user_id).gino.status()
+            return await UserMainBot.update.values(status=status).where(UserMainBot.username == user_id).gino.status()
 
     class ShopBot:
         @classmethod

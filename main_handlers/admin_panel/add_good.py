@@ -3,7 +3,6 @@ from aiogram.types import CallbackQuery, Message
 
 from database.commands import Database
 from keyboards.main.inline import InlineKeyboardMain
-from keyboards.shop.inline import InlineKeyboardShop
 from utils import load_texts
 
 from states.main_bot import AddGoods
@@ -40,7 +39,8 @@ async def insert_subcat(callback: CallbackQuery, state: FSMContext):
                                              reply_markup=await InlineKeyboardMain.subcategories("insert_good",
                                                                                                  subcategories,
                                                                                                  "add_good",
-                                                                                                 category_id))
+                                                                                                 category_id,
+                                                                                                 True))
     await state.set_state(AddGoods.name)
     return await callback.message.answer(text=texts['add_without_subcategories'].format(category=category.name),
                                          reply_markup=await InlineKeyboardMain.back("add_good"))

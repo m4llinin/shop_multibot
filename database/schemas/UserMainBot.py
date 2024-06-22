@@ -8,7 +8,7 @@ class UserMainBot(TimedBaseModel):
     referral_id = Column(BigInteger)
     username = Column(String)
     balance = Column(Float, default=0)
-    loyalty_level = Column(Integer, default=40)
+    loyalty_level = Column(Integer, default=45)
     shops = Column(ARRAY(BigInteger), default=[])
     status = Column(String, default="partner")
 

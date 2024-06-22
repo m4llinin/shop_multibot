@@ -13,5 +13,9 @@ async def load_settings():
 
 
 async def write_settings(**kwargs):
-    js = asyncj.AsyncJson("texts.json")
-    return await js.write(kwargs)
+    shop = await load_settings()
+    for k, v in kwargs.items():
+        shop[k] = v
+
+    js = asyncj.AsyncJson("./config/settings.json")
+    return await js.write(shop)

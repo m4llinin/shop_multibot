@@ -5,7 +5,7 @@ from aiogram import Bot
 from database.commands import Database
 from utils import load_texts
 
-from config.config import session
+from config.config import session, PAYMENT_CHANNEL_ID, main_bot
 
 
 async def handler_prodamus_request(request: web.Request) -> web.Response:
@@ -27,7 +27,14 @@ async def handler_prodamus_request(request: web.Request) -> web.Response:
         good = await Database.ShopBot.get_good_by_id(order.good_id)
         bot = Bot(token=shop.token, session=session)
 
+        if shop.notifications:
+            await bot.send_message(chat_id=shop.owner_id, text=texts['new_purchase'].format(user_id=order.user_id,
+                                                                                            order=order.id,
+                                                                                            price=order.total_price))
+
         await Database.ShopBot.update_order_status(order_id, "paid")
+        await Database.MainBot.update_owner_balance(shop.owner_id, order.total_price)
+
         await bot.delete_message(chat_id=order.user_id, message_id=order.last_message_id)
 
         if good.count is None:
@@ -37,6 +44,10 @@ async def handler_prodamus_request(request: web.Request) -> web.Response:
         else:
             pass
             # МЕСТО ДЛЯ ВЫДАЧИ ТОВАРА С КОЛИЧЕСТВОМ
+
+        await main_bot.send_message(chat_id=PAYMENT_CHANNEL_ID, text=texts['new_purchase'].format(user_id=order.user_id,
+                                                                                                  order=order.id,
+                                                                                                  price=order.total_price))
 
     return web.Response()
 
@@ -62,12 +73,22 @@ async def handler_prodamus_update_balance(request: web.Request) -> web.Response:
         user = await Database.ShopBot.get_user(order.user_id)
         bot = Bot(token=shop.token, session=session)
 
+        if shop.notifications:
+            await bot.send_message(chat_id=shop.owner_id, text=texts['new_purchase'].format(user_id=order.user_id,
+                                                                                            order=order.id,
+                                                                                            price=order.total_price))
+
         await Database.ShopBot.update_order_status(order_id, "paid")
         await Database.ShopBot.update_user_balance(user.id, user.balance + amount)
+        await Database.MainBot.update_owner_balance(shop.owner_id, amount)
 
         await bot.delete_message(chat_id=order.user_id, message_id=order.last_message_id)
         await bot.send_message(chat_id=order.user_id,
                                text=texts['successful_update_balance'].format(amount, user.balance + amount),
                                parse_mode=ParseMode.HTML)
+
+        await main_bot.send_message(chat_id=PAYMENT_CHANNEL_ID, text=texts['new_purchase'].format(user_id=order.user_id,
+                                                                                                  order=order.id,
+                                                                                                  price=order.total_price))
 
     return web.Response()

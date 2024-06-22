@@ -60,3 +60,19 @@ class AddAllMail(StatesGroup):
     text = State()
     date = State()
     button = State()
+
+
+class LinkChannelAdmin(StatesGroup):
+    channel = State()
+
+
+class ChangeStatus(StatesGroup):
+    user = State()
+
+
+class Statistics(StatesGroup):
+    users = State()
+    shops = State()
+    allPeriod = State()
+    period = State()
+    shop_period = State()

@@ -47,6 +47,9 @@ async def amount(message: Message, state: FSMContext):
     await Database.MainBot.insert_payment(user.id, data.get("cart"), value)
     payment = await Database.MainBot.get_last_payment()
 
+    if user.loyalty_level == 40 or (user.loyalty_level == 45 and not user.referral_id) or user.loyalty_level == 50:
+        value = value - (value * 0.03)
+
     admin = await Database.MainBot.get_admin()
     await message.bot.send_message(chat_id=admin.id,
                                    text=texts['query_withdraw_funds'].format(user.id, data.get("cart"), value),

@@ -5,7 +5,7 @@ import asyncio
 from aiogram import Router, F
 
 from utils import load_texts
-from states.main_bot import AddCategory, AddSubcategory, AddGoods, EditCount
+from states.main_bot import AddCategory, AddSubcategory, AddGoods, EditCount, LinkChannelAdmin, ChangeStatus
 
 from .admin import admin_panel, admin_panel_clb
 
@@ -16,7 +16,12 @@ from .add_good import (add_good, insert_good, insert_subcat, get_good_name, get_
                        get_good_count, get_product)
 
 from .delete import delete_good, delete_subcategory, delete_category
-from .edit_good_count import edit_good_count, get_count
+from .edit_good import edit_good_count, get_count
+
+from .link_channel import link_channel, linked_channel
+from .change_status import change_status, get_status, get_username
+
+from .statistics import statistics_router
 
 texts: dict = asyncio.run(load_texts())
 
@@ -54,3 +59,13 @@ def register_handlers_admin_panel(router: Router):
 
     router.callback_query.register(edit_good_count, lambda x: x.data.startswith("edit_good_"))
     router.message.register(get_count, F.text, EditCount.amount)
+
+    router.callback_query.register(link_channel, F.data == "link_channel")
+    router.message.register(linked_channel, LinkChannelAdmin.channel)
+
+    router.callback_query.register(change_status, F.data == "change_status")
+    router.message.register(get_username, F.text, ChangeStatus.user)
+    router.callback_query.register(get_status,
+                                   lambda x: x.data in ["main_admin", "admin", "partner", "linker", "super_partner"])
+
+    router.include_router(statistics_router)
