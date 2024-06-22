@@ -27,17 +27,16 @@ services:
     networks:
       - app
 
-  nginx:
-    image: nginx:1.27.0-alpine
+  server:
+    image: 'jc21/nginx-proxy-manager:latest'
     restart: unless-stopped
-    tty: true
     ports:
-      - "80:80"
-      - "443:443"
+      - '80:80'
+      - '81:81'
+      - '443:443'
     volumes:
-      - /var/www/html:/usr/share/nginx/html
-    networks:
-      - app
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
 
 volumes:
   pgdata:
