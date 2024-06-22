@@ -10,7 +10,8 @@ services:
     restart: on-failure
     ports:
       - "5432:5432"
-    network_mode: host
+    networks:
+      - app
 
   bot:
     stop_signal: SIGINT
@@ -23,6 +24,8 @@ services:
     depends_on:
       - nginx
       - db
+    networks:
+      - app
 
   nginx:
     image: nginx:1.27.0-alpine
@@ -33,6 +36,12 @@ services:
       - "443:443"
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
+    networks:
+      - app
 
 volumes:
   pgdata:
+
+networks:
+  app:
+    driver: bridge
