@@ -2,14 +2,12 @@ version: '3.7'
 
 services:
   db:
-    image: postgres
+    image: postgres:16-alpine
     environment:
       POSTGRES_PASSWORD: 8377
     volumes:
       - pgdata:/var/lib/postgresql/data
     restart: on-failure
-    ports:
-      - "5432:5432"
     network_mode: host
 
   bot:
@@ -25,7 +23,7 @@ services:
       - db
 
   nginx:
-    image: nginx
+    image: nginx:1.27.0-alpine
     restart: unless-stopped
     tty: true
     ports:
