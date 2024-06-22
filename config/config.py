@@ -45,7 +45,7 @@ storage = MemoryStorage()
 main_dispatcher = Dispatcher()
 multibot_dispatcher = Dispatcher()
 
-POSTGRES_URL = f"postgresql://{DATABASE_USER}:{DATABASE_PASS}@{DATABASE_HOST}/{DATABASE_NAME}"
+POSTGRES_URL = f"postgresql://{DATABASE_USER}:{DATABASE_PASS}@{DATABASE_HOST}:54320/{DATABASE_NAME}"
 
 TZ = pytz.timezone(os.getenv("TZ"))
 
