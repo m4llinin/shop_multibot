@@ -3,7 +3,6 @@ from aiogram.types import CallbackQuery, Message
 
 from database.commands import Database
 from keyboards.main.inline import InlineKeyboardMain
-from keyboards.shop.inline import InlineKeyboardShop
 from utils import load_texts
 
 from states.main_bot import AddSubcategory
@@ -16,7 +15,7 @@ async def add_subcategory(callback: CallbackQuery, state: FSMContext):
     if categories:
         await callback.message.delete()
         return await callback.message.answer(text=texts['choose_categories'],
-                                             reply_markup=await InlineKeyboardShop.categories("insert_subcategory",
+                                             reply_markup=await InlineKeyboardMain.categories("insert_subcategory",
                                                                                               categories,
                                                                                               "admin_panel"))
     return await callback.answer(text=texts['no_categories'], show_alert=True)
