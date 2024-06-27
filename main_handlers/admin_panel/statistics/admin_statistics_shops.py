@@ -47,13 +47,13 @@ async def statistics_shops(callback: CallbackQuery, state: FSMContext):
                                   reply_markup=await InlineKeyboardMain.all_admin_statistics(period))
 
 
-async def download_statistics(callback: CallbackQuery,):
+async def download_statistics(callback: CallbackQuery):
     texts = await load_texts()
 
     orders = await Database.MainBot.get_all_orders_status("paid")
 
     if len(orders) == 0:
-        return await callback.message.answer(text=texts['not_orders'])
+        return await callback.answer(text=texts['not_orders'], show_alert=True)
 
     with open("sales_statistics.csv", "w", newline="") as csvfile:
         csv_writer = csv.writer(csvfile)
