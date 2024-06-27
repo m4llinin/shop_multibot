@@ -192,3 +192,12 @@ class InlineKeyboardShop:
             [InlineKeyboardButton(text=cls.texts['check'], callback_data="start")],
         ]
         return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+    @classmethod
+    async def support_solution(cls, request_id: int):
+        keyboard = [
+            [InlineKeyboardButton(text=cls.texts['successful_payments'],
+                                  callback_data=f"successful_support_{request_id}"),
+             InlineKeyboardButton(text=cls.texts['bad_payments'], callback_data=f"bad_support_{request_id}")]
+        ]
+        return InlineKeyboardMarkup(inline_keyboard=keyboard)

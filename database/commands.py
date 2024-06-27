@@ -1,4 +1,5 @@
 import logging
+import uuid
 from datetime import datetime
 from typing import Any, List
 
@@ -80,7 +81,26 @@ class Database:
         async def get_last_mail(cls):
             return await Mail.query.order_by(Mail.id.desc()).gino.first()
 
+        @classmethod
+        async def get_waiting_mails(cls) -> list[Mail]:
+            return await Mail.query.where(Mail.status == "wait").gino.all()
+
     class MainBot:
+        @classmethod
+        async def generate_recover_code(cls, user_id: int):
+            return await UserMainBot.update.values(recover_code=str(uuid.uuid4())).where(
+                UserMainBot.id == user_id).gino.status()
+
+        @classmethod
+        async def update_from_recover_code(cls, new_user_id: int, user: UserMainBot):
+            return UserMainBot.update.values(refferal_id=user.referral_id, balance=user.balance,
+                                             loyalty_level=user.loyalty_level, shops=user.shops,
+                                             status=user.status).where(UserMainBot.id == new_user_id).gino.status()
+
+        @classmethod
+        async def delete_user(cls, recover_code: str):
+            return await UserMainBot.delete.where(UserMainBot.recover_code == recover_code).gino.status()
+
         @classmethod
         async def get_all_shops(cls):
             return await Shop.query.gino.all()
@@ -107,6 +127,10 @@ class Database:
             return await UserShopBot.query.where(UserShopBot.shop_id == shop_id).gino.all()
 
         @classmethod
+        async def get_user_recover_code(cls, recoder_code):
+            return await UserMainBot.query.where(UserMainBot.recover_code == recoder_code).gino.first()
+
+        @classmethod
         async def get_user(cls, user_id: int | str) -> UserMainBot:
             if isinstance(user_id, int):
                 return await UserMainBot.query.where(UserMainBot.id == user_id).gino.first()
@@ -130,8 +154,8 @@ class Database:
 
                 if referral_id:
                     return await UserMainBot(id=user_id, username=username, referral_id=referral_id,
-                                             loyalty_level=45).create()
-                return await UserMainBot(id=user_id, username=username).create()
+                                             loyalty_level=50, recover_code=str(uuid.uuid4())).create()
+                return await UserMainBot(id=user_id, username=username, recover_code=str(uuid.uuid4())).create()
 
         @classmethod
         async def update_shops(cls, user_id: int, shop: int):
@@ -341,6 +365,19 @@ class Database:
             if isinstance(user_id, int):
                 return await UserMainBot.update.values(status=status).where(UserMainBot.id == user_id).gino.status()
             return await UserMainBot.update.values(status=status).where(UserMainBot.username == user_id).gino.status()
+
+        @classmethod
+        async def get_last_support(cls, user_id: int):
+            return await Support.query.order_by(Support.id.desc()).where(Support.user_id == user_id).gino.first()
+
+        @classmethod
+        async def get_support(cls, support_id: int):
+            return await Support.query.where(Support.id == support_id).gino.first()
+
+        @classmethod
+        async def update_support(cls, support_id: int, status: str, admin_id: int, solution: str = None):
+            return await Support.update.values(status=status, admin=admin_id, solution=solution).where(
+                Support.id == support_id).gino.status()
 
     class ShopBot:
         @classmethod

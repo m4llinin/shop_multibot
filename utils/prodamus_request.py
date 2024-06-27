@@ -32,6 +32,13 @@ async def handler_prodamus_request(request: web.Request) -> web.Response:
                                                                                             order=order.id,
                                                                                             price=order.total_price))
 
+        user = await Database.ShopBot.get_user(order.user_id)
+        referral = None
+        if user.referral_id:
+            referral = await Database.ShopBot.get_user(user.referral_id)
+        if referral:
+            await Database.ShopBot.update_user_balance(referral.id, referral.balance + order.total_price * 0.05)
+
         await Database.ShopBot.update_order_status(order_id, "paid")
         await Database.MainBot.update_owner_balance(shop.owner_id, order.total_price)
 
@@ -77,6 +84,13 @@ async def handler_prodamus_update_balance(request: web.Request) -> web.Response:
             await bot.send_message(chat_id=shop.owner_id, text=texts['new_purchase'].format(user_id=order.user_id,
                                                                                             order=order.id,
                                                                                             price=order.total_price))
+
+        user = await Database.ShopBot.get_user(order.user_id)
+        referral = None
+        if user.referral_id:
+            referral = await Database.ShopBot.get_user(user.referral_id)
+        if referral:
+            await Database.ShopBot.update_user_balance(referral.id, referral.balance + order.total_price * 0.05)
 
         await Database.ShopBot.update_order_status(order_id, "paid")
         await Database.ShopBot.update_user_balance(user.id, user.balance + amount)

@@ -7,10 +7,17 @@ from keyboards import InlineKeyboardMain
 from states.main_bot import WithdrawFunds
 
 
-async def withdraw_funds(callback: CallbackQuery, state: FSMContext):
+async def choose_payment_to_withdraw(callback: CallbackQuery):
+    texts = await load_texts()
+    await callback.message.delete()
+    return await callback.message.answer(text=texts['choose_payment_to_withdraw'],
+                                         reply_markup=await InlineKeyboardMain.choose_payment_to_withdraw())
+
+
+async def cart_rf(callback: CallbackQuery, state: FSMContext):
     texts = await load_texts()
     user = await Database.MainBot.get_user(callback.message.chat.id)
-    value = 5000
+    value = 1500
 
     if user.balance < value:
         return await callback.answer(text=texts['not_funds'].format(value), show_alert=True)
@@ -26,8 +33,16 @@ async def payments(message: Message, state: FSMContext):
     cart_number = message.text.replace(" ", "")
 
     await state.update_data(cart=cart_number)
-    await state.set_state(WithdrawFunds.Amount)
+    await state.set_state(WithdrawFunds.name_on_cart)
     return await message.answer(text=texts['get_payment'])
+
+
+async def name(message: Message, state: FSMContext):
+    texts = await load_texts()
+
+    await state.update_data(name=message.text)
+    await state.set_state(WithdrawFunds.Amount)
+    return await message.answer(text=texts['get_name'])
 
 
 async def amount(message: Message, state: FSMContext):
@@ -39,8 +54,8 @@ async def amount(message: Message, state: FSMContext):
         value = int(message.text)
         if value > user.balance:
             return await message.answer(text=texts['not_balance'])
-        elif value < 5000:
-            return await message.answer(text=texts['not_funds'].format(5000))
+        elif value < 1500:
+            return await message.answer(text=texts['not_funds'].format(1500))
     except ValueError:
         return await message.answer(text=texts['bad_price'])
 

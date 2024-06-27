@@ -5,6 +5,7 @@ from sqlalchemy import Integer, Float, String, Column, ARRAY, sql, BigInteger
 class UserMainBot(TimedBaseModel):
     __tablename__ = 'users'
     id = Column(BigInteger, primary_key=True)
+    recover_code = Column(String)
     referral_id = Column(BigInteger)
     username = Column(String)
     balance = Column(Float, default=0)

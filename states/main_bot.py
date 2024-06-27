@@ -41,6 +41,7 @@ class EditToken(StatesGroup):
 
 class WithdrawFunds(StatesGroup):
     payment = State()
+    name_on_cart = State()
     Amount = State()
 
 
@@ -76,3 +77,11 @@ class Statistics(StatesGroup):
     allPeriod = State()
     period = State()
     shop_period = State()
+
+
+class Recover(StatesGroup):
+    code = State()
+
+
+class SupportSolution(StatesGroup):
+    text = State()

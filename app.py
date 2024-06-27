@@ -14,6 +14,8 @@ from main_handlers import register_main_handler
 from database.commands import Database
 from utils import handler_prodamus_request, handler_prodamus_update_balance
 
+from utils import recover_mails
+
 logger = logging.getLogger(__name__)
 
 
@@ -24,6 +26,10 @@ async def on_startup(dispatcher: Dispatcher, bot: Bot):
 
 async def on_shutdown(dispatcher: Dispatcher, bot: Bot):
     await bot.delete_webhook()
+
+
+async def on_startup_app(application: web.Application):
+    await recover_mails()
 
 
 async def on_shutdown_app(application: web.Application):
@@ -50,6 +56,7 @@ def main():
     app.router.add_route("POST", "/prodamus", handler_prodamus_request)
     app.router.add_route("POST", "/prodamus/balance", handler_prodamus_update_balance)
 
+    app.on_startup.append(on_startup_app)
     app.on_shutdown.append(on_shutdown_app)
 
     web.run_app(app, host=WEB_SERVER_HOST, port=WEB_SERVER_PORT)

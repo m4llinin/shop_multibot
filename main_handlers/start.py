@@ -11,13 +11,18 @@ from config.config import ADMIN_ID
 async def start(message: Message, state: FSMContext):
     texts = await load_texts()
     split_text = message.text.split(" ")
+    data = await state.get_data()
 
-    referral_id = None
+    referral_id = data.get("referral_id", None)
     if len(split_text) == 2:
         if int(split_text[1]) != message.chat.id:
             referral = await Database.MainBot.get_user(int(split_text[1]))
             if referral and referral.status == "linker":
                 referral_id = int(split_text[1])
+
+    if message.from_user.username is None:
+        await state.update_data(referral_id=referral_id)
+        return await message.answer(text=texts['enter_username'])
 
     shop = await load_settings()
     if shop.get("channel") != "":

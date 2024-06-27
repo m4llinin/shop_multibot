@@ -24,12 +24,24 @@ class InlineKeyboardMain:
         return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
     @classmethod
-    async def menu_kb(cls, count: int):
+    async def information(cls):
+        keyboard = [
+            [InlineKeyboardButton(text=cls.texts['best_choice'], url="t.me")],
+            [InlineKeyboardButton(text=cls.texts['main_channel'], url="t.me")],
+            [InlineKeyboardButton(text=cls.texts['quick_start'], url="t.me")],
+            [InlineKeyboardButton(text=cls.texts['manuals'], url="t.me")],
+            [InlineKeyboardButton(text=cls.texts['faq'], url="t.me")]
+        ]
+        return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+    @classmethod
+    async def menu_kb(cls):
         keyboard = [
             [InlineKeyboardButton(text=cls.texts['create_shop'], callback_data='create_shop')],
-            [InlineKeyboardButton(text=cls.texts['my_shops_menu'].format(count), callback_data='my_shops')],
+            [InlineKeyboardButton(text=cls.texts['my_shops_menu'], callback_data='my_shops')],
             [InlineKeyboardButton(text=cls.texts['mailing_lists'], callback_data='all_mailing_list')],
             [InlineKeyboardButton(text=cls.texts['all_statistics'], callback_data='allStatistics_1')],
+            [InlineKeyboardButton(text=cls.texts['recover_btn'], callback_data='recover')],
             [InlineKeyboardButton(text=cls.texts['withdraw_funds'], callback_data='withdraw_funds')],
             [InlineKeyboardButton(text=cls.texts['subpartnership'], callback_data='subpartner')],
         ]
@@ -467,3 +479,27 @@ class InlineKeyboardMain:
             [InlineKeyboardButton(text=cls.texts['back'], callback_data=f"admin_panel")]
         ]
         return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+    @classmethod
+    async def choose_payment_to_withdraw(cls):
+        keyboard = [
+            [InlineKeyboardButton(text=cls.texts['cart_rf'], callback_data="cart_rf")]
+        ]
+        return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+    @classmethod
+    async def recover_kb(cls):
+        keyboard = [
+            [InlineKeyboardButton(text=cls.texts['recover_code_btn'], callback_data=f"recover_code")],
+            [InlineKeyboardButton(text=cls.texts['recover_account_btn'], callback_data=f"recover_account")],
+            [InlineKeyboardButton(text=cls.texts['back'], callback_data=f"constructor")],
+        ]
+        return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+    @classmethod
+    async def recover_code(cls):
+        keyboards = [
+            [InlineKeyboardButton(text=cls.texts['new_recover_code'], callback_data=f"new_recover_code")],
+            [InlineKeyboardButton(text=cls.texts['back'], callback_data=f"recover")]
+        ]
+        return InlineKeyboardMarkup(inline_keyboard=keyboards)
