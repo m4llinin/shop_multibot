@@ -13,10 +13,11 @@ async def statistics_users(callback: CallbackQuery, state: FSMContext):
 
     texts = await load_texts()
     partners, subpartners = await Database.MainBot.statistics_users()
+    shops = await Database.MainBot.get_all_shops()
 
     await state.set_state(Statistics.users)
     await callback.message.delete()
-    await callback.message.answer(text=texts['statistics_users_text'].format(partners, subpartners),
+    await callback.message.answer(text=texts['statistics_users_text'].format(partners, subpartners, len(shops)),
                                   reply_markup=await InlineKeyboardMain.back("admin_statistics"))
 
 

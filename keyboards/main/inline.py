@@ -4,7 +4,6 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 from database.schemas.Category import Category
 from database.schemas.Good import Good
-from database.schemas.Mail import Mail
 from database.schemas.Shop import Shop
 from database.schemas.Subcategory import Subcategory
 from utils import load_texts
@@ -35,7 +34,7 @@ class InlineKeyboardMain:
         return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
     @classmethod
-    async def menu_kb(cls):
+    async def menu_kb(cls, is_loyalty: bool):
         keyboard = [
             [InlineKeyboardButton(text=cls.texts['create_shop'], callback_data='create_shop')],
             [InlineKeyboardButton(text=cls.texts['my_shops_menu'], callback_data='my_shops')],
@@ -45,6 +44,9 @@ class InlineKeyboardMain:
             [InlineKeyboardButton(text=cls.texts['withdraw_funds'], callback_data='withdraw_funds')],
             [InlineKeyboardButton(text=cls.texts['subpartnership'], callback_data='subpartner')],
         ]
+        if is_loyalty:
+            keyboard.append([InlineKeyboardButton(text=cls.texts['ppu_btn'], callback_data='ppu')])
+
         return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
     @classmethod
@@ -92,6 +94,7 @@ class InlineKeyboardMain:
             keyboard.append([InlineKeyboardButton(text=cls.texts['add_subcategory'], callback_data='add_subcategory')])
             keyboard.append([InlineKeyboardButton(text=cls.texts['add_good'], callback_data='add_good')])
 
+            keyboard.append([InlineKeyboardButton(text=cls.texts['mailing_lists'], callback_data='admin_mailing_list')])
             keyboard.append([InlineKeyboardButton(text=cls.texts['change_status'], callback_data='change_status')])
 
             channel_text = cls.texts['unlink_btn'] if is_linked else cls.texts['link_btn']
@@ -239,7 +242,7 @@ class InlineKeyboardMain:
             [InlineKeyboardButton(text=cls.texts['period_3'], callback_data=f"adminStatistics_3"),
              InlineKeyboardButton(text=cls.texts['period_4'], callback_data=f"adminStatistics_4")],
             [InlineKeyboardButton(text=cls.texts['period_5'], callback_data=f"adminStatistics_5")],
-            [InlineKeyboardButton(text=cls.texts['back'], callback_data=f"admin_statistics_shops")]
+            [InlineKeyboardButton(text=cls.texts['back'], callback_data=f"allAdminStatistics_1")]
         ]
 
         if period == 1:
@@ -410,6 +413,46 @@ class InlineKeyboardMain:
         return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
     @classmethod
+    async def admin_mailing_list(cls, my_mail: MyMail):
+        keyboard = [
+            [InlineKeyboardButton(text=cls.texts['add_mail_btn'], callback_data=f"add_admin_mail")],
+        ]
+
+        for i in range(my_mail.cur_page * 5, my_mail.cur_page * 5 + 5):
+            try:
+                if my_mail.mails[i].status == "wait":
+                    emoji = "🟠"
+                elif my_mail.mails[i].status == "done":
+                    emoji = "🟢"
+                else:
+                    emoji = "🔴"
+
+                try:
+                    keyboard.append([InlineKeyboardButton(
+                        text=cls.texts["schedule_mail_btn"].format(emoji, my_mail.mails[i].id,
+                                                                   my_mail.mails[i].real_date.strftime(
+                                                                       "%d.%m.%Y %H:%M")),
+                        callback_data=f"admin_mail_{my_mail.mails[i].id}")])
+                except AttributeError:
+                    keyboard.append([InlineKeyboardButton(
+                        text=cls.texts["schedule_mail_btn"].format(emoji, my_mail.mails[i].id,
+                                                                   my_mail.mails[i].wait_date.strftime(
+                                                                       "%d.%m.%Y %H:%M")),
+                        callback_data=f"admin_mail_{my_mail.mails[i].id}")])
+            except IndexError:
+                pass
+
+        if my_mail.mails:
+            keyboard.append([InlineKeyboardButton(text=cls.texts["<"], callback_data="back_page_admin_mail"),
+                             InlineKeyboardButton(
+                                 text=cls.texts["page"].format(my_mail.cur_page + 1, my_mail.all_pages),
+                                 callback_data="just_page"),
+                             InlineKeyboardButton(text=cls.texts['>'], callback_data="next_page_admin_mail")])
+
+        keyboard.append([InlineKeyboardButton(text=cls.texts['back'], callback_data="admin_panel")])
+        return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+    @classmethod
     async def add_mail_kb(cls, shop_id: int, date: str = None):
         date = date if date else "Сейчас"
         keyboard = [
@@ -428,6 +471,17 @@ class InlineKeyboardMain:
             [InlineKeyboardButton(text=cls.texts['add_btn'], callback_data=f"all_add_btn")],
             [InlineKeyboardButton(text=cls.texts['save_btn'], callback_data=f"all_save_btn")],
             [InlineKeyboardButton(text=cls.texts['cancel'], callback_data=f"constructor")]
+        ]
+        return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+    @classmethod
+    async def add_admin_mail_kb(cls, date: str = None):
+        date = date if date else "Сейчас"
+        keyboard = [
+            [InlineKeyboardButton(text=cls.texts['date_btn'].format(date), callback_data=f"admin_date")],
+            [InlineKeyboardButton(text=cls.texts['add_btn'], callback_data=f"admin_add_btn")],
+            [InlineKeyboardButton(text=cls.texts['save_btn'], callback_data=f"admin_save_btn")],
+            [InlineKeyboardButton(text=cls.texts['cancel'], callback_data=f"admin_panel")]
         ]
         return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
@@ -460,6 +514,20 @@ class InlineKeyboardMain:
         return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
     @classmethod
+    async def admin_mail_profile_kb(cls, deleted: bool):
+        if not deleted:
+            keyboard = [
+                [InlineKeyboardButton(text=cls.texts['delete_mail'], callback_data=f"admin_delete_mail")],
+            ]
+        else:
+            keyboard = []
+
+        keyboard.append([InlineKeyboardButton(text=cls.texts['view_mail'], callback_data=f"admin_view_mail")])
+        keyboard.append([InlineKeyboardButton(text=cls.texts['back'], callback_data=f"admin_mailing_list")])
+
+        return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+    @classmethod
     async def generate_keyboard(cls, text: str | None, url_l: str | None):
         if text and url_l:
             keyboard = [
@@ -471,7 +539,7 @@ class InlineKeyboardMain:
     async def statistics_menu(cls):
         keyboard = [
             [InlineKeyboardButton(text=cls.texts['statistics_users'], callback_data=f"admin_statistics_users")],
-            [InlineKeyboardButton(text=cls.texts['statistics_shops'], callback_data=f"admin_statistics_shops")],
+            [InlineKeyboardButton(text=cls.texts['statistics_shops'], callback_data=f"allAdminStatistics_1")],
             [InlineKeyboardButton(text=cls.texts['all_statistics_time_line'],
                                   callback_data=f"admin_all_statistics_time_line")],
             [InlineKeyboardButton(text=cls.texts['statistics_time_line'],
@@ -503,3 +571,45 @@ class InlineKeyboardMain:
             [InlineKeyboardButton(text=cls.texts['back'], callback_data=f"recover")]
         ]
         return InlineKeyboardMarkup(inline_keyboard=keyboards)
+
+    @classmethod
+    async def loyalty_solution(cls, user_id: int, loyalty_solution: int):
+        keyboard = [
+            [InlineKeyboardButton(text=cls.texts['successful_payments'],
+                                  callback_data=f"suc_level_{user_id}_{loyalty_solution}"),
+             InlineKeyboardButton(text=cls.texts['bad_payments'], callback_data=f"bad_level")]
+        ]
+        return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+    @classmethod
+    async def all_admin_statistics(cls, period: int):
+        keyboard = [
+            [InlineKeyboardButton(text=cls.texts['period_1'], callback_data=f"allAdminStatistics_1"),
+             InlineKeyboardButton(text=cls.texts['period_2'], callback_data=f"allAdminStatistics_2")],
+            [InlineKeyboardButton(text=cls.texts['period_3'], callback_data=f"allAdminStatistics_3"),
+             InlineKeyboardButton(text=cls.texts['period_4'], callback_data=f"allAdminStatistics_4")],
+            [InlineKeyboardButton(text=cls.texts['period_5'], callback_data=f"allAdminStatistics_5")],
+            [InlineKeyboardButton(text=cls.texts['download_statistics_btn'], callback_data=f"download_statistics")],
+            [InlineKeyboardButton(text=cls.texts['back'], callback_data=f"admin_statistics")]
+        ]
+
+        if period == 1:
+            keyboard[0][0].text = "✅" + cls.texts["period_1"]
+        elif period == 2:
+            keyboard[0][1].text = "✅" + cls.texts["period_2"]
+        elif period == 3:
+            keyboard[1][0].text = "✅" + cls.texts["period_3"]
+        elif period == 4:
+            keyboard[1][1].text = "✅" + cls.texts["period_4"]
+        elif period == 5:
+            keyboard[2][0].text = "✅" + cls.texts["period_5"]
+
+        return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+    @classmethod
+    async def ppu(cls):
+        keyboard = [
+            [InlineKeyboardButton(text=cls.texts['offer_btn'], callback_data="offer")],
+            [InlineKeyboardButton(text=cls.texts['think_more_btn'], callback_data="constructor")]
+        ]
+        return InlineKeyboardMarkup(inline_keyboard=keyboard)

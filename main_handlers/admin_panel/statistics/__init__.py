@@ -6,7 +6,7 @@ from states.main_bot import Statistics
 
 from .menu import statistics_menu
 from .statistics_users import statistics_users, get_username
-from .admin_statistics_shops import statistics_shops, get_username_shops, admin_statistics_shops
+from .admin_statistics_shops import statistics_shops, get_username_shops, admin_statistics_shops, download_statistics
 from .all_statistics_time_line import all_get_period, all_statistics_time_line
 from .statistics_time_line import get_period, get_name_shop, statistics_time_line
 
@@ -17,9 +17,10 @@ statistics_router.callback_query.register(statistics_menu, F.data == "admin_stat
 statistics_router.callback_query.register(statistics_users, F.data == "admin_statistics_users")
 statistics_router.message.register(get_username, F.text, Statistics.users)
 
-statistics_router.callback_query.register(statistics_shops, F.data == "admin_statistics_shops")
+statistics_router.callback_query.register(statistics_shops, lambda x: x.data.startswith("allAdminStatistics_"))
 statistics_router.message.register(get_username_shops, F.text, Statistics.shops)
 statistics_router.callback_query.register(admin_statistics_shops, lambda x: x.data.startswith("adminStatistics_"))
+statistics_router.callback_query.register(download_statistics, F.data == "download_statistics")
 
 statistics_router.callback_query.register(all_statistics_time_line, F.data == "admin_all_statistics_time_line")
 statistics_router.message.register(all_get_period, F.text, Statistics.allPeriod)

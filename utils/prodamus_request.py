@@ -1,3 +1,6 @@
+import calendar
+from datetime import datetime, timedelta
+
 from aiogram.enums import ParseMode
 from aiohttp import web
 from aiogram import Bot
@@ -5,6 +8,7 @@ from aiogram import Bot
 from database.commands import Database
 from utils import load_texts
 
+from keyboards import InlineKeyboardMain
 from config.config import session, PAYMENT_CHANNEL_ID, main_bot
 
 
@@ -28,9 +32,12 @@ async def handler_prodamus_request(request: web.Request) -> web.Response:
         bot = Bot(token=shop.token, session=session)
 
         if shop.notifications:
-            await bot.send_message(chat_id=shop.owner_id, text=texts['new_purchase'].format(user_id=order.user_id,
-                                                                                            order=order.id,
-                                                                                            price=order.total_price))
+            await main_bot.send_message(chat_id=shop.owner_id,
+                                        text=texts['new_purchase'].format(user_id=order.user_id,
+                                                                          good=good.name,
+                                                                          price=order.total_price,
+                                                                          date=datetime.now().strftime(
+                                                                              "%d.%m.%Y %H:%M")))
 
         user = await Database.ShopBot.get_user(order.user_id)
         referral = None
@@ -41,6 +48,28 @@ async def handler_prodamus_request(request: web.Request) -> web.Response:
 
         await Database.ShopBot.update_order_status(order_id, "paid")
         await Database.MainBot.update_owner_balance(shop.owner_id, order.total_price)
+
+        owner_shop = await Database.MainBot.get_user(shop.owner_id)
+        now = datetime.now()
+        period = now - timedelta(days=calendar.monthrange(now.year, now.year)[1])
+        start = datetime(period.year, period.month, 1, 0, 0, 1)
+        end = datetime(period.year, period.month, calendar.monthrange(period.year, period.month)[1], 23, 59, 59)
+        profit = sum([await Database.MainBot.get_profit(shop, start, end) for shop in user.shops])
+
+        if profit > 50000 and owner_shop.loyalty_level == 45:
+            await Database.MainBot.update_loyalty_level(owner_shop.id, 50)
+
+        if owner_shop.referral_id and owner_shop.loyalty_level >= 50:
+            if profit > 150000:
+                admin = await Database.MainBot.get_admin()
+                await main_bot.send_message(chat_id=admin.id,
+                                            text=texts['loyalty_level'].format(owner_shop.username, profit, 60),
+                                            reply_markup=await InlineKeyboardMain.loyalty_solution(owner_shop.id, 60))
+            elif profit > 100000:
+                admin = await Database.MainBot.get_admin()
+                await main_bot.send_message(chat_id=admin.id,
+                                            text=texts['loyalty_level'].format(owner_shop.username, profit, 55),
+                                            reply_markup=await InlineKeyboardMain.loyalty_solution(owner_shop.id, 55))
 
         await bot.delete_message(chat_id=order.user_id, message_id=order.last_message_id)
 
@@ -77,13 +106,15 @@ async def handler_prodamus_update_balance(request: web.Request) -> web.Response:
         texts = await load_texts()
         shop = await Database.ShopBot.get_shop_by_name(shop_name)
         order = await Database.ShopBot.get_order(order_id)
-        user = await Database.ShopBot.get_user(order.user_id)
         bot = Bot(token=shop.token, session=session)
 
         if shop.notifications:
-            await bot.send_message(chat_id=shop.owner_id, text=texts['new_purchase'].format(user_id=order.user_id,
-                                                                                            order=order.id,
-                                                                                            price=order.total_price))
+            await main_bot.send_message(chat_id=shop.owner_id,
+                                        text=texts['new_purchase'].format(user_id=order.user_id,
+                                                                          good=f"Пополнение баланса на {amount}₽",
+                                                                          price=order.total_price,
+                                                                          date=datetime.now().strftime(
+                                                                              "%d.%m.%Y %H:%M")))
 
         user = await Database.ShopBot.get_user(order.user_id)
         referral = None
@@ -95,6 +126,28 @@ async def handler_prodamus_update_balance(request: web.Request) -> web.Response:
         await Database.ShopBot.update_order_status(order_id, "paid")
         await Database.ShopBot.update_user_balance(user.id, user.balance + amount)
         await Database.MainBot.update_owner_balance(shop.owner_id, amount)
+
+        owner_shop = await Database.MainBot.get_user(shop.owner_id)
+        now = datetime.now()
+        period = now - timedelta(days=calendar.monthrange(now.year, now.year)[1])
+        start = datetime(period.year, period.month, 1, 0, 0, 1)
+        end = datetime(period.year, period.month, calendar.monthrange(period.year, period.month)[1], 23, 59, 59)
+        profit = sum([await Database.MainBot.get_profit(shop, start, end) for shop in user.shops])
+
+        if profit > 50000 and owner_shop.loyalty_level == 45:
+            await Database.MainBot.update_loyalty_level(owner_shop.id, 50)
+
+        if owner_shop.referral_id and owner_shop.loyalty_level >= 50:
+            if profit > 150000:
+                admin = await Database.MainBot.get_admin()
+                await main_bot.send_message(chat_id=admin.id,
+                                            text=texts['loyalty_level'].format(owner_shop.username, profit, 60),
+                                            reply_markup=await InlineKeyboardMain.loyalty_solution(owner_shop.id, 60))
+            elif profit > 100000:
+                admin = await Database.MainBot.get_admin()
+                await main_bot.send_message(chat_id=admin.id,
+                                            text=texts['loyalty_level'].format(owner_shop.username, profit, 55),
+                                            reply_markup=await InlineKeyboardMain.loyalty_solution(owner_shop.id, 55))
 
         await bot.delete_message(chat_id=order.user_id, message_id=order.last_message_id)
         await bot.send_message(chat_id=order.user_id,

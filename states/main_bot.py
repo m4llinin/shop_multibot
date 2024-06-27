@@ -63,6 +63,12 @@ class AddAllMail(StatesGroup):
     button = State()
 
 
+class AddAdminMail(StatesGroup):
+    text = State()
+    date = State()
+    button = State()
+
+
 class LinkChannelAdmin(StatesGroup):
     channel = State()
 
@@ -84,4 +90,8 @@ class Recover(StatesGroup):
 
 
 class SupportSolution(StatesGroup):
+    text = State()
+
+
+class Offer(StatesGroup):
     text = State()

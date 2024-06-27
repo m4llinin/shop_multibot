@@ -5,7 +5,8 @@ import asyncio
 from aiogram import Router, F
 
 from utils import load_texts
-from states.main_bot import AddCategory, AddSubcategory, AddGoods, EditCount, LinkChannelAdmin, ChangeStatus
+from states.main_bot import AddCategory, AddSubcategory, AddGoods, EditCount, LinkChannelAdmin, ChangeStatus, \
+    AddAdminMail
 
 from .admin import admin_panel, admin_panel_clb
 
@@ -22,6 +23,10 @@ from .link_channel import link_channel, linked_channel
 from .change_status import change_status, get_status, get_username
 
 from .statistics import statistics_router
+
+from .mailing import (admin_add_btn, admin_get_btn, admin_add_mail, admin_mailing_list, admin_add_date, admin_get_date,
+                      admin_view_adding_mail, admin_change_page, admin_get_text_photo, admin_save_mail, admin_view_mail,
+                      admin_view_profile_mail, admin_delete_mail)
 
 texts: dict = asyncio.run(load_texts())
 
@@ -67,5 +72,21 @@ def register_handlers_admin_panel(router: Router):
     router.message.register(get_username, F.text, ChangeStatus.user)
     router.callback_query.register(get_status,
                                    lambda x: x.data in ["main_admin", "admin", "partner", "linker", "super_partner"])
+
+    router.callback_query.register(admin_mailing_list, F.data == "admin_mailing_list")
+    router.callback_query.register(admin_change_page,
+                                   lambda x: x.data == "back_page_admin_mail" or x.data == "next_page_admin_mail")
+    router.callback_query.register(admin_view_adding_mail, F.data == "admin_view_adding_mail")
+    router.callback_query.register(admin_add_mail, F.data == "add_admin_mail")
+    router.message.register(admin_get_text_photo, F.text, AddAdminMail.text)
+    router.message.register(admin_get_text_photo, F.photo, AddAdminMail.text)
+    router.callback_query.register(admin_add_date, F.data == "admin_date")
+    router.message.register(admin_get_date, F.text, AddAdminMail.date)
+    router.callback_query.register(admin_add_btn, F.data == "admin_add_btn")
+    router.message.register(admin_get_btn, F.text, AddAdminMail.button)
+    router.callback_query.register(admin_save_mail, F.data == "admin_save_btn")
+    router.callback_query.register(admin_view_profile_mail, lambda x: x.data.startswith("admin_mail_"))
+    router.callback_query.register(admin_view_mail, F.data == "admin_view_mail")
+    router.message.register(admin_delete_mail, F.data == "admin_delete_mail")
 
     router.include_router(statistics_router)

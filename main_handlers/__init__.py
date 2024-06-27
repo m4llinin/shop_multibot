@@ -15,6 +15,7 @@ from .start import start, start_clb
 from .information import information
 from .constructor import constructor, constructor_clb
 from .support_solution import successful_support, bad_support, get_solution
+from .loyalty_level import successful_level, bad_level
 
 texts: dict = asyncio.run(load_texts())
 
@@ -30,6 +31,9 @@ def register_main_handler(router: Router):
     router.callback_query.register(successful_support, lambda x: x.data.startswith("successful_support_"))
     router.message.register(get_solution, F.text, SupportSolution.text)
     router.callback_query.register(bad_support, lambda x: x.data.startswith("bad_support_"))
+
+    router.callback_query.register(successful_level, lambda x: x.data.startswith("suc_level_"))
+    router.callback_query.register(bad_level, F.data == "bad_level")
 
     register_handlers_user_panel(router)
     register_handlers_admin_panel(router)

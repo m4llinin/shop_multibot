@@ -11,7 +11,7 @@ async def constructor(message: Message):
     user = await Database.MainBot.get_user(message.chat.id)
     return await message.answer(
         text=texts['constructor'].format(id=user.id, level=user.loyalty_level, balance=user.balance),
-        reply_markup=await InlineKeyboardMain.menu_kb())
+        reply_markup=await InlineKeyboardMain.menu_kb(user.loyalty_level >= 50))
 
 
 async def constructor_clb(callback: CallbackQuery, state: FSMContext):
@@ -22,4 +22,4 @@ async def constructor_clb(callback: CallbackQuery, state: FSMContext):
     await callback.message.delete()
     return await callback.message.answer(
         text=texts['constructor'].format(id=user.id, level=user.loyalty_level, balance=user.balance),
-        reply_markup=await InlineKeyboardMain.menu_kb())
+        reply_markup=await InlineKeyboardMain.menu_kb(user.loyalty_level >= 50))

@@ -4,7 +4,7 @@ from aiogram import Router, F
 
 from .add_new_shop import add_new_shop, new_shop
 
-from states.main_bot import AddShop, WithdrawFunds, SubmitApp, AddAllMail, Recover
+from states.main_bot import AddShop, WithdrawFunds, SubmitApp, AddAllMail, Recover, Offer
 from .my_shops import shops_router
 from .all_statistics import all_statistics
 from .withdraw_funds import (cart_rf, payments, amount, successful_payments, bad_payments,
@@ -15,6 +15,7 @@ from .all_mailing import (all_mailing_list, all_change_page, all_view_adding_mai
                           all_add_date, all_get_date, all_add_btn, all_get_btn, all_save_mail, all_view_profile_mail,
                           all_view_mail, all_delete_mail)
 from .recover import (recover_code, recover, recover_account, get_code, new_recover_code)
+from .ppu import ppu, offer, get_offer
 
 
 def register_handlers_user_panel(router: Router, ):
@@ -61,5 +62,9 @@ def register_handlers_user_panel(router: Router, ):
     router.callback_query.register(new_recover_code, F.data == "new_recover_code")
     router.callback_query.register(recover_account, F.data == "recover_account")
     router.message.register(get_code, F.text, Recover.code)
+
+    router.callback_query.register(ppu, F.data == "ppu")
+    router.callback_query.register(offer, F.data == "offer")
+    router.message.register(get_offer, F.text, Offer.text)
 
     router.include_router(shops_router)

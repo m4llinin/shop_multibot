@@ -85,7 +85,25 @@ class Database:
         async def get_waiting_mails(cls) -> list[Mail]:
             return await Mail.query.where(Mail.status == "wait").gino.all()
 
+        @classmethod
+        async def get_admin_mails(cls, user_id: int) -> list[Mail]:
+            user = await Database.MainBot.get_user(user_id)
+            mails = await Mail.query.where(Mail.user_id == user_id).gino.all()
+            output = []
+            for mail in mails:
+                if len(mail.shop_id) > len(user.shops):
+                    output.append(mail)
+            return output
+
     class MainBot:
+        @classmethod
+        async def get_all_orders_status(cls, status: str) -> list[Order]:
+            return await Order.query.where(Order.status == status).gino.all()
+
+        @classmethod
+        async def update_loyalty_level(cls, user_id: int, loyalty_level: int):
+            return await UserMainBot.update.values(id=user_id, loyalty_level=loyalty_level).gino.status()
+
         @classmethod
         async def generate_recover_code(cls, user_id: int):
             return await UserMainBot.update.values(recover_code=str(uuid.uuid4())).where(
@@ -119,7 +137,14 @@ class Database:
 
             if user.referral_id:
                 referral: UserMainBot = await UserMainBot.query.where(UserMainBot.id == user.referral_id).gino.first()
-                return await UserMainBot.update.values(balance=int(referral.balance + value * 0.25)).where(
+
+                percent = 0.2
+                if user.loyalty_level == 55:
+                    percent = 0.15
+                elif user.loyalty_level == 60:
+                    percent = 0.1
+
+                return await UserMainBot.update.values(balance=int(referral.balance + value * percent)).where(
                     UserMainBot.id == referral.id).gino.status()
 
         @classmethod
@@ -378,6 +403,14 @@ class Database:
         async def update_support(cls, support_id: int, status: str, admin_id: int, solution: str = None):
             return await Support.update.values(status=status, admin=admin_id, solution=solution).where(
                 Support.id == support_id).gino.status()
+
+        @classmethod
+        async def get_main_admin(cls):
+            return await UserMainBot.query.where(UserMainBot.status == "main_admin").gino.first()
+
+        @classmethod
+        async def update_last_offer(cls, user_id: int, date: datetime):
+            return await UserMainBot.update.values(last_offer=date).where(UserMainBot.id == user_id).gino.status()
 
     class ShopBot:
         @classmethod

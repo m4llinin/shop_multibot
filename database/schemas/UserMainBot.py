@@ -1,5 +1,5 @@
 from database.db_gino import TimedBaseModel
-from sqlalchemy import Integer, Float, String, Column, ARRAY, sql, BigInteger
+from sqlalchemy import Integer, Float, String, Column, ARRAY, sql, BigInteger, DateTime
 
 
 class UserMainBot(TimedBaseModel):
@@ -12,5 +12,6 @@ class UserMainBot(TimedBaseModel):
     loyalty_level = Column(Integer, default=45)
     shops = Column(ARRAY(BigInteger), default=[])
     status = Column(String, default="partner")
+    last_offer = Column(DateTime)
 
     query: sql.select

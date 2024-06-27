@@ -34,7 +34,7 @@ async def new_shop(message: Message, state: FSMContext):
     if bot:
         return await message.answer(text=texts['has_bot'])
 
-    commands = [BotCommand(command="start", description="♻️ ВЫЗВАТЬ МЕНЮ ♻️")]
+    commands = [BotCommand(command="start", description="❕МЕНЮ❕")]
     await new_bot.set_my_commands(commands=commands)
 
     await new_bot.delete_webhook(drop_pending_updates=True)
