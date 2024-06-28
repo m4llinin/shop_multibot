@@ -25,11 +25,11 @@ class InlineKeyboardMain:
     @classmethod
     async def information(cls):
         keyboard = [
-            [InlineKeyboardButton(text=cls.texts['best_choice'], url="t.me")],
-            [InlineKeyboardButton(text=cls.texts['main_channel'], url="t.me")],
-            [InlineKeyboardButton(text=cls.texts['quick_start'], url="t.me")],
-            [InlineKeyboardButton(text=cls.texts['manuals'], url="t.me")],
-            [InlineKeyboardButton(text=cls.texts['faq'], url="t.me")]
+            [InlineKeyboardButton(text=cls.texts['best_choice'],
+                                  url="https://telegra.ph/CHto-delaet-nas-luchshim-vyborom-06-27")],
+            [InlineKeyboardButton(text=cls.texts['main_channel'], url="https://t.me/+f8NjOsYEJFo0YWNi")],
+            [InlineKeyboardButton(text=cls.texts['quick_start'], url="https://telegra.ph/Bystryj-start-06-28")],
+            [InlineKeyboardButton(text=cls.texts['faq'], callback_data="faq")]
         ]
         return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
@@ -584,12 +584,11 @@ class InlineKeyboardMain:
     @classmethod
     async def all_admin_statistics(cls, period: int):
         keyboard = [
-            [InlineKeyboardButton(text=cls.texts['period_1'], callback_data=f"allAdminStatistics_1"),
-             InlineKeyboardButton(text=cls.texts['period_2'], callback_data=f"allAdminStatistics_2")],
+            [InlineKeyboardButton(text=cls.texts['period_1'], callback_data=f"allAdminStatistics_1")],
             [InlineKeyboardButton(text=cls.texts['period_3'], callback_data=f"allAdminStatistics_3"),
              InlineKeyboardButton(text=cls.texts['period_4'], callback_data=f"allAdminStatistics_4")],
-            [InlineKeyboardButton(text=cls.texts['period_5'], callback_data=f"allAdminStatistics_5")],
-            [InlineKeyboardButton(text=cls.texts['download_statistics_btn'], callback_data=f"download_statistics")],
+            [InlineKeyboardButton(text=cls.texts['download_statistics_btn'],
+                                  callback_data=f"download_statistics_{period}")],
             [InlineKeyboardButton(text=cls.texts['back'], callback_data=f"admin_statistics")]
         ]
 
@@ -611,5 +610,13 @@ class InlineKeyboardMain:
         keyboard = [
             [InlineKeyboardButton(text=cls.texts['offer_btn'], callback_data="offer")],
             [InlineKeyboardButton(text=cls.texts['think_more_btn'], callback_data="constructor")]
+        ]
+        return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+    @classmethod
+    async def download_users(cls):
+        keyboard = [
+            [InlineKeyboardButton(text=cls.texts['download_statistics_btn'], callback_data="download_users")],
+            [InlineKeyboardButton(text=cls.texts['back'], callback_data="admin_statistics")]
         ]
         return InlineKeyboardMarkup(inline_keyboard=keyboard)

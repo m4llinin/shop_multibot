@@ -36,6 +36,7 @@ async def new_shop(message: Message, state: FSMContext):
 
     commands = [BotCommand(command="start", description="❕МЕНЮ❕")]
     await new_bot.set_my_commands(commands=commands)
+    await new_bot.set_my_description(description=texts['description'])
 
     await new_bot.delete_webhook(drop_pending_updates=True)
     await new_bot.set_webhook(OTHER_BOTS_URL.format(bot_token=message.text))

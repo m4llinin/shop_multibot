@@ -48,15 +48,30 @@ async def statistics_shops(callback: CallbackQuery, state: FSMContext):
 
 
 async def download_statistics(callback: CallbackQuery):
-    texts = await load_texts()
+    period = int(callback.data.split("_")[2])
 
-    orders = await Database.MainBot.get_all_orders_status("paid")
+    now = datetime.now(tz=TZ)
+    if period == 1:
+        start = datetime(now.year, now.month, now.day, 0, 0, 0)
+        end = datetime(now.year, now.month, now.day, 23, 59, 59)
+    elif period == 2:
+        start = datetime(now.year, now.month, now.day, 0, 0, 0) - timedelta(days=1)
+        end = datetime(now.year, now.month, now.day, 0, 0, 0)
+    elif period == 3:
+        start = datetime(now.year, now.month, now.day, 0, 0, 0) - timedelta(weeks=1)
+        end = datetime(now.year, now.month, now.day, 0, 0, 0)
+    elif period == 4:
+        start = datetime(now.year, now.month, now.day, 0, 0, 0) - timedelta(
+            days=calendar.monthrange(now.year, now.month)[1])
+        end = datetime(now.year, now.month, now.day, 0, 0, 0)
+    else:
+        start, end = None, None
 
-    if len(orders) == 0:
-        return await callback.answer(text=texts['not_orders'], show_alert=True)
+    orders = await Database.MainBot.get_all_orders_status("paid", start, end)
 
     with open("sales_statistics.csv", "w", newline="") as csvfile:
         csv_writer = csv.writer(csvfile)
+        csv_writer.writerow([f"Статистика {start.strftime('%d.%m.%Y')} - {end.strftime('%d.%m.%Y')}"])
         csv_writer.writerow(["№", "Товар", "Сумма продаж", "Дата и время продажи", "Магазин"])
         i = 1
         for order in orders:

@@ -46,6 +46,10 @@ async def get_status(callback: CallbackQuery, state: FSMContext):
     texts = await load_texts()
     data = await state.get_data()
     username = data.get("username")
+    user = await Database.MainBot.get_user(username)
+
+    if callback.data == "super_partner":
+        await Database.MainBot.update_loyalty_level(user.id, 55)
 
     await Database.MainBot.update_user_status(username, callback.data)
     await callback.message.delete()

@@ -9,7 +9,7 @@ from database.commands import Database
 from utils import load_texts
 
 from keyboards import InlineKeyboardMain
-from config.config import session, PAYMENT_CHANNEL_ID, main_bot
+from config.config import session, main_bot
 
 
 async def handler_prodamus_request(request: web.Request) -> web.Response:
@@ -23,6 +23,7 @@ async def handler_prodamus_request(request: web.Request) -> web.Response:
             status = quantity.split("=")[1]
         elif quantity.split("=")[0] == "customer_extra":
             shop_name = quantity.split("=")[1]
+    print(order_id, status, shop_name)
 
     if status == "success":
         texts = await load_texts()
@@ -33,7 +34,8 @@ async def handler_prodamus_request(request: web.Request) -> web.Response:
 
         if shop.notifications:
             await main_bot.send_message(chat_id=shop.owner_id,
-                                        text=texts['new_purchase'].format(user_id=order.user_id,
+                                        text=texts['new_purchase'].format(shop=shop.username,
+                                                                          user_id=order.user_id,
                                                                           good=good.name,
                                                                           price=order.total_price,
                                                                           date=datetime.now().strftime(
@@ -51,10 +53,10 @@ async def handler_prodamus_request(request: web.Request) -> web.Response:
 
         owner_shop = await Database.MainBot.get_user(shop.owner_id)
         now = datetime.now()
-        period = now - timedelta(days=calendar.monthrange(now.year, now.year)[1])
+        period = now - timedelta(days=calendar.monthrange(now.year, now.month)[1])
         start = datetime(period.year, period.month, 1, 0, 0, 1)
         end = datetime(period.year, period.month, calendar.monthrange(period.year, period.month)[1], 23, 59, 59)
-        profit = sum([await Database.MainBot.get_profit(shop, start, end) for shop in user.shops])
+        profit = sum([await Database.MainBot.get_profit(shop, start, end) for shop in owner_shop.shops])
 
         if profit > 50000 and owner_shop.loyalty_level == 45:
             await Database.MainBot.update_loyalty_level(owner_shop.id, 50)
@@ -81,10 +83,6 @@ async def handler_prodamus_request(request: web.Request) -> web.Response:
             pass
             # МЕСТО ДЛЯ ВЫДАЧИ ТОВАРА С КОЛИЧЕСТВОМ
 
-        await main_bot.send_message(chat_id=PAYMENT_CHANNEL_ID, text=texts['new_purchase'].format(user_id=order.user_id,
-                                                                                                  order=order.id,
-                                                                                                  price=order.total_price))
-
     return web.Response()
 
 
@@ -110,7 +108,8 @@ async def handler_prodamus_update_balance(request: web.Request) -> web.Response:
 
         if shop.notifications:
             await main_bot.send_message(chat_id=shop.owner_id,
-                                        text=texts['new_purchase'].format(user_id=order.user_id,
+                                        text=texts['new_purchase'].format(shop=shop.username,
+                                                                          user_id=order.user_id,
                                                                           good=f"Пополнение баланса на {amount}₽",
                                                                           price=order.total_price,
                                                                           date=datetime.now().strftime(
@@ -129,10 +128,10 @@ async def handler_prodamus_update_balance(request: web.Request) -> web.Response:
 
         owner_shop = await Database.MainBot.get_user(shop.owner_id)
         now = datetime.now()
-        period = now - timedelta(days=calendar.monthrange(now.year, now.year)[1])
+        period = now - timedelta(days=calendar.monthrange(now.year, now.month)[1])
         start = datetime(period.year, period.month, 1, 0, 0, 1)
         end = datetime(period.year, period.month, calendar.monthrange(period.year, period.month)[1], 23, 59, 59)
-        profit = sum([await Database.MainBot.get_profit(shop, start, end) for shop in user.shops])
+        profit = sum([await Database.MainBot.get_profit(shop, start, end) for shop in owner_shop.shops])
 
         if profit > 50000 and owner_shop.loyalty_level == 45:
             await Database.MainBot.update_loyalty_level(owner_shop.id, 50)
@@ -153,9 +152,5 @@ async def handler_prodamus_update_balance(request: web.Request) -> web.Response:
         await bot.send_message(chat_id=order.user_id,
                                text=texts['successful_update_balance'].format(amount, user.balance + amount),
                                parse_mode=ParseMode.HTML)
-
-        await main_bot.send_message(chat_id=PAYMENT_CHANNEL_ID, text=texts['new_purchase'].format(user_id=order.user_id,
-                                                                                                  order=order.id,
-                                                                                                  price=order.total_price))
 
     return web.Response()

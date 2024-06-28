@@ -1,5 +1,8 @@
+import csv
+import os
+
 from aiogram.fsm.context import FSMContext
-from aiogram.types import CallbackQuery, Message
+from aiogram.types import CallbackQuery, Message, FSInputFile
 
 from utils import load_texts
 from keyboards import InlineKeyboardMain
@@ -18,7 +21,22 @@ async def statistics_users(callback: CallbackQuery, state: FSMContext):
     await state.set_state(Statistics.users)
     await callback.message.delete()
     await callback.message.answer(text=texts['statistics_users_text'].format(partners, subpartners, len(shops)),
-                                  reply_markup=await InlineKeyboardMain.back("admin_statistics"))
+                                  reply_markup=await InlineKeyboardMain.download_users())
+
+
+async def download_users(callback: CallbackQuery):
+    users = await Database.MainBot.get_all_users()
+
+    with open("users_statistics.csv", "w", newline="") as csvfile:
+        csv_writer = csv.writer(csvfile)
+        csv_writer.writerow(["username", "Кол-во афилиатов", "Кол-во подключенных магазинов", "Линки магазинов"])
+        for user in users:
+            shops = await Database.MainBot.get_shops(user.id)
+            subpartners = await Database.MainBot.get_subpartners(user.id)
+            csv_writer.writerow([user.username, subpartners, len(shops), " ".join([shop.username for shop in shops])])
+    await callback.message.answer_document(
+        document=FSInputFile("users_statistics.csv", filename="users_statistics.csv"))
+    return os.remove("users_statistics.csv")
 
 
 async def get_username(message: Message, state: FSMContext):

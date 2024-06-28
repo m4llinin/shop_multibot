@@ -12,7 +12,7 @@ from .user_panel import register_handlers_user_panel
 from .admin_panel import register_handlers_admin_panel
 
 from .start import start, start_clb
-from .information import information
+from .information import information, information_clb, faq
 from .constructor import constructor, constructor_clb
 from .support_solution import successful_support, bad_support, get_solution
 from .loyalty_level import successful_level, bad_level
@@ -25,6 +25,9 @@ def register_main_handler(router: Router):
     router.callback_query.register(start_clb, F.data == "start")
 
     router.message.register(information, F.text == texts['information'])
+    router.callback_query.register(information_clb, F.data == "information")
+    router.callback_query.register(faq, F.data == "faq")
+
     router.message.register(constructor, F.text == texts['my_shops'])
     router.callback_query.register(constructor_clb, F.data == "constructor")
 

@@ -97,12 +97,16 @@ class Database:
 
     class MainBot:
         @classmethod
-        async def get_all_orders_status(cls, status: str) -> list[Order]:
-            return await Order.query.where(Order.status == status).gino.all()
+        async def get_all_orders_status(cls, status: str, start: datetime = None, end: datetime = None) -> list[Order]:
+            if start is None and end is None:
+                return await Order.query.where(Order.status == status).gino.all()
+            return await Order.query.where(Order.status == status).where(Order.updated_at >= start).where(
+                Order.updated_at <= end).gino.all()
 
         @classmethod
         async def update_loyalty_level(cls, user_id: int, loyalty_level: int):
-            return await UserMainBot.update.values(id=user_id, loyalty_level=loyalty_level).gino.status()
+            return await UserMainBot.update.values(loyalty_level=loyalty_level).where(
+                UserMainBot.id == user_id).gino.status()
 
         @classmethod
         async def generate_recover_code(cls, user_id: int):
@@ -412,6 +416,10 @@ class Database:
         async def update_last_offer(cls, user_id: int, date: datetime):
             return await UserMainBot.update.values(last_offer=date).where(UserMainBot.id == user_id).gino.status()
 
+        @classmethod
+        async def get_all_users(cls):
+            return await UserMainBot.query.gino.all()
+
     class ShopBot:
         @classmethod
         async def get_categories(cls):
@@ -446,7 +454,7 @@ class Database:
 
         @classmethod
         async def update_order_status(cls, order_id: int, status: str):
-            return await Order.update.values(status=status).where(Good.id == order_id).gino.status()
+            return await Order.update.values(status=status).where(Order.id == order_id).gino.status()
 
         @classmethod
         async def get_shop_by_name(cls, shop_name: str):
