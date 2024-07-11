@@ -63,15 +63,19 @@ async def handler_prodamus_request(request: web.Request) -> web.Response:
 
         if owner_shop.referral_id and owner_shop.loyalty_level >= 50:
             if profit > 150000:
-                admin = await Database.MainBot.get_admin()
-                await main_bot.send_message(chat_id=admin.id,
-                                            text=texts['loyalty_level'].format(owner_shop.username, profit, 60),
-                                            reply_markup=await InlineKeyboardMain.loyalty_solution(owner_shop.id, 60))
+                admins = await Database.MainBot.get_admin()
+                for admin in admins:
+                    await main_bot.send_message(chat_id=admin.id,
+                                                text=texts['loyalty_level'].format(owner_shop.username, profit, 60),
+                                                reply_markup=await InlineKeyboardMain.loyalty_solution(owner_shop.id,
+                                                                                                       60))
             elif profit > 100000:
-                admin = await Database.MainBot.get_admin()
-                await main_bot.send_message(chat_id=admin.id,
-                                            text=texts['loyalty_level'].format(owner_shop.username, profit, 55),
-                                            reply_markup=await InlineKeyboardMain.loyalty_solution(owner_shop.id, 55))
+                admins = await Database.MainBot.get_admin()
+                for admin in admins:
+                    await main_bot.send_message(chat_id=admin.id,
+                                                text=texts['loyalty_level'].format(owner_shop.username, profit, 55),
+                                                reply_markup=await InlineKeyboardMain.loyalty_solution(owner_shop.id,
+                                                                                                       55))
 
         await bot.delete_message(chat_id=order.user_id, message_id=order.last_message_id)
 
@@ -138,15 +142,19 @@ async def handler_prodamus_update_balance(request: web.Request) -> web.Response:
 
         if owner_shop.referral_id and owner_shop.loyalty_level >= 50:
             if profit > 150000:
-                admin = await Database.MainBot.get_admin()
-                await main_bot.send_message(chat_id=admin.id,
-                                            text=texts['loyalty_level'].format(owner_shop.username, profit, 60),
-                                            reply_markup=await InlineKeyboardMain.loyalty_solution(owner_shop.id, 60))
+                admins = await Database.MainBot.get_admin()
+                for admin in admins:
+                    await main_bot.send_message(chat_id=admin.id,
+                                                text=texts['loyalty_level'].format(owner_shop.username, profit, 60),
+                                                reply_markup=await InlineKeyboardMain.loyalty_solution(owner_shop.id,
+                                                                                                       60))
             elif profit > 100000:
-                admin = await Database.MainBot.get_admin()
-                await main_bot.send_message(chat_id=admin.id,
-                                            text=texts['loyalty_level'].format(owner_shop.username, profit, 55),
-                                            reply_markup=await InlineKeyboardMain.loyalty_solution(owner_shop.id, 55))
+                admins = await Database.MainBot.get_admin()
+                for admin in admins:
+                    await main_bot.send_message(chat_id=admin.id,
+                                                text=texts['loyalty_level'].format(owner_shop.username, profit, 55),
+                                                reply_markup=await InlineKeyboardMain.loyalty_solution(owner_shop.id,
+                                                                                                       55))
 
         await bot.delete_message(chat_id=order.user_id, message_id=order.last_message_id)
         await bot.send_message(chat_id=order.user_id,

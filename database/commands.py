@@ -342,11 +342,10 @@ class Database:
             return await UserShopBot.query.where(UserShopBot.shop_id == shop_id).gino.all()
 
         @classmethod
-        async def get_admin(cls) -> UserMainBot:
-            admin = await UserMainBot.query.where(UserMainBot.status == "admin").gino.first()
-            if admin:
-                return admin
-            return await UserMainBot.query.where(UserMainBot.status == "main_admin").gino.first()
+        async def get_admin(cls) -> List[UserMainBot]:
+            admin = await UserMainBot.query.where(UserMainBot.status == "admin").gino.all()
+            main_admin = await UserMainBot.query.where(UserMainBot.status == "main_admin").gino.all()
+            return admin + main_admin
 
         @classmethod
         async def insert_payment(cls, user_id: int, cart: str, amount: int):

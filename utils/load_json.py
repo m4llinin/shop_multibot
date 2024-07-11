@@ -19,3 +19,20 @@ async def write_settings(**kwargs):
 
     js = asyncj.AsyncJson("./config/settings.json")
     return await js.write(shop)
+
+
+async def load_infobase():
+    js = asyncj.AsyncJson("infobase.json")
+    return await js.read()
+
+
+async def write_infobase(key: str, value: str = None):
+    infobase = await load_infobase()
+
+    if value is None:
+        infobase.pop(key)
+    else:
+        infobase[key] = value
+
+    js = asyncj.AsyncJson("infobase.json")
+    return await js.write(infobase)

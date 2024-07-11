@@ -28,6 +28,8 @@ from .mailing import (admin_add_btn, admin_get_btn, admin_add_mail, admin_mailin
                       admin_view_adding_mail, admin_change_page, admin_get_text_photo, admin_save_mail, admin_view_mail,
                       admin_view_profile_mail, admin_delete_mail)
 
+from .infobase import router as infobase_router
+
 texts: dict = asyncio.run(load_texts())
 
 
@@ -89,4 +91,5 @@ def register_handlers_admin_panel(router: Router):
     router.callback_query.register(admin_view_mail, F.data == "admin_view_mail")
     router.message.register(admin_delete_mail, F.data == "admin_delete_mail")
 
+    router.include_router(infobase_router)
     router.include_router(statistics_router)

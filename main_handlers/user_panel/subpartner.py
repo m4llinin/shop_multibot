@@ -61,14 +61,15 @@ async def get_platform(message: Message, state: FSMContext):
     await Database.MainBot.insert_request(user_id=message.chat.id, **data)
     request = await Database.MainBot.get_last_request()
 
-    admin = await Database.MainBot.get_admin()
-    await message.bot.send_message(chat_id=admin.id,
-                                   text=texts["request_subpartner"].format(id=request.user_id,
-                                                                           source=request.source,
-                                                                           experience=request.experience,
-                                                                           platform=request.platform),
-                                   reply_markup=await InlineKeyboardMain.solution_admin_subpartner(request.id,
-                                                                                                   message.chat.username))
+    admins = await Database.MainBot.get_admin()
+    for admin in admins:
+        await message.bot.send_message(chat_id=admin.id,
+                                       text=texts["request_subpartner"].format(id=request.user_id,
+                                                                               source=request.source,
+                                                                               experience=request.experience,
+                                                                               platform=request.platform),
+                                       reply_markup=await InlineKeyboardMain.solution_admin_subpartner(request.id,
+                                                                                                       message.chat.username))
     await state.clear()
     return await message.answer(text=texts['get_platform'], reply_markup=await InlineKeyboardMain.ready("constructor"))
 
@@ -77,6 +78,9 @@ async def successful_request(callback: CallbackQuery):
     texts = await load_texts()
     requests_id = int(callback.data.split("_")[2])
     request = await Database.MainBot.get_request(requests_id)
+
+    if request.status != "wait":
+        return await callback.message.edit_text(text=texts['has_solution'])
 
     await Database.MainBot.update_status_request(requests_id, callback.message.chat.id, "done")
     await Database.MainBot.update_user_status(request.user_id, "linker")
@@ -90,6 +94,9 @@ async def bad_request(callback: CallbackQuery):
     texts = await load_texts()
     requests_id = int(callback.data.split("_")[2])
     request = await Database.MainBot.get_request(requests_id)
+
+    if request.status != "wait":
+        return await callback.message.edit_text(text=texts['has_solution'])
 
     await Database.MainBot.update_status_request(requests_id, callback.message.chat.id, "cancel")
     await callback.message.edit_text(text=texts['bad_request'])

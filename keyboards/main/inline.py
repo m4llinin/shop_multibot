@@ -6,10 +6,9 @@ from database.schemas.Category import Category
 from database.schemas.Good import Good
 from database.schemas.Shop import Shop
 from database.schemas.Subcategory import Subcategory
-from utils import load_texts
 
 from config.config import MAIN_BOT_LINK
-from utils import MyMail
+from utils import MyMail, load_texts, load_infobase
 
 
 class InlineKeyboardMain:
@@ -24,13 +23,9 @@ class InlineKeyboardMain:
 
     @classmethod
     async def information(cls):
-        keyboard = [
-            [InlineKeyboardButton(text=cls.texts['best_choice'],
-                                  url="https://telegra.ph/CHto-delaet-nas-luchshim-vyborom-06-27")],
-            [InlineKeyboardButton(text=cls.texts['main_channel'], url="https://t.me/+f8NjOsYEJFo0YWNi")],
-            [InlineKeyboardButton(text=cls.texts['quick_start'], url="https://telegra.ph/Bystryj-start-06-28")],
-            [InlineKeyboardButton(text=cls.texts['faq'], callback_data="faq")]
-        ]
+        infobase = await load_infobase()
+        keyboard = [[InlineKeyboardButton(text=k, url=v)] for k, v in infobase.items()]
+        keyboard.append([InlineKeyboardButton(text=cls.texts['faq'], callback_data="faq")])
         return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
     @classmethod
@@ -96,6 +91,7 @@ class InlineKeyboardMain:
 
             keyboard.append([InlineKeyboardButton(text=cls.texts['mailing_lists'], callback_data='admin_mailing_list')])
             keyboard.append([InlineKeyboardButton(text=cls.texts['change_status'], callback_data='change_status')])
+            keyboard.append([InlineKeyboardButton(text=cls.texts['edit_infobase_btn'], callback_data='edit_infobase')])
 
             channel_text = cls.texts['unlink_btn'] if is_linked else cls.texts['link_btn']
             keyboard.append([InlineKeyboardButton(text=channel_text, callback_data='link_channel')])
@@ -619,4 +615,20 @@ class InlineKeyboardMain:
             [InlineKeyboardButton(text=cls.texts['download_statistics_btn'], callback_data="download_users")],
             [InlineKeyboardButton(text=cls.texts['back'], callback_data="admin_statistics")]
         ]
+        return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+    @classmethod
+    async def edit_infobase(cls):
+        keyboard = [
+            [InlineKeyboardButton(text=cls.texts['add_infobase_btn'], callback_data="add_infobase")],
+            [InlineKeyboardButton(text=cls.texts['delete_infobase_btn'], callback_data="delete_infobase")],
+            [InlineKeyboardButton(text=cls.texts['back'], callback_data="admin_panel")]
+        ]
+        return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+    @classmethod
+    async def delete_infobase(cls):
+        infobase = await load_infobase()
+        keyboard = [[InlineKeyboardButton(text=k, callback_data=k)] for k in infobase.keys()]
+        keyboard.append([InlineKeyboardButton(text=cls.texts['back'], callback_data="edit_infobase")])
         return InlineKeyboardMarkup(inline_keyboard=keyboard)

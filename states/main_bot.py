@@ -95,3 +95,8 @@ class SupportSolution(StatesGroup):
 
 class Offer(StatesGroup):
     text = State()
+
+
+class AddInfobase(StatesGroup):
+    question = State()
+    url = State()

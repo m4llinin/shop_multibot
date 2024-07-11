@@ -1,3 +1,5 @@
+import random
+
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery, Message
 
@@ -65,7 +67,7 @@ async def amount(message: Message, state: FSMContext):
     if user.loyalty_level == 40 or (user.loyalty_level == 45 and not user.referral_id) or user.loyalty_level == 50:
         value = value - (value * 0.03)
 
-    admin = await Database.MainBot.get_admin()
+    admin = random.choice(await Database.MainBot.get_admin())
     await message.bot.send_message(chat_id=admin.id,
                                    text=texts['query_withdraw_funds'].format(user.id, data.get("cart"), value),
                                    reply_markup=await InlineKeyboardMain.solution_admin_funds(payment.id))
