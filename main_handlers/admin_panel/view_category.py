@@ -47,7 +47,14 @@ async def view_subcategory(callback: CallbackQuery, state: FSMContext):
                                                                                          goods,
                                                                                          f"view_category",
                                                                                          category_id=category_id))
-    await callback.answer(text=texts['no_category'], show_alert=True)
+
+    await callback.message.delete()
+    return await callback.message.answer(text=texts['subcategories'].format(category_name=category.name,
+                                                                            category_description=category.description if category.description else ""),
+                                         reply_markup=await InlineKeyboardMain.goods("good",
+                                                                                     goods,
+                                                                                     f"view_category",
+                                                                                     category_id=category_id))
 
 
 async def view_good_list(callback: CallbackQuery, state: FSMContext):
@@ -69,12 +76,20 @@ async def view_good_list(callback: CallbackQuery, state: FSMContext):
                                                                                          goods,
                                                                                          f"category_{category_id}",
                                                                                          subcategory_id=subcategory_id))
-    await callback.answer(text=texts['no_category'], show_alert=True)
+    await callback.message.delete()
+    return await callback.message.answer(text=texts['goods_list'].format(category_name=category.name,
+                                                                         subcategory_name=subcategory.name,
+                                                                         subcategory_description=subcategory.description if subcategory.description else ""),
+                                         reply_markup=await InlineKeyboardMain.goods("good",
+                                                                                     goods,
+                                                                                     f"category_{category_id}",
+                                                                                     subcategory_id=subcategory_id))
 
 
 async def view_good(callback: CallbackQuery, state: FSMContext):
     texts = await load_texts()
     data = await state.get_data()
+    await state.set_state(None)
     good_id, subcategory_id, category_id = int(callback.data.split('_')[1]), data.get("subcategory_id", 0), data.get(
         "category_id")
     good = await Database.ShopBot.get_good_by_id(good_id)

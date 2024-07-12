@@ -102,12 +102,21 @@ class InlineKeyboardMain:
     async def good_kb_admin(cls, good_id: int, data: str, count: int | None):
         if count:
             keyboard = [
-                [InlineKeyboardButton(text=cls.texts['add_count'], callback_data=f'edit_good_{good_id}')]
+                [InlineKeyboardButton(text=cls.texts['delete_good_btn'], callback_data=f'delete_good_{good_id}')],
+                [InlineKeyboardButton(text=cls.texts['edit_count_btn'], callback_data=f'edit_good_count_{good_id}')]
             ]
         else:
-            keyboard = []
+            keyboard = [
+                [InlineKeyboardButton(text=cls.texts['delete_good_btn'], callback_data=f'delete_good_{good_id}')]]
 
-        keyboard.append([InlineKeyboardButton(text=cls.texts['delete'], callback_data=f'delete_good_{good_id}')])
+        keyboard.append([InlineKeyboardButton(text=cls.texts['edit_name_btn'],
+                                              callback_data=f'edit_good_name_{good_id}')])
+        keyboard.append([InlineKeyboardButton(text=cls.texts['edit_description_btn'],
+                                              callback_data=f'edit_good_description_{good_id}')])
+        keyboard.append([InlineKeyboardButton(text=cls.texts['edit_price_btn'],
+                                              callback_data=f'edit_good_price_{good_id}')])
+        keyboard.append([InlineKeyboardButton(text=cls.texts['edit_product_btn'],
+                                              callback_data=f'edit_good_product_{good_id}')])
         keyboard.append([InlineKeyboardButton(text=cls.texts['back'], callback_data=data)])
         return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
@@ -122,8 +131,11 @@ class InlineKeyboardMain:
     @classmethod
     async def subcategories(cls, callback: str, subcategories: list[Subcategory], data: str, category_id: int,
                             delete: bool = True):
-        keyboard, i = [[InlineKeyboardButton(text=cls.texts['delete'],
-                                             callback_data=f'delete_category_{category_id}')]], 0
+        keyboard, i = [[InlineKeyboardButton(text=cls.texts['delete_category_btn'],
+                                             callback_data=f'delete_category_{category_id}')],
+                       [InlineKeyboardButton(text=cls.texts['edit_category_btn'],
+                                             callback_data=f'edit_category_{category_id}')]
+                       ], 0
 
         if not delete:
             keyboard = []
@@ -142,9 +154,16 @@ class InlineKeyboardMain:
     @classmethod
     async def goods(cls, callback: str, goods: list[Good], data: str, subcategory_id: int = None,
                     category_id: int = None):
-        keyboard = [[InlineKeyboardButton(text=cls.texts['delete'],
-                                          callback_data=f'delete_category_{category_id}' if category_id else
-                                          f"delete_subcategory_{subcategory_id}")]]
+        keyboard = [
+            [InlineKeyboardButton(
+                text=cls.texts['delete_category_btn'] if category_id else cls.texts['delete_subcategory_btn'],
+                callback_data=f'delete_category_{category_id}' if category_id else
+                f"delete_subcategory_{subcategory_id}")],
+            [InlineKeyboardButton(
+                text=cls.texts['edit_category_btn'] if category_id else cls.texts['edit_subcategory_btn'],
+                callback_data=f'edit_category_{category_id}' if category_id else
+                f"edit_subcategory_{subcategory_id}")]
+        ]
         for good in goods:
             keyboard.append(
                 [InlineKeyboardButton(text=f"{good.name} ⸰ {good.price}₽",
@@ -471,10 +490,12 @@ class InlineKeyboardMain:
         return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
     @classmethod
-    async def add_admin_mail_kb(cls, date: str = None):
+    async def add_admin_mail_kb(cls, date: str = None, loop: str = None):
         date = date if date else "Сейчас"
+        loop = loop if loop else "Нет"
         keyboard = [
             [InlineKeyboardButton(text=cls.texts['date_btn'].format(date), callback_data=f"admin_date")],
+            [InlineKeyboardButton(text=cls.texts['add_loop_btn'].format(loop), callback_data=f"admin_add_loop")],
             [InlineKeyboardButton(text=cls.texts['add_btn'], callback_data=f"admin_add_btn")],
             [InlineKeyboardButton(text=cls.texts['save_btn'], callback_data=f"admin_save_btn")],
             [InlineKeyboardButton(text=cls.texts['cancel'], callback_data=f"admin_panel")]
@@ -631,4 +652,25 @@ class InlineKeyboardMain:
         infobase = await load_infobase()
         keyboard = [[InlineKeyboardButton(text=k, callback_data=k)] for k in infobase.keys()]
         keyboard.append([InlineKeyboardButton(text=cls.texts['back'], callback_data="edit_infobase")])
+        return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+    @classmethod
+    async def edit_category(cls, category_id: int):
+        keyboard = [
+            [InlineKeyboardButton(text=cls.texts['edit_name_btn'], callback_data=f"edit_name_{category_id}")],
+            [InlineKeyboardButton(text=cls.texts['edit_description_btn'],
+                                  callback_data=f"edit_description_{category_id}")],
+            [InlineKeyboardButton(text=cls.texts['back'], callback_data=f"category_{category_id}")]
+        ]
+        return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+    @classmethod
+    async def edit_subcategory(cls, subcategory_id: int):
+        keyboard = [
+            [InlineKeyboardButton(text=cls.texts['edit_name_btn'],
+                                  callback_data=f"edit_sub_name_{subcategory_id}")],
+            [InlineKeyboardButton(text=cls.texts['edit_description_btn'],
+                                  callback_data=f"edit_sub_description_{subcategory_id}")],
+            [InlineKeyboardButton(text=cls.texts['back'], callback_data=f"subcategory_{subcategory_id}")]
+        ]
         return InlineKeyboardMarkup(inline_keyboard=keyboard)

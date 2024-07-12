@@ -17,7 +17,6 @@ from .add_good import (add_good, insert_good, insert_subcat, get_good_name, get_
                        get_good_count, get_product)
 
 from .delete import delete_good, delete_subcategory, delete_category
-from .edit_good import edit_good_count, get_count
 
 from .link_channel import link_channel, linked_channel
 from .change_status import change_status, get_status, get_username
@@ -26,9 +25,10 @@ from .statistics import statistics_router
 
 from .mailing import (admin_add_btn, admin_get_btn, admin_add_mail, admin_mailing_list, admin_add_date, admin_get_date,
                       admin_view_adding_mail, admin_change_page, admin_get_text_photo, admin_save_mail, admin_view_mail,
-                      admin_view_profile_mail, admin_delete_mail)
+                      admin_view_profile_mail, admin_delete_mail, admin_add_loop, admin_get_loop)
 
 from .infobase import router as infobase_router
+from .edit import router as edit_router
 
 texts: dict = asyncio.run(load_texts())
 
@@ -64,9 +64,6 @@ def register_handlers_admin_panel(router: Router):
     router.callback_query.register(delete_subcategory, lambda x: x.data.startswith("delete_subcategory_"))
     router.callback_query.register(delete_category, lambda x: x.data.startswith("delete_category_"))
 
-    router.callback_query.register(edit_good_count, lambda x: x.data.startswith("edit_good_"))
-    router.message.register(get_count, F.text, EditCount.amount)
-
     router.callback_query.register(link_channel, F.data == "link_channel")
     router.message.register(linked_channel, LinkChannelAdmin.channel)
 
@@ -89,7 +86,10 @@ def register_handlers_admin_panel(router: Router):
     router.callback_query.register(admin_save_mail, F.data == "admin_save_btn")
     router.callback_query.register(admin_view_profile_mail, lambda x: x.data.startswith("admin_mail_"))
     router.callback_query.register(admin_view_mail, F.data == "admin_view_mail")
-    router.message.register(admin_delete_mail, F.data == "admin_delete_mail")
+    router.callback_query.register(admin_delete_mail, F.data == "admin_delete_mail")
+    router.callback_query.register(admin_add_loop, F.data == "admin_add_loop")
+    router.message.register(admin_get_loop, F.text, AddAdminMail.loop)
 
+    router.include_router(edit_router)
     router.include_router(infobase_router)
     router.include_router(statistics_router)

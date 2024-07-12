@@ -207,7 +207,10 @@ class Database:
             return await Category(name=category_name).create()
 
         @classmethod
-        async def update_description_category(cls, category_name: str, description: str = None) -> Any:
+        async def update_description_category(cls, category_name: str | int, description: str = None) -> Any:
+            if isinstance(category_name, int):
+                return await Category.update.values(description=description).where(
+                    Category.id == category_name).gino.status()
             return await Category.update.values(description=description).where(
                 Category.name == category_name).gino.status()
 
@@ -225,7 +228,11 @@ class Database:
             return await Subcategory(name=subcategory_name, category_id=category_id).create()
 
         @classmethod
-        async def update_description_subcategory(cls, subcategory_name: str, description: str, category_id: int):
+        async def update_description_subcategory(cls, subcategory_name: str | int, description: str,
+                                                 category_id: int = None):
+            if isinstance(subcategory_name, int):
+                return await Subcategory.update.values(description=description).where(
+                    Subcategory.id == subcategory_name).gino.status()
             return await Subcategory.update.values(description=description).where(
                 Subcategory.name == subcategory_name).where(Subcategory.category_id == category_id).gino.status()
 
@@ -418,6 +425,18 @@ class Database:
         @classmethod
         async def get_all_users(cls):
             return await UserMainBot.query.gino.all()
+
+        @classmethod
+        async def update_name_category(cls, category_id: int, name: str):
+            return await Category.update.values(name=name).where(Category.id == category_id).gino.status()
+
+        @classmethod
+        async def update_name_subcategory(cls, subcategory_id: int, name: str):
+            return await Subcategory.update.values(name=name).where(Subcategory.id == subcategory_id).gino.status()
+
+        @classmethod
+        async def update_good_name(cls, good_id: int, name: str):
+            return await Good.update.values(name=name).where(Good.id == good_id).gino.status()
 
     class ShopBot:
         @classmethod

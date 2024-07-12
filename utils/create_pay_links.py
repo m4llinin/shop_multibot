@@ -6,7 +6,7 @@ from .Cart import Cart
 async def create_pay_link(cart: Cart = None):
     url = (F"{PRODAMUS_LINK}/?order_id={cart.order_id}&products[0][price]={cart.good.price * cart.extra_charge}"
            F"&products[0][quantity]={cart.count}&products[0][sku]={cart.good.id}&sys=coin&"
-           F"products[0][name]={cart.good.name.replace(' ', '%20')}&do=link&"
+           F"products[0][name]={'Онлайн обучение'.replace(' ', '%20')}&do=link&"
            F"urlNotification={BASE_URL}/prodamus&customer_extra={cart.shop_name}")
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as response:

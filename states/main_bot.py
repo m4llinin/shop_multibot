@@ -67,6 +67,7 @@ class AddAdminMail(StatesGroup):
     text = State()
     date = State()
     button = State()
+    loop = State()
 
 
 class LinkChannelAdmin(StatesGroup):
@@ -100,3 +101,21 @@ class Offer(StatesGroup):
 class AddInfobase(StatesGroup):
     question = State()
     url = State()
+
+
+class EditCategory(StatesGroup):
+    name = State()
+    description = State()
+
+
+class EditSubcategory(StatesGroup):
+    name = State()
+    description = State()
+
+
+class EditGood(StatesGroup):
+    name = State()
+    description = State()
+    price = State()
+    count = State()
+    product = State()

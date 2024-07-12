@@ -11,9 +11,9 @@ async def delete_category(callback: CallbackQuery):
     category_id = int(callback.data.split("_")[2])
     await Database.MainBot.delete_category(category_id)
 
+    await callback.message.delete()
     categories = await Database.ShopBot.get_categories()
     if categories:
-        await callback.message.delete()
         return await callback.message.answer(text=texts['categories'],
                                              reply_markup=await InlineKeyboardMain.categories("category",
                                                                                               categories,

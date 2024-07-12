@@ -13,7 +13,7 @@ from keyboards import InlineKeyboardMain
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from states.main_bot import AddAdminMail
-from utils.schedular import send_mail
+from utils.schedular import send_mail, send_loop_mail
 
 statuses = {
     "done": "Выполнена",
@@ -28,6 +28,7 @@ class MailData:
     photo: str = None
     keyboard: str = None
     date: datetime = None
+    loop: str = None
 
 
 async def admin_mailing_list(callback: CallbackQuery, state: FSMContext):
@@ -77,11 +78,12 @@ async def admin_view_adding_mail(callback: CallbackQuery, state: FSMContext):
     date = mail.date.strftime("%d.%m.%Y %H:%M") if mail.date else None
     if mail.photo:
         return await callback.message.answer_photo(photo=mail.photo, caption=mail.text + button,
-                                                   reply_markup=await InlineKeyboardMain.add_admin_mail_kb(date),
+                                                   reply_markup=await InlineKeyboardMain.add_admin_mail_kb(date,
+                                                                                                           mail.loop),
                                                    disable_web_page_preview=True)
     else:
         return await callback.message.answer(text=mail.text + button,
-                                             reply_markup=await InlineKeyboardMain.add_admin_mail_kb(date),
+                                             reply_markup=await InlineKeyboardMain.add_admin_mail_kb(date, mail.loop),
                                              disable_web_page_preview=True)
 
 
@@ -136,12 +138,12 @@ async def admin_get_date(message: Message, state: FSMContext):
     if mail.photo:
         return await message.answer_photo(photo=mail.photo, caption=mail.text + button,
                                           reply_markup=await InlineKeyboardMain.add_admin_mail_kb(date.strftime(
-                                              "%d.%m.%Y %H:%M")),
+                                              "%d.%m.%Y %H:%M"), mail.loop),
                                           disable_web_page_preview=True)
     else:
         return await message.answer(text=mail.text + button,
                                     reply_markup=await InlineKeyboardMain.add_admin_mail_kb(
-                                        date.strftime("%d.%m.%Y %H:%M")),
+                                        date.strftime("%d.%m.%Y %H:%M"), mail.loop),
                                     disable_web_page_preview=True)
 
 
@@ -175,11 +177,51 @@ async def admin_get_btn(message: Message, state: FSMContext):
     date = mail.date.strftime("%d.%m.%Y %H:%M") if mail.date else None
     if mail.photo:
         return await message.answer_photo(photo=mail.photo, caption=mail.text + button,
-                                          reply_markup=await InlineKeyboardMain.add_admin_mail_kb(date),
+                                          reply_markup=await InlineKeyboardMain.add_admin_mail_kb(date, mail.loop),
                                           disable_web_page_preview=True)
     else:
         return await message.answer(text=mail.text + button,
-                                    reply_markup=await InlineKeyboardMain.add_admin_mail_kb(date),
+                                    reply_markup=await InlineKeyboardMain.add_admin_mail_kb(date, mail.loop),
+                                    disable_web_page_preview=True)
+
+
+async def admin_add_loop(callback: CallbackQuery, state: FSMContext):
+    texts = await load_texts()
+    await state.set_state(AddAdminMail.loop)
+    await callback.message.delete()
+    return await callback.message.answer(text=texts['add_loop'],
+                                         reply_markup=await InlineKeyboardMain.back("admin_view_adding_mail"))
+
+
+async def admin_get_loop(message: Message, state: FSMContext):
+    texts = await load_texts()
+    data = await state.get_data()
+    mail: MailData = data.get("mail")
+
+    loop = re.match(r"\d{2}:\d{2}", message.text)
+    if not loop:
+        return await message.answer(text=texts['fail_loop'])
+
+    try:
+        hour, minute = list(map(int, loop.string.split(":")))
+        if not (1 <= minute <= 59):
+            raise ValueError
+    except ValueError:
+        return await message.answer(text=texts['fail_loop'])
+
+    mail.loop = loop.string
+    await state.update_data(mail=mail)
+    await state.set_state(None)
+
+    button = f"\n\n{mail.keyboard}" if mail.keyboard else ""
+    date = mail.date.strftime("%d.%m.%Y %H:%M") if mail.date else None
+    if mail.photo:
+        return await message.answer_photo(photo=mail.photo, caption=mail.text + button,
+                                          reply_markup=await InlineKeyboardMain.add_admin_mail_kb(date, mail.loop),
+                                          disable_web_page_preview=True)
+    else:
+        return await message.answer(text=mail.text + button,
+                                    reply_markup=await InlineKeyboardMain.add_admin_mail_kb(date, mail.loop),
                                     disable_web_page_preview=True)
 
 
@@ -197,8 +239,13 @@ async def admin_save_mail(callback: CallbackQuery, state: FSMContext):
     await Database.Mail.insert_mail(callback.message.chat.id, shop_ids, mail)
     last_mail = await Database.Mail.get_last_mail()
 
-    schedular.add_job(func=send_mail, trigger="date", id=f"mail_{last_mail.id}", args=(last_mail.id,),
-                      next_run_time=last_mail.wait_date)
+    if mail.loop is None:
+        schedular.add_job(func=send_mail, trigger="date", id=f"mail_{last_mail.id}", args=(last_mail.id,),
+                          next_run_time=last_mail.wait_date)
+    else:
+        hours, minutes = list(map(int, mail.loop.split(":")))
+        schedular.add_job(func=send_loop_mail, trigger="interval", id=f"mail_{last_mail.id}", args=(last_mail.id,),
+                          hours=hours, minutes=minutes)
 
     await callback.message.delete()
     return callback.message.answer(text=texts['all_save_mail'],
