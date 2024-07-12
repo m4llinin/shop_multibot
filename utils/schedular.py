@@ -32,12 +32,14 @@ async def send_mail(mail_id: int):
                                          photo=FSInputFile(path=f"./photos/mailing/{mail.photo}.jpg",
                                                            filename="mail.jpg"),
                                          caption=mail.text,
-                                         reply_markup=await InlineKeyboardMain.generate_keyboard(text, url[1:]),
+                                         reply_markup=await InlineKeyboardMain.generate_keyboard(text, url[
+                                                                                                       1:]) if mail.keyboard else None,
                                          parse_mode=ParseMode.HTML)
                 else:
                     await bot.send_message(chat_id=user.id,
                                            text=mail.text,
-                                           reply_markup=await InlineKeyboardMain.generate_keyboard(text, url[1:]),
+                                           reply_markup=await InlineKeyboardMain.generate_keyboard(text, url[
+                                                                                                         1:]) if mail.keyboard else None,
                                            parse_mode=ParseMode.HTML)
                 send += 1
             except:
@@ -64,12 +66,14 @@ async def send_loop_mail(mail_id: int):
                                          photo=FSInputFile(path=f"./photos/mailing/{mail.photo}.jpg",
                                                            filename="mail.jpg"),
                                          caption=mail.text,
-                                         reply_markup=await InlineKeyboardMain.generate_keyboard(text, url[1:]),
+                                         reply_markup=await InlineKeyboardMain.generate_keyboard(text, url[
+                                                                                                       1:]) if mail.keyboard else None,
                                          parse_mode=ParseMode.HTML)
                 else:
                     await bot.send_message(chat_id=user.id,
                                            text=mail.text,
-                                           reply_markup=await InlineKeyboardMain.generate_keyboard(text, url[1:]),
+                                           reply_markup=await InlineKeyboardMain.generate_keyboard(text, url[
+                                                                                                         1:]) if mail.keyboard else None,
                                            parse_mode=ParseMode.HTML)
             except Exception as e:
                 logger.error(e)
