@@ -64,7 +64,7 @@ class Database:
         @classmethod
         async def insert_mail(cls, user_id: int, shop_id: list[int], mail):
             return await Mail(user_id=user_id, shop_id=shop_id, text=mail.text, photo=mail.photo,
-                              keyboard=mail.keyboard, wait_date=mail.date).create()
+                              keyboard=mail.keyboard, wait_date=mail.date, loop=mail.loop).create()
 
         @classmethod
         async def get_mail(cls, mail_id: int) -> Mail:
@@ -416,7 +416,7 @@ class Database:
 
         @classmethod
         async def get_main_admin(cls):
-            return await UserMainBot.query.where(UserMainBot.status == "main_admin").gino.first()
+            return await UserMainBot.query.where(UserMainBot.status == "main_admin").gino.all()
 
         @classmethod
         async def update_last_offer(cls, user_id: int, date: datetime):
@@ -483,7 +483,10 @@ class Database:
             return await Order.query.order_by(Order.id.desc()).gino.first()
 
         @classmethod
-        async def get_user(cls, user_id: int) -> UserShopBot:
+        async def get_user(cls, user_id: int, shop_id: int = None) -> UserShopBot:
+            if shop_id:
+                return await UserShopBot.query.where(UserShopBot.id == user_id).where(
+                    UserShopBot.shop_id == shop_id).gino.first()
             return await UserShopBot.query.where(UserShopBot.id == user_id).gino.first()
 
         @classmethod

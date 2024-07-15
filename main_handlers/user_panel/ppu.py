@@ -33,9 +33,10 @@ async def get_offer(message: Message, state: FSMContext):
     await state.clear()
     texts = await load_texts()
 
-    main_admin = await Database.MainBot.get_main_admin()
+    main_admins = await Database.MainBot.get_main_admin()
     user = await Database.MainBot.get_user(message.chat.id)
     await Database.MainBot.update_last_offer(message.chat.id, datetime.datetime.now())
-    await message.bot.send_message(chat_id=main_admin.id, text=texts['new_offer'].format(username=user.username,
-                                                                                         text=message.text))
+    for main_admin in main_admins:
+        await message.bot.send_message(chat_id=main_admin.id, text=texts['new_offer'].format(username=user.username,
+                                                                                             text=message.text))
     return await message.answer(text=texts['new_offer_user'], reply_markup=await InlineKeyboardMain.ready("ppu"))

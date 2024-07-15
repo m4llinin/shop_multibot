@@ -64,7 +64,7 @@ async def get_text_query(message: Message, state: FSMContext):
 
     request = await Database.MainBot.get_last_support(message.chat.id)
 
-    admins = await Database.MainBot.get_admin()
+    admins = await Database.MainBot.get_main_admin()
     shop = await Database.MainBot.get_shop(message.bot.id)
 
     for admin in admins:
@@ -73,12 +73,6 @@ async def get_text_query(message: Message, state: FSMContext):
                                                                                        theme=data.get("theme_support"),
                                                                                        text=message.text),
                                     reply_markup=await InlineKeyboardShop.support_solution(request.id))
-
-    await main_bot.send_message(chat_id=shop.owner_id, text=texts['new_support'].format(user_id=message.chat.id,
-                                                                                        shop_id=message.bot.id,
-                                                                                        theme=data.get("theme_support"),
-                                                                                        text=message.text),
-                                reply_markup=await InlineKeyboardShop.support_solution(request.id))
 
     await message.answer(text=texts['added_query'], parse_mode=ParseMode.HTML)
     return await state.clear()

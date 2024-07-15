@@ -13,7 +13,7 @@ from keyboards import InlineKeyboardMain
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from states.main_bot import AddAdminMail
-from utils.schedular import send_mail, send_loop_mail
+from utils.schedular import send_mail
 
 statuses = {
     "done": "Выполнена",
@@ -239,14 +239,8 @@ async def admin_save_mail(callback: CallbackQuery, state: FSMContext):
     await Database.Mail.insert_mail(callback.message.chat.id, shop_ids, mail)
     last_mail = await Database.Mail.get_last_mail()
 
-    if mail.loop is None:
-        schedular.add_job(func=send_mail, trigger="date", id=f"mail_{last_mail.id}", args=(last_mail.id,),
-                          next_run_time=last_mail.wait_date)
-    else:
-        hours, minutes = list(map(int, mail.loop.split(":")))
-        schedular.add_job(func=send_loop_mail, trigger="interval", id=f"mail_{last_mail.id}", args=(last_mail.id,),
-                          hours=hours, minutes=minutes)
-
+    schedular.add_job(func=send_mail, trigger="date", id=f"mail_{last_mail.id}", args=(last_mail.id,),
+                      next_run_time=last_mail.wait_date)
     await callback.message.delete()
     return callback.message.answer(text=texts['all_save_mail'],
                                    reply_markup=await InlineKeyboardMain.back("admin_mailing_list"))

@@ -11,6 +11,7 @@ class Mail(TimedBaseModel):
     photo = Column(String)
     keyboard = Column(String)
     wait_date = Column(DateTime)
+    loop = Column(String)
     real_date = Column(DateTime)
     all_send = Column(Integer, default=0)
     successful_send = Column(Integer, default=0)
