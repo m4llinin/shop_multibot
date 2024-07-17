@@ -30,17 +30,18 @@ async def send_mail(mail_id: int):
     if mail.keyboard:
         text, url = mail.keyboard[1:-1].split("-")
 
+    if url:
+        url = url[1:]
+
     send, fail = 0, 0
     for shop_id in mail.shop_id:
         shop = await Database.MainBot.get_shop(shop_id)
         users_of_shop = await Database.MainBot.get_all_users_of_shop(shop.id)
         bot = Bot(token=shop.token, session=session)
 
-        if url:
-            url = url[1:]
-            new_url = url
-            if new_url and "{}" in url:
-                new_url = url.format(shop.username)
+        new_url = url
+        if new_url and "{}" in url:
+            new_url = url.format(shop.username)
 
         for user in users_of_shop:
             try:
