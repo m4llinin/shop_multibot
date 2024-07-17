@@ -204,8 +204,8 @@ async def admin_get_loop(message: Message, state: FSMContext):
 
     try:
         hour, minute = list(map(int, loop.string.split(":")))
-        if not (1 <= minute <= 59):
-            raise ValueError
+        # if not (1 <= minute <= 59):
+        #     raise ValueError
     except ValueError:
         return await message.answer(text=texts['fail_loop'])
 
