@@ -35,6 +35,13 @@ async def send_mail(mail_id: int):
         shop = await Database.MainBot.get_shop(shop_id)
         users_of_shop = await Database.MainBot.get_all_users_of_shop(shop.id)
         bot = Bot(token=shop.token, session=session)
+
+        if url:
+            url = url[1:]
+            new_url = url
+            if new_url and "{}" in url:
+                new_url = url.format(shop.username)
+
         for user in users_of_shop:
             try:
                 if mail.photo:
@@ -42,17 +49,16 @@ async def send_mail(mail_id: int):
                                          photo=FSInputFile(path=f"./photos/mailing/{mail.photo}.jpg",
                                                            filename="mail.jpg"),
                                          caption=mail.text,
-                                         reply_markup=await InlineKeyboardMain.generate_keyboard(text, url[
-                                                                                                       1:]) if mail.keyboard else None,
+                                         reply_markup=await InlineKeyboardMain.generate_keyboard(text, new_url),
                                          parse_mode=ParseMode.HTML)
                 else:
                     await bot.send_message(chat_id=user.id,
                                            text=mail.text,
-                                           reply_markup=await InlineKeyboardMain.generate_keyboard(text, url[
-                                                                                                         1:]) if mail.keyboard else None,
+                                           reply_markup=await InlineKeyboardMain.generate_keyboard(text, new_url),
                                            parse_mode=ParseMode.HTML)
                 send += 1
-            except:
+            except Exception as e:
+                logger.error(e)
                 fail += 1
 
     await Database.Mail.update_status(mail.id, "done", send, fail, send + fail, datetime.now())

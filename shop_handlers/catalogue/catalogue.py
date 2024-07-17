@@ -12,7 +12,7 @@ async def view_category(message: Message, state: FSMContext):
     texts = await load_texts()
     categories = await Database.ShopBot.get_categories()
     if categories:
-        return await message.answer_photo(photo=FSInputFile("./photos/our_goods.jpeg"),
+        return await message.answer_photo(photo=FSInputFile("./photos/our_goods.png"),
                                           reply_markup=await InlineKeyboardShop.categories("category",
                                                                                            categories),
                                           parse_mode=ParseMode.HTML)
@@ -24,7 +24,7 @@ async def view_category_clb(callback: CallbackQuery):
     categories = await Database.ShopBot.get_categories()
     if categories:
         await callback.message.delete()
-        return await callback.message.answer_photo(photo=FSInputFile("./photos/our_goods.jpeg"),
+        return await callback.message.answer_photo(photo=FSInputFile("./photos/our_goods.png"),
                                                    reply_markup=await InlineKeyboardShop.categories("category",
                                                                                                     categories),
                                                    parse_mode=ParseMode.HTML)

@@ -127,7 +127,7 @@ async def admin_get_date(message: Message, state: FSMContext):
     mail: MailData = data.get("mail")
 
     date = datetime.strptime(message.text, "%d.%m.%Y %H:%M")
-    if not date or date.timestamp() < (datetime.now(tz=TZ) + timedelta(minutes=5)).timestamp():
+    if not date or date.timestamp() < (datetime.now(tz=TZ) + timedelta(minutes=3)).timestamp():
         return await message.answer(text=texts['fail_date'])
 
     mail.date = date
@@ -165,7 +165,7 @@ async def admin_get_btn(message: Message, state: FSMContext):
     data = await state.get_data()
     mail: MailData = data.get("mail")
 
-    btn = re.match("\[.+ - \S+]", message.text)
+    btn = re.match(r"\[.+ - \S+]", message.text)
     if not btn:
         return await message.answer(text=texts['fail_btn'])
 
@@ -290,6 +290,8 @@ async def admin_delete_mail(callback: CallbackQuery, state: FSMContext):
     schedular.remove_job(f"mail_{mail.id}", "default")
 
     await Database.Mail.update_status(mail.id, "cancel")
+    mail.status = "cancel"
+    await state.update_data(mail=mail)
     await callback.message.delete()
     return await callback.message.answer(text=texts['admin_mail_profile'].format(id=mail.id,
                                                                                  status=statuses[mail.status],

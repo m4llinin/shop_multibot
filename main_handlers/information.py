@@ -5,13 +5,13 @@ from utils import load_texts
 
 
 async def information(message: Message):
-    return await message.answer_photo(photo=FSInputFile("./photos/information.jpeg"),
+    return await message.answer_photo(photo=FSInputFile("./photos/information.png"),
                                       reply_markup=await InlineKeyboardMain.information())
 
 
 async def information_clb(callback: CallbackQuery):
     await callback.message.delete()
-    return await callback.message.answer_photo(photo=FSInputFile("./photos/information.jpeg"),
+    return await callback.message.answer_photo(photo=FSInputFile("./photos/information.png"),
                                                reply_markup=await InlineKeyboardMain.information())
 
 
