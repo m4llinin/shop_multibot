@@ -6,7 +6,7 @@ class Support(TimedBaseModel):
     __tablename__ = 'supports'
     id = Column(Integer, primary_key=True, autoincrement=True)
     shop_id = Column(BigInteger, nullable=False)
-    user_id = Column(Integer, nullable=False)
+    user_id = Column(BigInteger, nullable=False)
     theme = Column(String, nullable=False)
     text = Column(String, nullable=False)
     solution = Column(String)

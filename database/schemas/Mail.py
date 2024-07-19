@@ -4,8 +4,8 @@ from database.db_gino import TimedBaseModel
 
 class Mail(TimedBaseModel):
     __tablename__ = 'mails'
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    user_id = Column(Integer)
+    id = Column(BigInteger, primary_key=True, autoincrement=True)
+    user_id = Column(BigInteger)
     shop_id = Column(ARRAY(BigInteger))
     text = Column(String)
     photo = Column(String)
