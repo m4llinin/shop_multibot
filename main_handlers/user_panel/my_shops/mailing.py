@@ -28,6 +28,7 @@ class MailData:
     photo: str = None
     keyboard: str = None
     date: datetime = None
+    loop: str = None
 
 
 async def mailing_list(callback: CallbackQuery, state: FSMContext):
