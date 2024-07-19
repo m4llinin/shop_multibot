@@ -15,8 +15,15 @@ async def subpartner(callback: CallbackQuery, state: FSMContext):
     user = await Database.MainBot.get_user(callback.message.chat.id)
 
     if user.status == "linker":
-        count = await Database.MainBot.get_subpartners(user.id)
-        text = texts['sub_link'].format(referral_count=count,
+        subpartners = await Database.MainBot.get_subpartners(user.id)
+
+        profit = 0
+        for subpart in subpartners:
+            for shop_id in subpart.shops:
+                profit += await Database.MainBot.get_profit(shop_id, None, None)
+
+        text = texts['sub_link'].format(referral_count=len(subpartners),
+                                        profit=profit,
                                         link=MAIN_BOT_LINK,
                                         user_id=user.id)
     else:

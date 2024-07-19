@@ -69,7 +69,8 @@ async def amount(message: Message, state: FSMContext):
 
     admin = random.choice(await Database.MainBot.get_admin())
     await message.bot.send_message(chat_id=admin.id,
-                                   text=texts['query_withdraw_funds'].format(user.id, data.get("cart"), value),
+                                   text=texts['query_withdraw_funds'].format(user.id, user.username, data.get("cart"),
+                                                                             value),
                                    reply_markup=await InlineKeyboardMain.solution_admin_funds(payment.id))
 
     await state.clear()

@@ -29,16 +29,23 @@ async def order_profile(callback: CallbackQuery):
     texts = await load_texts()
     order_id = int(callback.data.split("_")[2])
     order = await Database.ShopBot.get_order(order_id)
+    good = await Database.ShopBot.get_good_by_id(order.good_id)
 
     emoji = "🟢" if order.status == "paid" else "🔴"
 
     await callback.message.delete()
-    return await callback.message.answer(text=texts['order_profile'].format(emoji=emoji,
-                                                                            order_id=order.id,
-                                                                            good_name=order.good_name,
-                                                                            count=order.count,
-                                                                            total_price=order.total_price,
-                                                                            status=status[order.status]),
+
+    text = texts['order_profile'].format(emoji=emoji, order_id=order.id, good_name=order.good_name, count=order.count,
+                                         total_price=order.total_price, status=status[order.status])
+    if order.status == "paid":
+        if good and good.count is None:
+            text += f"\n\nПродукт: <b>{good.product}</b>"
+        elif good and good.count is not None:
+            pass
+            # МЕСТО ДЛЯ ВЫДАЧИ ТОВАРА С КОЛИЧЕСТВОМ
+        else:
+            text += f"\n\nПродукт: <b>{order.good_name}</b>"
+    return await callback.message.answer(text=text,
                                          reply_markup=await InlineKeyboardShop.back("my_orders"),
                                          parse_mode=ParseMode.HTML)
 

@@ -375,8 +375,8 @@ class Database:
             return await UserMainBot.update.values(balance=balance).where(UserMainBot.id == user_id).gino.status()
 
         @classmethod
-        async def get_subpartners(cls, user_id: int):
-            return len(await UserMainBot.query.where(UserMainBot.referral_id == user_id).gino.all())
+        async def get_subpartners(cls, user_id: int) -> List[UserMainBot]:
+            return await UserMainBot.query.where(UserMainBot.referral_id == user_id).gino.all()
 
         @classmethod
         async def insert_request(cls, user_id: int, source: str, experience: str, platform: str):
