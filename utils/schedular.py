@@ -72,7 +72,8 @@ async def send_mail(mail_id: int):
         hours, minutes = list(map(int, mail.loop.split(":")))
         new_mail = MailData(mail.text, mail.photo, mail.keyboard,
                             mail.wait_date + timedelta(hours=hours, minutes=minutes), mail.loop)
-        await Database.Mail.insert_mail(mail.user_id, mail.shop_id, new_mail)
+        shops = await Database.MainBot.get_all_shops()
+        await Database.Mail.insert_mail(mail.user_id, shops, new_mail)
         last_mail = await Database.Mail.get_last_mail()
         schedular.add_job(func=send_mail, trigger="date", id=f"mail_{last_mail.id}", args=(last_mail.id,),
                           next_run_time=last_mail.wait_date)
