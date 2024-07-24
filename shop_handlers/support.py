@@ -80,7 +80,7 @@ async def get_text_query(message: Message, state: FSMContext):
 
 async def my_queries(callback: CallbackQuery):
     texts = await load_texts()
-    queries = await Database.ShopBot.get_queries_list(callback.message.chat.id)
+    queries = await Database.ShopBot.get_queries_list(callback.message.chat.id, callback.bot.id)
 
     await callback.message.delete()
     await callback.message.answer(text=texts['my_queries'],

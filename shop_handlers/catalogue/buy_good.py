@@ -53,14 +53,14 @@ async def buy_now_balance(callback: CallbackQuery, state: FSMContext):
     texts = await load_texts()
     data = await state.get_data()
     cart: Cart | None = data.get("cart", None)
-    user = await Database.ShopBot.get_user(callback.message.chat.id)
+    user = await Database.ShopBot.get_user(callback.message.chat.id, callback.bot.id)
 
     total_price = cart.good.price * cart.extra_charge * cart.count
 
     if user.balance < total_price:
         return await callback.answer(text=texts['not_balance'], show_alert=True)
 
-    await Database.ShopBot.update_user_balance(user.id, user.balance - total_price)
+    await Database.ShopBot.update_user_balance(user.id, user.balance - total_price, callback.bot.id)
     await Database.ShopBot.update_order_status(cart.order_id, "paid")
 
     await callback.message.delete()

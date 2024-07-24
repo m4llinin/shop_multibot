@@ -14,7 +14,7 @@ status = {
 
 async def my_orders_list(callback: CallbackQuery, state: FSMContext):
     texts = await load_texts()
-    orders = await Database.ShopBot.my_orders(callback.message.chat.id)
+    orders = await Database.ShopBot.my_orders(callback.message.chat.id, callback.bot.id)
 
     all_pages = int(len(orders) / 3) + (len(orders) % 3 != 0) if len(orders) > 0 else 1
     my_order = MyOrder(orders=orders, all_pages=all_pages)

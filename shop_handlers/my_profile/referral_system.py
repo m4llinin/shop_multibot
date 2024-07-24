@@ -10,7 +10,7 @@ async def referral_system(callback: CallbackQuery):
     texts = await load_texts()
 
     shop = await Database.MainBot.get_shop(callback.bot.id)
-    referral_count = await Database.ShopBot.get_partner_count(callback.message.chat.id)
+    referral_count = await Database.ShopBot.get_partner_count(callback.message.chat.id, callback.bot.id)
 
     await callback.message.delete()
     await callback.message.answer(text=texts['referral_sys'].format(referral_count=referral_count,

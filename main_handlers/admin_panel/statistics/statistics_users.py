@@ -61,7 +61,7 @@ async def get_username(message: Message, state: FSMContext):
     shops = await Database.MainBot.get_shops(user.id)
     shops_links = ""
     for shop in shops:
-        shops_links += f"{shop.name}\n@{shop.username}"
+        shops_links += f"{shop.name}\n@{shop.username}\n\n"
 
     await state.set_state(None)
     await message.answer(text=texts['shops_links'].format(user.username, len(shops)) + shops_links,

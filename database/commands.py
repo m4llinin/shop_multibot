@@ -491,33 +491,42 @@ class Database:
 
         @classmethod
         async def insert_user(cls, user_id: int, shop_id: int, referral_id: int | None = None):
-            if not (await cls.get_user(user_id)):
+            if not (await cls.get_user(user_id, shop_id)):
                 return await UserShopBot(id=user_id, shop_id=shop_id, referral_id=referral_id).create()
 
         @classmethod
-        async def get_partner_balance(cls, user_id: int) -> int:
-            partners = await UserShopBot.query.where(UserShopBot.referral_id == user_id).gino.all()
+        async def get_partner_balance(cls, user_id: int, shop_id: int = None) -> int:
+            if shop_id:
+                partners = await UserShopBot.query.where(UserShopBot.referral_id == user_id).where(
+                    UserShopBot.shop_id == shop_id).gino.all()
+            else:
+                partners = await UserShopBot.query.where(UserShopBot.referral_id == user_id).gino.all()
             if partners:
                 return sum([partner.balance for partner in partners])
             return 0
 
         @classmethod
-        async def get_partner_count(cls, user_id: int) -> int:
-            referrals = await UserShopBot.query.where(UserShopBot.referral_id == user_id).gino.all()
+        async def get_partner_count(cls, user_id: int, shop_id: int = None) -> int:
+            if shop_id:
+                referrals = await UserShopBot.query.where(UserShopBot.referral_id == user_id).where(
+                    UserShopBot.shop_id == shop_id).gino.all()
+            else:
+                referrals = await UserShopBot.query.where(UserShopBot.referral_id == user_id).gino.all()
             if referrals:
                 return len(referrals)
             return 0
 
         @classmethod
-        async def get_total_orders(cls, user_id: int):
-            orders = await Order.query.where(Order.user_id == user_id).where(Order.status == "paid").gino.all()
+        async def get_total_orders(cls, user_id: int, shop_id: int) -> int:
+            orders = await Order.query.where(Order.user_id == user_id).where(Order.status == "paid").where(
+                Order.shop_id == shop_id).gino.all()
             if orders:
                 return len(orders)
             return 0
 
         @classmethod
-        async def my_orders(cls, user_id: int):
-            return await Order.query.where(Order.user_id == user_id).gino.all()
+        async def my_orders(cls, user_id: int, shop_id: int):
+            return await Order.query.where(Order.user_id == user_id).where(Order.shop_id == shop_id).gino.all()
 
         @classmethod
         async def get_order(cls, order_id: int):
@@ -528,7 +537,10 @@ class Database:
             return await Order.update.values(last_message_id=msg_id).where(Order.id == order_id).gino.status()
 
         @classmethod
-        async def update_user_balance(cls, user_id: int, balance: int | float):
+        async def update_user_balance(cls, user_id: int, balance: int | float, shop_id: int = None):
+            if shop_id:
+                return await UserShopBot.update.values(balance=balance).where(UserShopBot.id == user_id).where(
+                    UserShopBot.shop_id == shop_id).gino.status()
             return await UserShopBot.update.values(balance=balance).where(UserShopBot.id == user_id).gino.status()
 
         @classmethod
@@ -536,8 +548,9 @@ class Database:
             return await Support(user_id=user_id, shop_id=shop_id, theme=theme, text=text).create()
 
         @classmethod
-        async def get_queries_list(cls, user_id: int):
-            return await Support.query.where(Support.user_id == user_id).gino.all()
+        async def get_queries_list(cls, user_id: int, shop_id: int):
+            return await Support.query.where(Support.user_id == user_id).where(
+                Support.shop_id == shop_id).gino.all()
 
         @classmethod
         async def get_query(cls, query_id: int) -> Support:

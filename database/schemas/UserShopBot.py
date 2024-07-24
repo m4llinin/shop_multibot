@@ -4,7 +4,8 @@ from sqlalchemy import Float, Column, sql, BigInteger, ForeignKey
 
 class UserShopBot(TimedBaseModel):
     __tablename__ = 'shop_users'
-    id = Column(BigInteger, primary_key=True)
+    table_id = Column(BigInteger, primary_key=True, autoincrement=True)
+    id = Column(BigInteger, nullable=False)
     shop_id = Column(BigInteger, nullable=False)
     balance = Column(Float, default=0)
     referral_id = Column(BigInteger)

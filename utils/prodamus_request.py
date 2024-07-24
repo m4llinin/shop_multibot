@@ -44,12 +44,13 @@ async def handler_prodamus_request(request: web.Request) -> web.Response:
                                                                               date=datetime.now().strftime(
                                                                                   "%d.%m.%Y %H:%M")))
 
-            user = await Database.ShopBot.get_user(order.user_id)
+            user = await Database.ShopBot.get_user(order.user_id, shop.id)
             referral = None
             if user.referral_id:
-                referral = await Database.ShopBot.get_user(user.referral_id)
+                referral = await Database.ShopBot.get_user(user.referral_id, shop.id)
             if referral:
-                await Database.ShopBot.update_user_balance(referral.id, referral.balance + order.total_price * 0.05)
+                await Database.ShopBot.update_user_balance(referral.id, referral.balance + order.total_price * 0.05,
+                                                           shop.id)
 
             await Database.ShopBot.update_order_status(order_id, "paid")
             await Database.MainBot.update_owner_balance(shop.owner_id, order.total_price)
@@ -126,15 +127,16 @@ async def handler_prodamus_update_balance(request: web.Request) -> web.Response:
                                                                               date=datetime.now().strftime(
                                                                                   "%d.%m.%Y %H:%M")))
 
-            user = await Database.ShopBot.get_user(order.user_id)
+            user = await Database.ShopBot.get_user(order.user_id, shop.id)
             referral = None
             if user.referral_id:
-                referral = await Database.ShopBot.get_user(user.referral_id)
+                referral = await Database.ShopBot.get_user(user.referral_id, shop.id)
             if referral:
-                await Database.ShopBot.update_user_balance(referral.id, referral.balance + order.total_price * 0.05)
+                await Database.ShopBot.update_user_balance(referral.id, referral.balance + order.total_price * 0.05,
+                                                           shop.id)
 
             await Database.ShopBot.update_order_status(order_id, "paid")
-            await Database.ShopBot.update_user_balance(user.id, user.balance + amount)
+            await Database.ShopBot.update_user_balance(user.id, user.balance + amount, shop.id)
             await Database.MainBot.update_owner_balance(shop.owner_id, amount)
 
             owner_shop = await Database.MainBot.get_user(shop.owner_id)
