@@ -88,7 +88,7 @@ class Database:
         @classmethod
         async def get_admin_mails(cls, user_id: int) -> list[Mail]:
             user = await Database.MainBot.get_user(user_id)
-            mails = await Mail.query.order_by(Mail.id.desc()).gino.all()
+            mails = await Mail.query.order_by(Mail.wait_date.desc()).gino.all()
             output = []
             for mail in mails:
                 if len(mail.shop_id) > len(user.shops):
