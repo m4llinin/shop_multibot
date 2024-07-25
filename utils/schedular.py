@@ -73,7 +73,15 @@ async def send_mail(mail_id: int):
         new_mail = MailData(mail.text, mail.photo, mail.keyboard,
                             mail.wait_date + timedelta(hours=hours, minutes=minutes), mail.loop)
         shops = await Database.MainBot.get_all_shops()
-        await Database.Mail.insert_mail(mail.user_id, shops, new_mail)
+
+        shop_ids = []
+        for shop in shops:
+            try:
+                shop_ids.append(shop.id)
+            except Exception as e:
+                logger.error(e)
+
+        await Database.Mail.insert_mail(mail.user_id, shop_ids, new_mail)
         last_mail = await Database.Mail.get_last_mail()
         schedular.add_job(func=send_mail, trigger="date", id=f"mail_{last_mail.id}", args=(last_mail.id,),
                           next_run_time=last_mail.wait_date)
