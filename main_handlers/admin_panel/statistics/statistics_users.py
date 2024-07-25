@@ -41,7 +41,7 @@ async def download_users(callback: CallbackQuery):
             subpartners = await Database.MainBot.get_subpartners(user.id)
             profit = sum([await Database.MainBot.get_profit(shop, start, end) for shop in user.shops])
             csv_writer.writerow(
-                [user.username, subpartners, len(shops), " ".join([shop.username for shop in shops]), profit])
+                [user.username, len(subpartners), len(shops), " ".join([shop.username for shop in shops]), profit])
     await callback.message.answer_document(
         document=FSInputFile("users_statistics.csv", filename="users_statistics.csv"))
     return os.remove("users_statistics.csv")
