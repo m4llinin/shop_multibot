@@ -38,31 +38,33 @@ async def send_mail(mail_id: int):
     try:
         for shop_id in mail.shop_id:
             shop = await Database.MainBot.get_shop(shop_id)
-            users_of_shop = await Database.MainBot.get_all_users_of_shop(shop.id)
-            bot = Bot(token=shop.token, session=session)
 
-            new_url = url
-            if new_url and "{}" in url:
-                new_url = url.format(shop.username)
+            if shop is not None:
+                users_of_shop = await Database.MainBot.get_all_users_of_shop(shop.id)
+                bot = Bot(token=shop.token, session=session)
 
-            for user in users_of_shop:
-                try:
-                    if mail.photo:
-                        await bot.send_photo(chat_id=user.id,
-                                             photo=FSInputFile(path=f"./photos/mailing/{mail.photo}.jpg",
-                                                               filename="mail.jpg"),
-                                             caption=mail.text,
-                                             reply_markup=await InlineKeyboardMain.generate_keyboard(text, new_url),
-                                             parse_mode=ParseMode.HTML)
-                    else:
-                        await bot.send_message(chat_id=user.id,
-                                               text=mail.text,
-                                               reply_markup=await InlineKeyboardMain.generate_keyboard(text, new_url),
-                                               parse_mode=ParseMode.HTML)
-                    send += 1
-                except Exception as e:
-                    logger.error(e)
-                    fail += 1
+                new_url = url
+                if new_url and "{}" in url:
+                    new_url = url.format(shop.username)
+
+                for user in users_of_shop:
+                    try:
+                        if mail.photo:
+                            await bot.send_photo(chat_id=user.id,
+                                                 photo=FSInputFile(path=f"./photos/mailing/{mail.photo}.jpg",
+                                                                   filename="mail.jpg"),
+                                                 caption=mail.text,
+                                                 reply_markup=await InlineKeyboardMain.generate_keyboard(text, new_url),
+                                                 parse_mode=ParseMode.HTML)
+                        else:
+                            await bot.send_message(chat_id=user.id,
+                                                   text=mail.text,
+                                                   reply_markup=await InlineKeyboardMain.generate_keyboard(text, new_url),
+                                                   parse_mode=ParseMode.HTML)
+                        send += 1
+                    except Exception as e:
+                        logger.error(e)
+                        fail += 1
     except Exception as e:
         logger.error(e)
 
