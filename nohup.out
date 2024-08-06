@@ -1,0 +1,298 @@
+[32m2024-06-23 14:46:29,062 [37m[1mINFO    [0m [36m[__main__] [0m(app.py:[4m<module>[0m:60) [37m[1mBot was started[0m
+[32m2024-06-23 14:46:30,454 [37m[1mINFO    [0m [36m[database.commands] [0m(commands.py:[4m_on_connect[0m:35) [37m[1mDatabase was connected[0m
+[32m2024-06-23 14:46:30,455 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mselect relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1[0m
+[32m2024-06-23 14:46:30,455 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m('goods',)[0m
+[32m2024-06-23 14:46:30,461 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mselect relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1[0m
+[32m2024-06-23 14:46:30,461 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m('orders',)[0m
+[32m2024-06-23 14:46:30,467 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mselect relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1[0m
+[32m2024-06-23 14:46:30,467 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m('users',)[0m
+[32m2024-06-23 14:46:30,469 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mselect relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1[0m
+[32m2024-06-23 14:46:30,469 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m('shops',)[0m
+[32m2024-06-23 14:46:30,470 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mselect relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1[0m
+[32m2024-06-23 14:46:30,470 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m('categories',)[0m
+[32m2024-06-23 14:46:30,471 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mselect relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1[0m
+[32m2024-06-23 14:46:30,471 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m('subcategories',)[0m
+[32m2024-06-23 14:46:30,475 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mselect relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1[0m
+[32m2024-06-23 14:46:30,475 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m('shop_users',)[0m
+[32m2024-06-23 14:46:30,476 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mselect relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1[0m
+[32m2024-06-23 14:46:30,476 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m('supports',)[0m
+[32m2024-06-23 14:46:30,477 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mselect relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1[0m
+[32m2024-06-23 14:46:30,477 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m('payments',)[0m
+[32m2024-06-23 14:46:30,477 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mselect relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1[0m
+[32m2024-06-23 14:46:30,477 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m('requests',)[0m
+[32m2024-06-23 14:46:30,483 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mselect relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1[0m
+[32m2024-06-23 14:46:30,483 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m('mails',)[0m
+[32m2024-06-23 14:46:30,758 [37m[1mINFO    [0m [36m[apscheduler.scheduler] [0m(base.py:[4mstart[0m:181) [37m[1mScheduler started[0m
+[32m2024-06-23 14:46:38,064 [37m[1mINFO    [0m [36m[__main__] [0m(app.py:[4mon_shutdown_app[0m:30) [37m[1mBot was stopped[0m
+[32m2024-06-23 14:46:38,315 [37m[1mINFO    [0m [36m[database.commands] [0m(commands.py:[4m_on_disconnect[0m:43) [37m[1mDatabase was disconnected[0m
+======== Running on http://127.0.0.1:8000 ========
+(Press CTRL+C to quit)
+[32m2024-06-23 14:46:55,747 [37m[1mINFO    [0m [36m[__main__] [0m(app.py:[4m<module>[0m:60) [37m[1mBot was started[0m
+[32m2024-06-23 14:46:57,054 [37m[1mINFO    [0m [36m[database.commands] [0m(commands.py:[4m_on_connect[0m:35) [37m[1mDatabase was connected[0m
+[32m2024-06-23 14:46:57,055 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mselect relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1[0m
+[32m2024-06-23 14:46:57,055 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m('goods',)[0m
+[32m2024-06-23 14:46:57,061 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mselect relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1[0m
+[32m2024-06-23 14:46:57,061 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m('orders',)[0m
+[32m2024-06-23 14:46:57,067 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mselect relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1[0m
+[32m2024-06-23 14:46:57,067 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m('users',)[0m
+[32m2024-06-23 14:46:57,069 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mselect relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1[0m
+[32m2024-06-23 14:46:57,069 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m('shops',)[0m
+[32m2024-06-23 14:46:57,070 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mselect relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1[0m
+[32m2024-06-23 14:46:57,070 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m('categories',)[0m
+[32m2024-06-23 14:46:57,071 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mselect relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1[0m
+[32m2024-06-23 14:46:57,071 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m('subcategories',)[0m
+[32m2024-06-23 14:46:57,075 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mselect relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1[0m
+[32m2024-06-23 14:46:57,075 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m('shop_users',)[0m
+[32m2024-06-23 14:46:57,076 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mselect relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1[0m
+[32m2024-06-23 14:46:57,076 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m('supports',)[0m
+[32m2024-06-23 14:46:57,076 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mselect relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1[0m
+[32m2024-06-23 14:46:57,077 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m('payments',)[0m
+[32m2024-06-23 14:46:57,077 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mselect relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1[0m
+[32m2024-06-23 14:46:57,077 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m('requests',)[0m
+[32m2024-06-23 14:46:57,078 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mselect relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1[0m
+[32m2024-06-23 14:46:57,078 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m('mails',)[0m
+[32m2024-06-23 14:46:57,216 [37m[1mINFO    [0m [36m[apscheduler.scheduler] [0m(base.py:[4mstart[0m:181) [37m[1mScheduler started[0m
+[32m2024-06-23 14:46:58,009 [37m[1mINFO    [0m [36m[aiohttp.access] [0m(web_log.py:[4mlog[0m:211) [37m[1m127.0.0.1 [23/Jun/2024:14:46:58 +0300] "POST /webhook/main HTTP/1.0" 200 159 "-" "-"[0m
+[32m2024-06-23 14:46:58,016 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mSELECT users.id, users.referral_id, users.username, users.balance, users.loyalty_level, users.shops, users.status, users.created_at, users.updated_at 
+FROM users 
+WHERE users.id = $1[0m
+[32m2024-06-23 14:46:58,017 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m(574588496,)[0m
+[32m2024-06-23 14:46:58,049 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mSELECT users.id, users.referral_id, users.username, users.balance, users.loyalty_level, users.shops, users.status, users.created_at, users.updated_at 
+FROM users 
+WHERE users.id = $1[0m
+[32m2024-06-23 14:46:58,050 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m(574588496,)[0m
+[32m2024-06-23 14:46:58,492 [37m[1mINFO    [0m [36m[aiogram.event] [0m(dispatcher.py:[4mfeed_update[0m:172) [37m[1mUpdate id=571877610 is handled. Duration 481 ms by bot id=6863958973[0m
+[32m2024-06-23 14:47:03,809 [37m[1mINFO    [0m [36m[aiohttp.access] [0m(web_log.py:[4mlog[0m:211) [37m[1m127.0.0.1 [23/Jun/2024:14:47:03 +0300] "POST /webhook/main HTTP/1.0" 200 159 "-" "-"[0m
+[32m2024-06-23 14:47:03,816 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mSELECT users.id, users.referral_id, users.username, users.balance, users.loyalty_level, users.shops, users.status, users.created_at, users.updated_at 
+FROM users 
+WHERE users.id = $1[0m
+[32m2024-06-23 14:47:03,816 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m(574588496,)[0m
+[32m2024-06-23 14:47:03,823 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mSELECT users.id, users.referral_id, users.username, users.balance, users.loyalty_level, users.shops, users.status, users.created_at, users.updated_at 
+FROM users 
+WHERE users.id = $1[0m
+[32m2024-06-23 14:47:03,823 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m(574588496,)[0m
+[32m2024-06-23 14:47:04,206 [37m[1mINFO    [0m [36m[aiogram.event] [0m(dispatcher.py:[4mfeed_update[0m:172) [37m[1mUpdate id=571877611 is handled. Duration 396 ms by bot id=6863958973[0m
+[32m2024-06-23 14:47:05,542 [37m[1mINFO    [0m [36m[aiohttp.access] [0m(web_log.py:[4mlog[0m:211) [37m[1m127.0.0.1 [23/Jun/2024:14:47:05 +0300] "POST /webhook/main HTTP/1.0" 200 159 "-" "-"[0m
+[32m2024-06-23 14:47:05,552 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mSELECT users.id, users.referral_id, users.username, users.balance, users.loyalty_level, users.shops, users.status, users.created_at, users.updated_at 
+FROM users 
+WHERE users.id = $1[0m
+[32m2024-06-23 14:47:05,552 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m(574588496,)[0m
+[32m2024-06-23 14:47:05,559 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mSELECT users.id, users.referral_id, users.username, users.balance, users.loyalty_level, users.shops, users.status, users.created_at, users.updated_at 
+FROM users 
+WHERE users.id = $1[0m
+[32m2024-06-23 14:47:05,559 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m(574588496,)[0m
+[32m2024-06-23 14:47:05,719 [37m[1mINFO    [0m [36m[aiogram.event] [0m(dispatcher.py:[4mfeed_update[0m:172) [37m[1mUpdate id=571877612 is handled. Duration 175 ms by bot id=6863958973[0m
+[32m2024-06-23 14:47:07,154 [37m[1mINFO    [0m [36m[aiohttp.access] [0m(web_log.py:[4mlog[0m:211) [37m[1m127.0.0.1 [23/Jun/2024:14:47:07 +0300] "POST /webhook/main HTTP/1.0" 200 159 "-" "-"[0m
+[32m2024-06-23 14:47:07,157 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mSELECT users.id, users.referral_id, users.username, users.balance, users.loyalty_level, users.shops, users.status, users.created_at, users.updated_at 
+FROM users 
+WHERE users.id = $1[0m
+[32m2024-06-23 14:47:07,157 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m(574588496,)[0m
+[32m2024-06-23 14:47:07,241 [37m[1mINFO    [0m [36m[aiogram.event] [0m(dispatcher.py:[4mfeed_update[0m:172) [37m[1mUpdate id=571877613 is handled. Duration 87 ms by bot id=6863958973[0m
+[32m2024-06-23 14:47:07,973 [37m[1mINFO    [0m [36m[aiohttp.access] [0m(web_log.py:[4mlog[0m:211) [37m[1m127.0.0.1 [23/Jun/2024:14:47:07 +0300] "POST /webhook/main HTTP/1.0" 200 159 "-" "-"[0m
+[32m2024-06-23 14:47:07,981 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mSELECT users.id, users.referral_id, users.username, users.balance, users.loyalty_level, users.shops, users.status, users.created_at, users.updated_at 
+FROM users 
+WHERE users.id = $1[0m
+[32m2024-06-23 14:47:07,981 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m(574588496,)[0m
+[32m2024-06-23 14:47:08,172 [37m[1mINFO    [0m [36m[aiogram.event] [0m(dispatcher.py:[4mfeed_update[0m:172) [37m[1mUpdate id=571877614 is handled. Duration 198 ms by bot id=6863958973[0m
+[32m2024-06-23 14:48:12,382 [37m[1mINFO    [0m [36m[aiohttp.access] [0m(web_log.py:[4mlog[0m:211) [37m[1m127.0.0.1 [23/Jun/2024:14:48:12 +0300] "POST /webhook/main HTTP/1.0" 200 159 "-" "-"[0m
+[32m2024-06-23 14:48:12,710 [37m[1mINFO    [0m [36m[aiogram.event] [0m(dispatcher.py:[4mfeed_update[0m:172) [37m[1mUpdate id=571877615 is handled. Duration 325 ms by bot id=6863958973[0m
+[32m2024-06-23 14:48:14,220 [37m[1mINFO    [0m [36m[aiohttp.access] [0m(web_log.py:[4mlog[0m:211) [37m[1m127.0.0.1 [23/Jun/2024:14:48:14 +0300] "POST /webhook/main HTTP/1.0" 200 159 "-" "-"[0m
+[32m2024-06-23 14:48:14,245 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mSELECT users.id, users.referral_id, users.username, users.balance, users.loyalty_level, users.shops, users.status, users.created_at, users.updated_at 
+FROM users 
+WHERE users.referral_id IS NULL[0m
+[32m2024-06-23 14:48:14,245 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m()[0m
+[32m2024-06-23 14:48:14,255 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mSELECT users.id, users.referral_id, users.username, users.balance, users.loyalty_level, users.shops, users.status, users.created_at, users.updated_at 
+FROM users 
+WHERE users.referral_id IS NOT NULL[0m
+[32m2024-06-23 14:48:14,255 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m()[0m
+[32m2024-06-23 14:48:14,587 [37m[1mINFO    [0m [36m[aiogram.event] [0m(dispatcher.py:[4mfeed_update[0m:172) [37m[1mUpdate id=571877616 is handled. Duration 366 ms by bot id=6863958973[0m
+[32m2024-06-23 14:48:18,511 [37m[1mINFO    [0m [36m[aiohttp.access] [0m(web_log.py:[4mlog[0m:211) [37m[1m127.0.0.1 [23/Jun/2024:14:48:18 +0300] "POST /webhook/main HTTP/1.0" 200 159 "-" "-"[0m
+[32m2024-06-23 14:48:18,693 [37m[1mINFO    [0m [36m[aiogram.event] [0m(dispatcher.py:[4mfeed_update[0m:172) [37m[1mUpdate id=571877617 is handled. Duration 181 ms by bot id=6863958973[0m
+[32m2024-06-23 14:48:19,783 [37m[1mINFO    [0m [36m[aiohttp.access] [0m(web_log.py:[4mlog[0m:211) [37m[1m127.0.0.1 [23/Jun/2024:14:48:19 +0300] "POST /webhook/main HTTP/1.0" 200 159 "-" "-"[0m
+[32m2024-06-23 14:48:19,796 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mSELECT users.id, users.referral_id, users.username, users.balance, users.loyalty_level, users.shops, users.status, users.created_at, users.updated_at 
+FROM users 
+WHERE users.id = $1[0m
+[32m2024-06-23 14:48:19,796 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m(574588496,)[0m
+[32m2024-06-23 14:48:19,925 [37m[1mINFO    [0m [36m[aiogram.event] [0m(dispatcher.py:[4mfeed_update[0m:172) [37m[1mUpdate id=571877618 is handled. Duration 140 ms by bot id=6863958973[0m
+[32m2024-06-23 14:48:23,577 [37m[1mINFO    [0m [36m[aiohttp.access] [0m(web_log.py:[4mlog[0m:211) [37m[1m127.0.0.1 [23/Jun/2024:14:48:23 +0300] "POST /webhook/main HTTP/1.0" 200 159 "-" "-"[0m
+[32m2024-06-23 14:48:23,749 [37m[1mINFO    [0m [36m[aiogram.event] [0m(dispatcher.py:[4mfeed_update[0m:172) [37m[1mUpdate id=571877619 is handled. Duration 171 ms by bot id=6863958973[0m
+[32m2024-06-23 14:48:25,629 [37m[1mINFO    [0m [36m[aiohttp.access] [0m(web_log.py:[4mlog[0m:211) [37m[1m127.0.0.1 [23/Jun/2024:14:48:25 +0300] "POST /webhook/main HTTP/1.0" 200 159 "-" "-"[0m
+[32m2024-06-23 14:48:25,665 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mSELECT users.id, users.referral_id, users.username, users.balance, users.loyalty_level, users.shops, users.status, users.created_at, users.updated_at 
+FROM users 
+WHERE users.referral_id IS NULL[0m
+[32m2024-06-23 14:48:25,665 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m()[0m
+[32m2024-06-23 14:48:25,674 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mSELECT users.id, users.referral_id, users.username, users.balance, users.loyalty_level, users.shops, users.status, users.created_at, users.updated_at 
+FROM users 
+WHERE users.referral_id IS NOT NULL[0m
+[32m2024-06-23 14:48:25,674 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m()[0m
+[32m2024-06-23 14:48:25,920 [37m[1mINFO    [0m [36m[aiogram.event] [0m(dispatcher.py:[4mfeed_update[0m:172) [37m[1mUpdate id=571877620 is handled. Duration 283 ms by bot id=6863958973[0m
+[32m2024-06-23 14:48:30,297 [37m[1mINFO    [0m [36m[aiohttp.access] [0m(web_log.py:[4mlog[0m:211) [37m[1m127.0.0.1 [23/Jun/2024:14:48:30 +0300] "POST /webhook/main HTTP/1.0" 200 159 "-" "-"[0m
+[32m2024-06-23 14:48:30,326 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mSELECT users.id, users.referral_id, users.username, users.balance, users.loyalty_level, users.shops, users.status, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = $1[0m
+[32m2024-06-23 14:48:30,326 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m('m4llinin',)[0m
+[32m2024-06-23 14:48:30,333 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mSELECT shops.id, shops.owner_id, shops.token, shops.username, shops.name, shops.description, shops.short_description, shops.notifications, shops.extra_charge, shops.channel, shops.is_on, shops.created_at, shops.updated_at 
+FROM shops 
+WHERE shops.owner_id = $1[0m
+[32m2024-06-23 14:48:30,333 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m(574588496,)[0m
+[32m2024-06-23 14:48:30,410 [37m[1mINFO    [0m [36m[aiogram.event] [0m(dispatcher.py:[4mfeed_update[0m:172) [37m[1mUpdate id=571877621 is handled. Duration 108 ms by bot id=6863958973[0m
+[32m2024-06-23 14:48:33,239 [37m[1mINFO    [0m [36m[aiohttp.access] [0m(web_log.py:[4mlog[0m:211) [37m[1m127.0.0.1 [23/Jun/2024:14:48:33 +0300] "POST /webhook/main HTTP/1.0" 200 159 "-" "-"[0m
+[32m2024-06-23 14:48:33,259 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mSELECT users.id, users.referral_id, users.username, users.balance, users.loyalty_level, users.shops, users.status, users.created_at, users.updated_at 
+FROM users 
+WHERE users.referral_id IS NULL[0m
+[32m2024-06-23 14:48:33,259 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m()[0m
+[32m2024-06-23 14:48:33,267 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mSELECT users.id, users.referral_id, users.username, users.balance, users.loyalty_level, users.shops, users.status, users.created_at, users.updated_at 
+FROM users 
+WHERE users.referral_id IS NOT NULL[0m
+[32m2024-06-23 14:48:33,267 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m()[0m
+[32m2024-06-23 14:48:33,403 [37m[1mINFO    [0m [36m[aiogram.event] [0m(dispatcher.py:[4mfeed_update[0m:172) [37m[1mUpdate id=571877622 is handled. Duration 163 ms by bot id=6863958973[0m
+[32m2024-06-23 14:48:34,098 [37m[1mINFO    [0m [36m[aiohttp.access] [0m(web_log.py:[4mlog[0m:211) [37m[1m127.0.0.1 [23/Jun/2024:14:48:34 +0300] "POST /webhook/main HTTP/1.0" 200 159 "-" "-"[0m
+[32m2024-06-23 14:48:34,264 [37m[1mINFO    [0m [36m[aiogram.event] [0m(dispatcher.py:[4mfeed_update[0m:172) [37m[1mUpdate id=571877623 is handled. Duration 164 ms by bot id=6863958973[0m
+[32m2024-06-23 14:54:06,921 [37m[1mINFO    [0m [36m[aiohttp.access] [0m(web_log.py:[4mlog[0m:211) [37m[1m127.0.0.1 [23/Jun/2024:14:54:06 +0300] "POST /webhook/main HTTP/1.0" 200 159 "-" "-"[0m
+[32m2024-06-23 14:54:07,027 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mSELECT users.id, users.referral_id, users.username, users.balance, users.loyalty_level, users.shops, users.status, users.created_at, users.updated_at 
+FROM users 
+WHERE users.id = $1[0m
+[32m2024-06-23 14:54:07,027 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m(574588496,)[0m
+[32m2024-06-23 14:54:07,299 [37m[1mINFO    [0m [36m[aiogram.event] [0m(dispatcher.py:[4mfeed_update[0m:172) [37m[1mUpdate id=571877624 is handled. Duration 375 ms by bot id=6863958973[0m
+[32m2024-06-23 14:54:08,453 [37m[1mINFO    [0m [36m[aiohttp.access] [0m(web_log.py:[4mlog[0m:211) [37m[1m127.0.0.1 [23/Jun/2024:14:54:08 +0300] "POST /webhook/main HTTP/1.0" 200 159 "-" "-"[0m
+[32m2024-06-23 14:54:08,710 [37m[1mINFO    [0m [36m[aiogram.event] [0m(dispatcher.py:[4mfeed_update[0m:172) [37m[1mUpdate id=571877625 is handled. Duration 256 ms by bot id=6863958973[0m
+[32m2024-06-23 14:54:09,505 [37m[1mINFO    [0m [36m[aiohttp.access] [0m(web_log.py:[4mlog[0m:211) [37m[1m127.0.0.1 [23/Jun/2024:14:54:09 +0300] "POST /webhook/main HTTP/1.0" 200 159 "-" "-"[0m
+[32m2024-06-23 14:54:09,562 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mSELECT shops.id, shops.owner_id, shops.token, shops.username, shops.name, shops.description, shops.short_description, shops.notifications, shops.extra_charge, shops.channel, shops.is_on, shops.created_at, shops.updated_at 
+FROM shops 
+WHERE shops.id = $1[0m
+[32m2024-06-23 14:54:09,563 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m(5654810680,)[0m
+[32m2024-06-23 14:54:09,756 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mINSERT INTO shops (id, owner_id, token, username, name, description, short_description, notifications, extra_charge, is_on, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING shops.id, shops.owner_id, shops.token, shops.username, shops.name, shops.description, shops.short_description, shops.notifications, shops.extra_charge, shops.channel, shops.is_on, shops.created_at, shops.updated_at[0m
+[32m2024-06-23 14:54:09,756 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m(5654810680, 574588496, '5654810680:AAE6yMn0lEQEkpw2D9zomA8ZHSms2cDSkGE', 'paronim_ege_bot', 'ПАРОНИМЫ | РУССКИЙ ЕГЭ', '', '', True, 0, True, datetime.datetime(2024, 6, 23, 11, 54, 9, 756313))[0m
+[32m2024-06-23 14:54:09,756 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_commit_impl[0m:769) [37m[1mCOMMIT[0m
+[32m2024-06-23 14:54:09,762 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mSELECT users.id, users.referral_id, users.username, users.balance, users.loyalty_level, users.shops, users.status, users.created_at, users.updated_at 
+FROM users 
+WHERE users.id = $1[0m
+[32m2024-06-23 14:54:09,762 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m(574588496,)[0m
+[32m2024-06-23 14:54:09,768 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mUPDATE users SET shops=$1, updated_at=$2 WHERE users.id = $3[0m
+[32m2024-06-23 14:54:09,768 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m([5654810680], datetime.datetime(2024, 6, 23, 11, 54, 9, 768454), 574588496)[0m
+[32m2024-06-23 14:54:09,768 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_commit_impl[0m:769) [37m[1mCOMMIT[0m
+[32m2024-06-23 14:54:09,838 [37m[1mINFO    [0m [36m[aiogram.event] [0m(dispatcher.py:[4mfeed_update[0m:172) [37m[1mUpdate id=571877626 is handled. Duration 332 ms by bot id=6863958973[0m
+[32m2024-06-23 14:54:13,900 [37m[1mINFO    [0m [36m[aiohttp.access] [0m(web_log.py:[4mlog[0m:211) [37m[1m127.0.0.1 [23/Jun/2024:14:54:13 +0300] "POST /webhook/bot/5654810680:AAE6yMn0lEQEkpw2D9zomA8ZHSms2cDSkGE HTTP/1.0" 200 159 "-" "-"[0m
+[32m2024-06-23 14:54:13,908 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mSELECT shops.id, shops.owner_id, shops.token, shops.username, shops.name, shops.description, shops.short_description, shops.notifications, shops.extra_charge, shops.channel, shops.is_on, shops.created_at, shops.updated_at 
+FROM shops 
+WHERE shops.id = $1[0m
+[32m2024-06-23 14:54:13,908 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m(5654810680,)[0m
+[32m2024-06-23 14:54:13,914 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mSELECT shop_users.id, shop_users.shop_id, shop_users.balance, shop_users.referral_id, shop_users.created_at, shop_users.updated_at 
+FROM shop_users 
+WHERE shop_users.id = $1[0m
+[32m2024-06-23 14:54:13,914 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m(574588496,)[0m
+[32m2024-06-23 14:54:13,921 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mINSERT INTO shop_users (id, shop_id, balance, referral_id, updated_at) VALUES ($1, $2, $3, $4, $5) RETURNING shop_users.id, shop_users.shop_id, shop_users.balance, shop_users.referral_id, shop_users.created_at, shop_users.updated_at[0m
+[32m2024-06-23 14:54:13,921 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m(574588496, 5654810680, 0, None, datetime.datetime(2024, 6, 23, 11, 54, 13, 921432))[0m
+[32m2024-06-23 14:54:13,921 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_commit_impl[0m:769) [37m[1mCOMMIT[0m
+[32m2024-06-23 14:54:14,343 [37m[1mINFO    [0m [36m[aiogram.event] [0m(dispatcher.py:[4mfeed_update[0m:172) [37m[1mUpdate id=81677103 is handled. Duration 442 ms by bot id=5654810680[0m
+[32m2024-06-23 14:54:57,971 [37m[1mINFO    [0m [36m[aiohttp.access] [0m(web_log.py:[4mlog[0m:211) [37m[1m127.0.0.1 [23/Jun/2024:14:54:57 +0300] "POST /webhook/main HTTP/1.0" 200 159 "-" "-"[0m
+[32m2024-06-23 14:54:57,987 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mSELECT users.id, users.referral_id, users.username, users.balance, users.loyalty_level, users.shops, users.status, users.created_at, users.updated_at 
+FROM users 
+WHERE users.id = $1[0m
+[32m2024-06-23 14:54:57,987 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m(574588496,)[0m
+[32m2024-06-23 14:54:58,141 [37m[1mINFO    [0m [36m[aiogram.event] [0m(dispatcher.py:[4mfeed_update[0m:172) [37m[1mUpdate id=571877627 is handled. Duration 168 ms by bot id=6863958973[0m
+[32m2024-06-23 14:54:59,401 [37m[1mINFO    [0m [36m[aiohttp.access] [0m(web_log.py:[4mlog[0m:211) [37m[1m127.0.0.1 [23/Jun/2024:14:54:59 +0300] "POST /webhook/main HTTP/1.0" 200 159 "-" "-"[0m
+[32m2024-06-23 14:54:59,408 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mSELECT mails.id, mails.user_id, mails.shop_id, mails.text, mails.photo, mails.keyboard, mails.wait_date, mails.real_date, mails.all_send, mails.successful_send, mails.failed_send, mails.status, mails.created_at, mails.updated_at 
+FROM mails 
+WHERE mails.user_id = $1[0m
+[32m2024-06-23 14:54:59,409 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m(574588496,)[0m
+[32m2024-06-23 14:54:59,573 [37m[1mINFO    [0m [36m[aiogram.event] [0m(dispatcher.py:[4mfeed_update[0m:172) [37m[1mUpdate id=571877628 is handled. Duration 170 ms by bot id=6863958973[0m
+[32m2024-06-23 14:55:00,595 [37m[1mINFO    [0m [36m[aiohttp.access] [0m(web_log.py:[4mlog[0m:211) [37m[1m127.0.0.1 [23/Jun/2024:14:55:00 +0300] "POST /webhook/main HTTP/1.0" 200 159 "-" "-"[0m
+[32m2024-06-23 14:55:00,799 [37m[1mINFO    [0m [36m[aiogram.event] [0m(dispatcher.py:[4mfeed_update[0m:172) [37m[1mUpdate id=571877629 is handled. Duration 202 ms by bot id=6863958973[0m
+[32m2024-06-23 14:55:07,277 [37m[1mINFO    [0m [36m[aiohttp.access] [0m(web_log.py:[4mlog[0m:211) [37m[1m127.0.0.1 [23/Jun/2024:14:55:07 +0300] "POST /webhook/main HTTP/1.0" 200 159 "-" "-"[0m
+[32m2024-06-23 14:55:07,361 [37m[1mINFO    [0m [36m[aiogram.event] [0m(dispatcher.py:[4mfeed_update[0m:172) [37m[1mUpdate id=571877630 is handled. Duration 78 ms by bot id=6863958973[0m
+[32m2024-06-23 14:55:09,525 [37m[1mINFO    [0m [36m[aiohttp.access] [0m(web_log.py:[4mlog[0m:211) [37m[1m127.0.0.1 [23/Jun/2024:14:55:09 +0300] "POST /webhook/main HTTP/1.0" 200 159 "-" "-"[0m
+[32m2024-06-23 14:55:09,541 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mSELECT users.id, users.referral_id, users.username, users.balance, users.loyalty_level, users.shops, users.status, users.created_at, users.updated_at 
+FROM users 
+WHERE users.id = $1[0m
+[32m2024-06-23 14:55:09,541 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m(574588496,)[0m
+[32m2024-06-23 14:55:09,548 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mINSERT INTO mails (user_id, shop_id, text, photo, keyboard, wait_date, all_send, successful_send, failed_send, status, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING mails.id, mails.user_id, mails.shop_id, mails.text, mails.photo, mails.keyboard, mails.wait_date, mails.real_date, mails.all_send, mails.successful_send, mails.failed_send, mails.status, mails.created_at, mails.updated_at[0m
+[32m2024-06-23 14:55:09,548 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m(574588496, [5654810680], '✅ <b>Выполнено!</b>\n\nПоздравляю с созданием нового магазина. Найти его можно по ссылке t.me/paronim_ege_bot', None, None, datetime.datetime(2024, 6, 23, 14, 55, 19, 546800), 0, 0, 0, 'wait', datetime.datetime(2024, 6, 23, 11, 55, 9, 548010))[0m
+[32m2024-06-23 14:55:09,548 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_commit_impl[0m:769) [37m[1mCOMMIT[0m
+[32m2024-06-23 14:55:09,558 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mSELECT mails.id, mails.user_id, mails.shop_id, mails.text, mails.photo, mails.keyboard, mails.wait_date, mails.real_date, mails.all_send, mails.successful_send, mails.failed_send, mails.status, mails.created_at, mails.updated_at 
+FROM mails ORDER BY mails.id DESC[0m
+[32m2024-06-23 14:55:09,559 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m()[0m
+[32m2024-06-23 14:55:09,564 [37m[1mINFO    [0m [36m[apscheduler.scheduler] [0m(base.py:[4m_real_add_job[0m:895) [37m[1mAdded job "send_mail" to job store "default"[0m
+[32m2024-06-23 14:55:09,617 [37m[1mINFO    [0m [36m[aiogram.event] [0m(dispatcher.py:[4mfeed_update[0m:172) [37m[1mUpdate id=571877631 is handled. Duration 90 ms by bot id=6863958973[0m
+[32m2024-06-23 14:55:19,551 [37m[1mINFO    [0m [36m[apscheduler.scheduler] [0m(base.py:[4mremove_job[0m:641) [37m[1mRemoved job mail_1[0m
+[32m2024-06-23 14:55:19,552 [37m[1mINFO    [0m [36m[apscheduler.executors.default] [0m(base_py3.py:[4mrun_coroutine_job[0m:28) [37m[1mRunning job "send_mail (trigger: date[2024-06-23 14:55:09 MSK], next run at: 2024-06-23 14:55:19 MSK)" (scheduled at 2024-06-23 14:55:19.546800+03:00)[0m
+[32m2024-06-23 14:55:19,557 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mSELECT mails.id, mails.user_id, mails.shop_id, mails.text, mails.photo, mails.keyboard, mails.wait_date, mails.real_date, mails.all_send, mails.successful_send, mails.failed_send, mails.status, mails.created_at, mails.updated_at 
+FROM mails 
+WHERE mails.id = $1[0m
+[32m2024-06-23 14:55:19,557 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m(1,)[0m
+[32m2024-06-23 14:55:19,567 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mSELECT shops.id, shops.owner_id, shops.token, shops.username, shops.name, shops.description, shops.short_description, shops.notifications, shops.extra_charge, shops.channel, shops.is_on, shops.created_at, shops.updated_at 
+FROM shops 
+WHERE shops.id = $1[0m
+[32m2024-06-23 14:55:19,567 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m(5654810680,)[0m
+[32m2024-06-23 14:55:19,569 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mSELECT shop_users.id, shop_users.shop_id, shop_users.balance, shop_users.referral_id, shop_users.created_at, shop_users.updated_at 
+FROM shop_users 
+WHERE shop_users.shop_id = $1[0m
+[32m2024-06-23 14:55:19,570 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m(5654810680,)[0m
+[32m2024-06-23 14:55:19,651 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mUPDATE mails SET real_date=$1, all_send=$2, successful_send=$3, failed_send=$4, status=$5, updated_at=$6 WHERE mails.id = $7[0m
+[32m2024-06-23 14:55:19,651 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m(datetime.datetime(2024, 6, 23, 14, 55, 19, 650415), 1, 1, 0, 'done', datetime.datetime(2024, 6, 23, 11, 55, 19, 651400), 1)[0m
+[32m2024-06-23 14:55:19,651 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_commit_impl[0m:769) [37m[1mCOMMIT[0m
+[32m2024-06-23 14:55:19,656 [37m[1mINFO    [0m [36m[apscheduler.executors.default] [0m(base_py3.py:[4mrun_coroutine_job[0m:41) [37m[1mJob "send_mail (trigger: date[2024-06-23 14:55:09 MSK], next run at: 2024-06-23 14:55:19 MSK)" executed successfully[0m
+[32m2024-06-23 14:58:43,493 [37m[1mINFO    [0m [36m[__main__] [0m(app.py:[4m<module>[0m:60) [37m[1mBot was started[0m
+[32m2024-06-23 14:58:44,847 [37m[1mINFO    [0m [36m[database.commands] [0m(commands.py:[4m_on_connect[0m:35) [37m[1mDatabase was connected[0m
+[32m2024-06-23 14:58:44,848 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mselect relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1[0m
+[32m2024-06-23 14:58:44,848 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m('goods',)[0m
+[32m2024-06-23 14:58:44,853 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mselect relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1[0m
+[32m2024-06-23 14:58:44,853 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m('orders',)[0m
+[32m2024-06-23 14:58:44,859 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mselect relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1[0m
+[32m2024-06-23 14:58:44,859 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m('users',)[0m
+[32m2024-06-23 14:58:44,861 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mselect relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1[0m
+[32m2024-06-23 14:58:44,861 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m('shops',)[0m
+[32m2024-06-23 14:58:44,862 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mselect relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1[0m
+[32m2024-06-23 14:58:44,862 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m('categories',)[0m
+[32m2024-06-23 14:58:44,863 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mselect relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1[0m
+[32m2024-06-23 14:58:44,863 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m('subcategories',)[0m
+[32m2024-06-23 14:58:44,867 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mselect relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1[0m
+[32m2024-06-23 14:58:44,867 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m('shop_users',)[0m
+[32m2024-06-23 14:58:44,868 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mselect relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1[0m
+[32m2024-06-23 14:58:44,868 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m('supports',)[0m
+[32m2024-06-23 14:58:44,868 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mselect relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1[0m
+[32m2024-06-23 14:58:44,869 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m('payments',)[0m
+[32m2024-06-23 14:58:44,869 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mselect relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1[0m
+[32m2024-06-23 14:58:44,869 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m('requests',)[0m
+[32m2024-06-23 14:58:44,870 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1234) [37m[1mselect relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1[0m
+[32m2024-06-23 14:58:44,870 [37m[1mINFO    [0m [36m[gino.engine._SAEngine] [0m(base.py:[4m_execute_context[0m:1236) [37m[1m('mails',)[0m
+[32m2024-06-23 14:58:45,012 [37m[1mINFO    [0m [36m[apscheduler.scheduler] [0m(base.py:[4mstart[0m:181) [37m[1mScheduler started[0m
+[32m2024-06-23 14:58:45,388 [37m[1mINFO    [0m [36m[__main__] [0m(app.py:[4mon_shutdown_app[0m:30) [37m[1mBot was stopped[0m
+[32m2024-06-23 14:58:45,640 [37m[1mINFO    [0m [36m[database.commands] [0m(commands.py:[4m_on_disconnect[0m:43) [37m[1mDatabase was disconnected[0m
+[32m2024-06-23 14:58:45,702 [31m[1mERROR   [0m [36m[asyncio] [0m(base_events.py:[4mdefault_exception_handler[0m:1758) [31m[1munhandled exception during asyncio.run() shutdown
+task: <Task finished name='Task-22' coro=<_run_app() done, defined at /usr/local/lib/python3.10/dist-packages/aiohttp/web.py:303> exception=OSError(98, "error while attempting to bind on address ('127.0.0.1', 8000): address already in use")>[0m
+[33m[1mTraceback (most recent call last):[0m
+
+  File "/usr/local/lib/python3.10/dist-packages/aiohttp/web.py", line 544, in run_app
+    loop.run_until_complete(main_task)
+  File "/usr/lib/python3.10/asyncio/base_events.py", line 649, in run_until_complete
+    return future.result()
+  File "/usr/local/lib/python3.10/dist-packages/aiohttp/web.py", line 448, in _run_app
+    await site.start()
+  File "/usr/local/lib/python3.10/dist-packages/aiohttp/web_runner.py", line 119, in start
+    self._server = await loop.create_server(
+  File "/usr/lib/python3.10/asyncio/base_events.py", line 1519, in create_server
+    raise OSError(err.errno, 'error while attempting '
+
+[31m[1mOSError[0m:[1m [Errno 98] error while attempting to bind on address ('127.0.0.1', 8000): address already in use[0m
+
+Traceback (most recent call last):
+  File "/home/shop_multibot/app.py", line 61, in <module>
+    main()
+  File "/home/shop_multibot/app.py", line 55, in main
+    web.run_app(app, host=WEB_SERVER_HOST, port=WEB_SERVER_PORT)
+  File "/usr/local/lib/python3.10/dist-packages/aiohttp/web.py", line 544, in run_app
+    loop.run_until_complete(main_task)
+  File "/usr/lib/python3.10/asyncio/base_events.py", line 649, in run_until_complete
+    return future.result()
+  File "/usr/local/lib/python3.10/dist-packages/aiohttp/web.py", line 448, in _run_app
+    await site.start()
+  File "/usr/local/lib/python3.10/dist-packages/aiohttp/web_runner.py", line 119, in start
+    self._server = await loop.create_server(
+  File "/usr/lib/python3.10/asyncio/base_events.py", line 1519, in create_server
+    raise OSError(err.errno, 'error while attempting '
+OSError: [Errno 98] error while attempting to bind on address ('127.0.0.1', 8000): address already in use
+[32m2024-06-23 15:03:07,228 [37m[1mINFO    [0m [36m[__main__] [0m(app.py:[4mon_shutdown_app[0m:30) [37m[1mBot was stopped[0m
+[32m2024-06-23 15:03:07,480 [37m[1mINFO    [0m [36m[database.commands] [0m(commands.py:[4m_on_disconnect[0m:43) [37m[1mDatabase was disconnected[0m
+======== Running on http://127.0.0.1:8000 ========
+(Press CTRL+C to quit)
