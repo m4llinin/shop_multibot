@@ -35,6 +35,7 @@ async def start(message: Message, state: FSMContext):
         extra_charge = (shop.extra_charge / 100) + 1 if shop.extra_charge != 0 else 1
         cart = Cart(good=good, extra_charge=extra_charge, shop_name=shop.username)
         await Database.ShopBot.insert_user(user_id=user_id, shop_id=shop.id)
+        await state.update_data(cart=cart)
         return await message.answer(text=texts['good'].format(good_name=good.name,
                                                               good_description=good.description,
                                                               price=good.price * extra_charge),
