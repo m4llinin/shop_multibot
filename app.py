@@ -3,6 +3,7 @@ import logging
 from aiogram import Dispatcher, Bot
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
+from aiogram.types import BotCommand
 from aiogram.webhook.aiohttp_server import SimpleRequestHandler, TokenBasedRequestHandler, setup_application
 from aiohttp import web
 
@@ -21,6 +22,9 @@ logger = logging.getLogger(__name__)
 
 async def on_startup(dispatcher: Dispatcher, bot: Bot):
     await bot.set_webhook(f"{BASE_URL}{MAIN_BOT_PATH}", drop_pending_updates=True)
+    commands = [BotCommand(command="start", description="❕МЕНЮ❕"),
+                BotCommand(command="privacy", description="Политика конфиденциальности")]
+    await bot.set_my_commands(commands=commands)
     schedular.start()
 
 

@@ -21,3 +21,11 @@ async def faq(callback: CallbackQuery):
     return await callback.message.answer(text=texts['faq_text'],
                                          reply_markup=await InlineKeyboardMain.back("information"),
                                          disable_web_page_preview=True)
+
+
+async def privacy_policy(callback: CallbackQuery):
+    texts = await load_texts()
+    await callback.message.delete()
+    return await callback.message.answer(text=texts['privacy_policy'],
+                                         reply_markup=await InlineKeyboardMain.back("information"),
+                                         disable_web_page_preview=True)

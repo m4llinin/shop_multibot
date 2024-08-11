@@ -34,7 +34,8 @@ async def new_shop(message: Message, state: FSMContext):
     if bot:
         return await message.answer(text=texts['has_bot'])
 
-    commands = [BotCommand(command="start", description="❕МЕНЮ❕")]
+    commands = [BotCommand(command="start", description="❕МЕНЮ❕"),
+                BotCommand(command="privacy", description="Политика конфиденциальности")]
     await new_bot.set_my_commands(commands=commands)
     await new_bot.set_my_description(description=texts['description'])
 

@@ -26,6 +26,7 @@ class InlineKeyboardMain:
         infobase = await load_infobase()
         keyboard = [[InlineKeyboardButton(text=k, url=v)] for k, v in infobase.items()]
         keyboard.append([InlineKeyboardButton(text=cls.texts['faq'], callback_data="faq")])
+        keyboard.append([InlineKeyboardButton(text=cls.texts['privacy_policy_btn'], callback_data="privacy_policy")])
         return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
     @classmethod

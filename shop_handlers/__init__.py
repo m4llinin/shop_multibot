@@ -21,11 +21,14 @@ from .update_balance import update_balance_1, update_balance_2, update_balance_1
 
 from .support import (support, support_clb, support_themes, select_theme_support, get_text_query, my_queries,
                       query_profile)
+from .privacy import privacy
 
 texts: dict = asyncio.run(load_texts())
 
 
 def register_shop_handler(router: Router):
+    router.message.register(privacy, Command("privacy"))
+
     router.message.register(start, Command("start"))
     router.callback_query.register(start_clb, F.data == "start")
 
