@@ -55,12 +55,16 @@ class AddMail(StatesGroup):
     text = State()
     date = State()
     button = State()
+    edit_text = State()
+    edit_photo = State()
 
 
 class AddAllMail(StatesGroup):
     text = State()
     date = State()
     button = State()
+    edit_text = State()
+    edit_photo = State()
 
 
 class AddAdminMail(StatesGroup):
@@ -68,6 +72,8 @@ class AddAdminMail(StatesGroup):
     date = State()
     button = State()
     loop = State()
+    edit_text = State()
+    edit_photo = State()
 
 
 class LinkChannelAdmin(StatesGroup):

@@ -161,6 +161,7 @@ class InlineKeyboardShop:
             [InlineKeyboardButton(text=cls.texts['theme_2'], callback_data="theme_2")],
             [InlineKeyboardButton(text=cls.texts['theme_3'], callback_data="theme_3")],
             [InlineKeyboardButton(text=cls.texts['theme_4'], callback_data="theme_4")],
+            [InlineKeyboardButton(text=cls.texts['theme_5'], url=f"https://t.me/Mint_Partners")],
             [InlineKeyboardButton(text=cls.texts['back'], callback_data="support")]
         ]
         return InlineKeyboardMarkup(inline_keyboard=keyboard)

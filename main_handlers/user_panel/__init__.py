@@ -13,7 +13,8 @@ from .subpartner import (subpartner, submit_app, get_source, get_platform, get_e
                          bad_request)
 from .all_mailing import (all_mailing_list, all_change_page, all_view_adding_mail, all_add_mail, all_get_text_photo,
                           all_add_date, all_get_date, all_add_btn, all_get_btn, all_save_mail, all_view_profile_mail,
-                          all_view_mail, all_delete_mail)
+                          all_view_mail, all_delete_mail, edit_mail_photo, edit_mail_text, get_edit_mail_text,
+                          get_edit_mail_photo)
 from .recover import (recover_code, recover, recover_account, get_code, new_recover_code)
 from .ppu import ppu, offer, get_offer
 
@@ -56,6 +57,10 @@ def register_handlers_user_panel(router: Router, ):
     router.callback_query.register(all_view_profile_mail, lambda x: x.data.startswith("all_mail_"))
     router.callback_query.register(all_view_mail, F.data == "all_view_mail")
     router.callback_query.register(all_delete_mail, F.data == "all_delete_mail")
+    shops_router.callback_query.register(edit_mail_photo, F.data == f"edit_all_mail_photo")
+    shops_router.callback_query.register(edit_mail_text, F.data == f"edit_all_mail_text")
+    shops_router.message.register(get_edit_mail_text, F.text, AddAllMail.edit_text)
+    shops_router.message.register(get_edit_mail_photo, F.photo, AddAllMail.edit_photo)
 
     router.callback_query.register(recover, F.data == "recover")
     router.callback_query.register(recover_code, F.data == "recover_code")

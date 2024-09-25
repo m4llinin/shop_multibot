@@ -17,7 +17,7 @@ from .my_profile.my_profile import my_profile, my_profile_clb
 from .my_profile.referral_system import referral_system
 from .my_profile.my_orders import my_orders_list, order_profile, just_page, edit_page
 
-from .update_balance import update_balance_1, update_balance_2, update_balance_1_message, update_balance_2_message
+from .update_balance import update_balance_1, update_balance_2, feedback, update_balance_2_message
 
 from .support import (support, support_clb, support_themes, select_theme_support, get_text_query, my_queries,
                       query_profile)
@@ -34,7 +34,7 @@ def register_shop_handler(router: Router):
 
     router.message.register(view_category, F.text == texts['catalogue'])
     router.message.register(my_profile, F.text == texts['my_profile'])
-    router.message.register(update_balance_1_message, F.text == texts['pay_balance_reply'])
+    router.message.register(feedback, F.text == texts['pay_balance_reply'])
     router.message.register(support, F.text == texts['contact'])
 
     router.callback_query.register(view_subcategory, lambda x: x.data.startswith("category_"))

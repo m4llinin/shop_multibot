@@ -24,7 +24,7 @@ async def start(message: Message, state: FSMContext):
         if status_channel.status == "left" or status_channel.status == "kicked":
             channel = await message.bot.get_chat(shop.channel)
             await state.update_data(referral_id=referral_id)
-            return message.answer_photo(photo=FSInputFile("./photos/hello_shop_bot.png"),
+            return message.answer_photo(photo=FSInputFile("./photos/hello_shop_bot.jpeg"),
                                         caption=texts['subscribe_channel'],
                                         reply_markup=await InlineKeyboardShop.subscribe(channel.invite_link),
                                         parse_mode=ParseMode.HTML)
@@ -46,7 +46,7 @@ async def start(message: Message, state: FSMContext):
                                     parse_mode=ParseMode.HTML)
 
     await Database.ShopBot.insert_user(user_id=user_id, referral_id=referral_id, shop_id=shop.id)
-    return await message.answer_photo(photo=FSInputFile("./photos/hello_shop_bot.png"), caption=texts['start_shop'],
+    return await message.answer_photo(photo=FSInputFile("./photos/hello_shop_bot.jpeg"), caption=texts['start_shop'],
                                       reply_markup=await RelpyKeyboardShop.start_kb(),
                                       parse_mode=ParseMode.HTML, disable_web_page_preview=True)
 
@@ -63,13 +63,13 @@ async def start_clb(callback: CallbackQuery, state: FSMContext):
         status_channel = await callback.message.bot.get_chat_member(chat_id=shop.channel, user_id=user_id)
         if status_channel.status == "left" or status_channel.status == "kicked":
             channel = await callback.bot.get_chat(shop.channel)
-            return callback.message.answer_photo(photo=FSInputFile("./photos/hello_shop_bot.png"),
+            return callback.message.answer_photo(photo=FSInputFile("./photos/hello_shop_bot.jpeg"),
                                                  caption=texts['subscribe_channel'],
                                                  reply_markup=await InlineKeyboardShop.subscribe(channel.invite_link),
                                                  parse_mode=ParseMode.HTML)
 
     await Database.ShopBot.insert_user(user_id=user_id, referral_id=referral_id, shop_id=shop.id)
-    return await callback.message.answer_photo(photo=FSInputFile("./photos/hello_shop_bot.png"),
+    return await callback.message.answer_photo(photo=FSInputFile("./photos/hello_shop_bot.jpeg"),
                                                caption=texts['start_shop'],
                                                reply_markup=await RelpyKeyboardShop.start_kb(),
                                                parse_mode=ParseMode.HTML, disable_web_page_preview=True)

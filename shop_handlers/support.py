@@ -69,7 +69,9 @@ async def get_text_query(message: Message, state: FSMContext):
 
     for admin in admins:
         await main_bot.send_message(chat_id=admin.id, text=texts['new_support'].format(user_id=message.chat.id,
+                                                                                       username=message.from_user.username,
                                                                                        shop_id=message.bot.id,
+                                                                                       shopname=shop.username,
                                                                                        theme=data.get("theme_support"),
                                                                                        text=message.text),
                                     reply_markup=await InlineKeyboardShop.support_solution(request.id))

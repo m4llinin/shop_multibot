@@ -4,6 +4,6 @@ git stash
 
 git pull
 
-echo hockey
-
 systemctl restart bot
+
+systemctl status bot

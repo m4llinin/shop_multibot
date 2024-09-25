@@ -1,0 +1,90 @@
+INFO:__main__:Bot was started
+INFO:database.commands:Database was connected
+INFO:gino.engine._SAEngine:select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1
+INFO:gino.engine._SAEngine:('goods',)
+INFO:gino.engine._SAEngine:select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1
+INFO:gino.engine._SAEngine:('orders',)
+INFO:gino.engine._SAEngine:select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1
+INFO:gino.engine._SAEngine:('users',)
+INFO:gino.engine._SAEngine:select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1
+INFO:gino.engine._SAEngine:('shops',)
+INFO:gino.engine._SAEngine:select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1
+INFO:gino.engine._SAEngine:('categories',)
+INFO:gino.engine._SAEngine:select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1
+INFO:gino.engine._SAEngine:('subcategories',)
+INFO:gino.engine._SAEngine:select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1
+INFO:gino.engine._SAEngine:('shop_users',)
+INFO:gino.engine._SAEngine:select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1
+INFO:gino.engine._SAEngine:('supports',)
+INFO:gino.engine._SAEngine:select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1
+INFO:gino.engine._SAEngine:('payments',)
+INFO:gino.engine._SAEngine:select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1
+INFO:gino.engine._SAEngine:('requests',)
+INFO:gino.engine._SAEngine:select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where pg_catalog.pg_table_is_visible(c.oid) and relname=$1
+INFO:gino.engine._SAEngine:('mails',)
+INFO:apscheduler.scheduler:Scheduler started
+INFO:gino.engine._SAEngine:SELECT mails.id, mails.user_id, mails.shop_id, mails.text, mails.photo, mails.keyboard, mails.wait_date, mails.loop, mails.real_date, mails.all_send, mails.successful_send, mails.failed_send, mails.status, mails.created_at, mails.updated_at 
+FROM mails 
+WHERE mails.status = $1
+INFO:gino.engine._SAEngine:('wait',)
+INFO:aiohttp.access:127.0.0.1 [25/Sep/2024:21:39:45 +0300] "POST /webhook/main HTTP/1.1" 200 159 "-" "-"
+INFO:gino.engine._SAEngine:SELECT users.id, users.recover_code, users.referral_id, users.username, users.balance, users.loyalty_level, users.shops, users.status, users.last_offer, users.created_at, users.updated_at 
+FROM users 
+WHERE users.id = $1
+INFO:gino.engine._SAEngine:(574588496,)
+INFO:aiogram.event:Update id=571878896 is handled. Duration 421 ms by bot id=6863958973
+INFO:aiohttp.access:127.0.0.1 [25/Sep/2024:21:39:47 +0300] "POST /webhook/main HTTP/1.1" 200 159 "-" "-"
+INFO:gino.engine._SAEngine:SELECT users.id, users.recover_code, users.referral_id, users.username, users.balance, users.loyalty_level, users.shops, users.status, users.last_offer, users.created_at, users.updated_at 
+FROM users 
+WHERE users.id = $1
+INFO:gino.engine._SAEngine:(574588496,)
+INFO:gino.engine._SAEngine:SELECT mails.id, mails.user_id, mails.shop_id, mails.text, mails.photo, mails.keyboard, mails.wait_date, mails.loop, mails.real_date, mails.all_send, mails.successful_send, mails.failed_send, mails.status, mails.created_at, mails.updated_at 
+FROM mails ORDER BY mails.wait_date DESC
+INFO:gino.engine._SAEngine:()
+INFO:aiogram.event:Update id=571878897 is handled. Duration 178 ms by bot id=6863958973
+INFO:aiohttp.access:127.0.0.1 [25/Sep/2024:21:39:49 +0300] "POST /webhook/main HTTP/1.1" 200 159 "-" "-"
+INFO:aiogram.event:Update id=571878898 is handled. Duration 132 ms by bot id=6863958973
+INFO:aiohttp.access:127.0.0.1 [25/Sep/2024:21:39:51 +0300] "POST /webhook/main HTTP/1.1" 200 159 "-" "-"
+INFO:aiogram.event:Update id=571878899 is handled. Duration 86 ms by bot id=6863958973
+INFO:aiohttp.access:127.0.0.1 [25/Sep/2024:21:39:53 +0300] "POST /webhook/main HTTP/1.1" 200 159 "-" "-"
+INFO:aiogram.event:Update id=571878900 is handled. Duration 190 ms by bot id=6863958973
+INFO:aiohttp.access:127.0.0.1 [25/Sep/2024:21:39:57 +0300] "POST /webhook/main HTTP/1.1" 200 159 "-" "-"
+INFO:aiogram.event:Update id=571878901 is handled. Duration 154 ms by bot id=6863958973
+INFO:aiohttp.access:127.0.0.1 [25/Sep/2024:21:39:59 +0300] "POST /webhook/main HTTP/1.1" 200 159 "-" "-"
+INFO:gino.engine._SAEngine:SELECT shops.id, shops.owner_id, shops.token, shops.username, shops.name, shops.description, shops.short_description, shops.notifications, shops.extra_charge, shops.channel, shops.is_on, shops.created_at, shops.updated_at 
+FROM shops
+INFO:gino.engine._SAEngine:()
+INFO:gino.engine._SAEngine:INSERT INTO mails (user_id, shop_id, text, photo, keyboard, wait_date, loop, all_send, successful_send, failed_send, status, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING mails.id, mails.user_id, mails.shop_id, mails.text, mails.photo, mails.keyboard, mails.wait_date, mails.loop, mails.real_date, mails.all_send, mails.successful_send, mails.failed_send, mails.status, mails.created_at, mails.updated_at
+INFO:gino.engine._SAEngine:(574588496, [6949256342, 7060499366], 'aweawe', None, None, datetime.datetime(2024, 9, 25, 22, 39), None, 0, 0, 0, 'wait', datetime.datetime(2024, 9, 25, 18, 39, 59, 236187))
+INFO:gino.engine._SAEngine:COMMIT
+INFO:gino.engine._SAEngine:SELECT mails.id, mails.user_id, mails.shop_id, mails.text, mails.photo, mails.keyboard, mails.wait_date, mails.loop, mails.real_date, mails.all_send, mails.successful_send, mails.failed_send, mails.status, mails.created_at, mails.updated_at 
+FROM mails ORDER BY mails.id DESC
+INFO:gino.engine._SAEngine:()
+INFO:apscheduler.scheduler:Added job "send_mail" to job store "default"
+INFO:aiogram.event:Update id=571878902 is handled. Duration 179 ms by bot id=6863958973
+INFO:aiohttp.access:127.0.0.1 [25/Sep/2024:21:40:00 +0300] "POST /webhook/main HTTP/1.1" 200 159 "-" "-"
+INFO:gino.engine._SAEngine:SELECT users.id, users.recover_code, users.referral_id, users.username, users.balance, users.loyalty_level, users.shops, users.status, users.last_offer, users.created_at, users.updated_at 
+FROM users 
+WHERE users.id = $1
+INFO:gino.engine._SAEngine:(574588496,)
+INFO:gino.engine._SAEngine:SELECT mails.id, mails.user_id, mails.shop_id, mails.text, mails.photo, mails.keyboard, mails.wait_date, mails.loop, mails.real_date, mails.all_send, mails.successful_send, mails.failed_send, mails.status, mails.created_at, mails.updated_at 
+FROM mails ORDER BY mails.wait_date DESC
+INFO:gino.engine._SAEngine:()
+INFO:aiogram.event:Update id=571878903 is handled. Duration 417 ms by bot id=6863958973
+INFO:aiohttp.access:127.0.0.1 [25/Sep/2024:21:40:04 +0300] "POST /webhook/main HTTP/1.1" 200 159 "-" "-"
+INFO:gino.engine._SAEngine:SELECT users.id, users.recover_code, users.referral_id, users.username, users.balance, users.loyalty_level, users.shops, users.status, users.last_offer, users.created_at, users.updated_at 
+FROM users 
+WHERE users.id = $1
+INFO:gino.engine._SAEngine:(574588496,)
+INFO:aiogram.event:Update id=571878904 is handled. Duration 165 ms by bot id=6863958973
+INFO:aiohttp.access:127.0.0.1 [25/Sep/2024:21:40:07 +0300] "POST /webhook/main HTTP/1.1" 200 159 "-" "-"
+INFO:gino.engine._SAEngine:SELECT users.id, users.recover_code, users.referral_id, users.username, users.balance, users.loyalty_level, users.shops, users.status, users.last_offer, users.created_at, users.updated_at 
+FROM users 
+WHERE users.id = $1
+INFO:gino.engine._SAEngine:(574588496,)
+INFO:gino.engine._SAEngine:SELECT mails.id, mails.user_id, mails.shop_id, mails.text, mails.photo, mails.keyboard, mails.wait_date, mails.loop, mails.real_date, mails.all_send, mails.successful_send, mails.failed_send, mails.status, mails.created_at, mails.updated_at 
+FROM mails ORDER BY mails.wait_date DESC
+INFO:gino.engine._SAEngine:()
+INFO:aiogram.event:Update id=571878905 is handled. Duration 156 ms by bot id=6863958973
+INFO:__main__:Bot was stopped
+INFO:database.commands:Database was disconnected

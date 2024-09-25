@@ -16,7 +16,8 @@ from .settings.edit_token import edit_token, get_edit_token
 from .settings.delete_shop import delete_shop
 
 from .mailing import (mailing_list, add_mail, get_text_photo, view_adding_mail, add_date, get_date, add_btn, get_btn,
-                      save_mail, change_page, view_profile_mail, view_mail, delete_mail, just_page)
+                      save_mail, change_page, view_profile_mail, view_mail, delete_mail, just_page, edit_mail_text,
+                      edit_mail_photo, get_edit_mail_text, get_edit_mail_photo)
 
 shops_router = Router()
 
@@ -61,5 +62,10 @@ shops_router.callback_query.register(change_page, lambda x: x.data == "back_page
 shops_router.callback_query.register(view_profile_mail, lambda x: x.data.startswith("mail_"))
 shops_router.callback_query.register(view_mail, F.data == "view_mail")
 shops_router.callback_query.register(delete_mail, F.data == "delete_mail")
+
+shops_router.callback_query.register(edit_mail_photo, F.data == f"edit_mail_photo")
+shops_router.callback_query.register(edit_mail_text, F.data == f"edit_mail_text")
+shops_router.message.register(get_edit_mail_text, F.text, AddMail.edit_text)
+shops_router.message.register(get_edit_mail_photo, F.photo, AddMail.edit_photo)
 
 shops_router.callback_query.register(just_page, F.data == "just_page")

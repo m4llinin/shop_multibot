@@ -41,13 +41,10 @@ async def update_balance_2(callback: CallbackQuery, state: FSMContext):
     return await Database.ShopBot.update_order_msg(order_id=order.id, msg_id=msg.message_id)
 
 
-async def update_balance_1_message(message: Message, state: FSMContext):
+async def feedback(message: Message, state: FSMContext):
     texts = await load_texts()
     await state.clear()
-    await state.set_state(UpdateBalance.amount)
-    msg = await message.answer(text=texts['update_balance_1'],
-                               reply_markup=await InlineKeyboardShop.update_balance_btn(),
-                               parse_mode=ParseMode.HTML)
+    msg = await message.answer(text=texts['feedback'], parse_mode=ParseMode.HTML)
     return await state.update_data(msg=msg)
 
 

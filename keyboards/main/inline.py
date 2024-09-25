@@ -508,6 +508,8 @@ class InlineKeyboardMain:
         if not deleted:
             keyboard = [
                 [InlineKeyboardButton(text=cls.texts['delete_mail'], callback_data=f"delete_mail")],
+                [InlineKeyboardButton(text=cls.texts['edit_mail_text_btn'], callback_data=f"edit_mail_text")],
+                [InlineKeyboardButton(text=cls.texts['edit_mail_photo_btn'], callback_data=f"edit_mail_photo")]
             ]
         else:
             keyboard = []
@@ -522,6 +524,8 @@ class InlineKeyboardMain:
         if not deleted:
             keyboard = [
                 [InlineKeyboardButton(text=cls.texts['delete_mail'], callback_data=f"all_delete_mail")],
+                [InlineKeyboardButton(text=cls.texts['edit_mail_text_btn'], callback_data=f"edit_all_mail_text")],
+                [InlineKeyboardButton(text=cls.texts['edit_mail_photo_btn'], callback_data=f"edit_all_mail_photo")]
             ]
         else:
             keyboard = []
@@ -536,6 +540,8 @@ class InlineKeyboardMain:
         if not deleted:
             keyboard = [
                 [InlineKeyboardButton(text=cls.texts['delete_mail'], callback_data=f"admin_delete_mail")],
+                [InlineKeyboardButton(text=cls.texts['edit_mail_text_btn'], callback_data=f"edit_admin_mail_text")],
+                [InlineKeyboardButton(text=cls.texts['edit_mail_photo_btn'], callback_data=f"edit_admin_mail_photo")]
             ]
         else:
             keyboard = []

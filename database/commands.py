@@ -95,6 +95,14 @@ class Database:
                     output.append(mail)
             return output
 
+        @classmethod
+        async def edit_text_mail(cls, mail_id: int, text: str):
+            await Mail.update.values(text=text).where(Mail.id == mail_id).gino.status()
+
+        @classmethod
+        async def edit_photo_mail(cls, mail_id: int, photo: str):
+            await Mail.update.values(photo=photo).where(Mail.id == mail_id).gino.status()
+
     class MainBot:
         @classmethod
         async def get_all_orders_status(cls, status: str, start: datetime = None, end: datetime = None) -> list[Order]:

@@ -218,6 +218,7 @@ async def save_mail(callback: CallbackQuery, state: FSMContext):
 
 
 async def view_profile_mail(callback: CallbackQuery, state: FSMContext):
+    await state.set_state(None)
     texts = await load_texts()
     data = await state.get_data()
     shop: Shop = data.get("shop")
@@ -280,3 +281,46 @@ async def delete_mail(callback: CallbackQuery, state: FSMContext):
 async def just_page(callback: CallbackQuery):
     texts = await load_texts()
     return await callback.answer(text=texts['just_page'], show_alert=True)
+
+
+async def edit_mail_text(callback: CallbackQuery, state: FSMContext):
+    texts = await load_texts()
+    data = await state.get_data()
+    mail: Mail = data.get("mail")
+
+    await state.set_state(AddMail.edit_text)
+    await callback.message.delete()
+    await callback.message.answer(text=texts['edit_mail_text'],
+                                  reply_markup=await InlineKeyboardMain.back(f"mail_{mail.id}"))
+
+
+async def get_edit_mail_text(message: Message, state: FSMContext):
+    texts = await load_texts()
+    data = await state.get_data()
+    mail: Mail = data.get("mail")
+
+    await state.set_state(None)
+    await Database.Mail.edit_text_mail(mail.id, message.text)
+    await message.answer(text=texts['successful_edit'], reply_markup=await InlineKeyboardMain.ready(f"mail_{mail.id}"))
+
+
+async def edit_mail_photo(callback: CallbackQuery, state: FSMContext):
+    texts = await load_texts()
+    data = await state.get_data()
+    mail: Mail = data.get("mail")
+
+    await state.set_state(AddMail.edit_photo)
+    await callback.message.delete()
+    await callback.message.answer(text=texts['edit_mail_photo'],
+                                  reply_markup=await InlineKeyboardMain.back(f"mail_{mail.id}"))
+
+
+async def get_edit_mail_photo(message: Message, state: FSMContext):
+    texts = await load_texts()
+    data = await state.get_data()
+    mail: Mail = data.get("mail")
+
+    await state.set_state(None)
+    await message.bot.download(message.photo[-1].file_id, f"./photos/mailing/{message.photo[-1].file_id}.jpg")
+    await Database.Mail.edit_photo_mail(mail.id, message.photo[-1].file_id)
+    await message.answer(text=texts['successful_edit'], reply_markup=await InlineKeyboardMain.ready(f"mail_{mail.id}"))
