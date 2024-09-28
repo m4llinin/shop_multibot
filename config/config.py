@@ -3,6 +3,7 @@ import logging
 
 import betterlogging as bl
 import pytz
+from aiocryptopay import AioCryptoPay, Networks
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.client.session.aiohttp import AiohttpSession
@@ -31,6 +32,9 @@ PAYMENT_CHANNEL_ID = int(os.getenv("PAYMENT_CHANNEL_ID"))
 
 PRODAMUS_API = os.getenv("PRODAMUS_API")
 PRODAMUS_LINK = os.getenv("PRODAMUS_LINK")
+
+CRYPTOPAY_LINK = os.getenv("CRYPTOPAY_LINK")
+client = AioCryptoPay(token=CRYPTOPAY_LINK, network=Networks.MAIN_NET)
 
 WEB_SERVER_HOST = os.getenv("WEB_SERVER_HOST")
 WEB_SERVER_PORT = int(os.getenv("WEB_SERVER_PORT"))

@@ -82,6 +82,8 @@
     "pay_btn": "🔗 Перейти к оплате",
     "pay_from_balance_btn": "🏦 Оплатить с баланса",
     "pay_card_btn": "💳 Оплатить картой",
+    "pay_crypto_bot_btn": "\uD83D\uDC5B Оплатить CryptoBot",
+    "pay_stars_btn": "⭐\uFE0F Оплатить stars",
     "choose_payment": "💳 <b>Оплата заказа: </b><code>{order_id}</code>\n\nТовар:<b>{good}</b>\nКол-во: <b>{count}</b>\nСумма к оплате:<b>{total_price}</b>",
     "my_profile_text": "<b>\uD83E\uDD77 Мой профиль</b>\n\nID: <b>{user_id}</b>\nРегистрация: <b>{date_registration}</b>\n\nОсновной баланс: <b>{main_balance}₽</b>\nПартнерский баланс: <b>{partner_balance}₽</b>\n\n<b>Статистика</b>\nВсего покупок: <b>{total_orders}</b>",
     "my_orders_btn": "\uD83D\uDDC4\uFE0F Мои заказы",

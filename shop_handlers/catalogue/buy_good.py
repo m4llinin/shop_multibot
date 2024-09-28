@@ -1,10 +1,11 @@
 from aiogram.enums import ParseMode
 from aiogram.fsm.context import FSMContext
-from aiogram.types import CallbackQuery
+from aiogram.types import CallbackQuery, LabeledPrice
 
 from keyboards import InlineKeyboardShop
 from database.commands import Database
 from utils import load_texts, Cart, create_pay_link
+from utils.create_pay_links import create_cryptopay_link
 
 
 async def choose_payment(callback: CallbackQuery, state: FSMContext):
@@ -70,3 +71,15 @@ async def buy_now_balance(callback: CallbackQuery, state: FSMContext):
     else:
         pass
         # МЕСТО ДЛЯ ВЫДАЧИ ТОВАРА С КОЛИЧЕСТВОМ
+
+
+async def buy_now_cryptopay(callback: CallbackQuery, state: FSMContext):
+    data = await state.get_data()
+    cart: Cart | None = data.get("cart", None)
+
+    url = await create_cryptopay_link(cart)
+
+    msg = await callback.message.edit_reply_markup(
+        reply_markup=await InlineKeyboardShop.pay_kb(url, f"buy_good_{cart.good.id}"))
+
+    await Database.ShopBot.update_order_msg(cart.order_id, msg.message_id)

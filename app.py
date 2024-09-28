@@ -8,7 +8,7 @@ from aiogram.webhook.aiohttp_server import SimpleRequestHandler, TokenBasedReque
 from aiohttp import web
 
 from config.config import (BASE_URL, MAIN_BOT_PATH, main_dispatcher, multibot_dispatcher, main_bot, session,
-                           OTHER_BOTS_PATH, WEB_SERVER_HOST, WEB_SERVER_PORT, schedular)
+                           OTHER_BOTS_PATH, WEB_SERVER_HOST, WEB_SERVER_PORT, schedular, client)
 from shop_handlers import register_shop_handler
 from main_handlers import register_main_handler
 
@@ -38,6 +38,7 @@ async def on_startup_app(application: web.Application):
 
 async def on_shutdown_app(application: web.Application):
     logger.info("Bot was stopped")
+    await client.close()
     return await session.close()
 
 
@@ -59,6 +60,7 @@ def main():
     setup_application(app, multibot_dispatcher)
     app.router.add_route("POST", "/prodamus", handler_prodamus_request)
     app.router.add_route("POST", "/prodamus/balance", handler_prodamus_update_balance)
+    app.router.add_route("POST", "/cryptopay", client.get_updates)
 
     app.on_startup.append(on_startup_app)
     app.on_shutdown.append(on_shutdown_app)

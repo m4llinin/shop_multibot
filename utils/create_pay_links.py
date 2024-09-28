@@ -1,5 +1,5 @@
 import aiohttp
-from config.config import PRODAMUS_LINK, BASE_URL
+from config.config import PRODAMUS_LINK, BASE_URL, client
 from .Cart import Cart
 
 
@@ -20,3 +20,20 @@ async def create_pay_link_balance(amount: int, order_id: int, shop_name: str):
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as response:
             return await response.text()
+
+
+async def create_cryptopay_link(cart: Cart):
+    rates = await client.get_exchange_rates()
+    rate_ton_rub = None
+    for rate in rates:
+        if rate.source == "TON" and rate.target == "RUB":
+            rate_ton_rub = rate.rate
+
+    invoice = await client.create_invoice(
+        amount=cart.good.price * cart.extra_charge * cart.count / rate_ton_rub,
+        asset="TON",
+        accepted_assets=["TON", "USDT", "BTC"],
+        payload=f"{cart.order_id}",
+        allow_anonymous=False
+    )
+    return invoice.bot_invoice_url

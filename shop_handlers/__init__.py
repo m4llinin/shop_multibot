@@ -11,7 +11,7 @@ from states.shop_bot import UpdateBalance, AddQuery
 from .start import start, start_clb
 from .catalogue.catalogue import view_category, view_category_clb, view_subcategory, view_good_list, view_good
 from .catalogue.good_profile import edit_count_cart, just_count
-from .catalogue.buy_good import choose_payment, buy_now_prodamus, buy_now_balance
+from .catalogue.buy_good import choose_payment, buy_now_prodamus, buy_now_balance, buy_now_cryptopay
 
 from .my_profile.my_profile import my_profile, my_profile_clb
 from .my_profile.referral_system import referral_system
@@ -48,6 +48,7 @@ def register_shop_handler(router: Router):
     router.callback_query.register(choose_payment, lambda x: x.data.startswith("buy_good_"))
     router.callback_query.register(buy_now_prodamus, F.data == "pay_card")
     router.callback_query.register(buy_now_balance, F.data == "pay_from_balance")
+    router.callback_query.register(buy_now_cryptopay, F.data == "pay_cryptopay")
 
     router.callback_query.register(my_profile_clb, F.data == "my_profile")
     router.callback_query.register(referral_system, F.data == "referral_sys")

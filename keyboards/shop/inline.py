@@ -79,6 +79,7 @@ class InlineKeyboardShop:
         keyboard = [
             [InlineKeyboardButton(text=cls.texts['pay_from_balance_btn'], callback_data="pay_from_balance")],
             [InlineKeyboardButton(text=cls.texts['pay_card_btn'], callback_data="pay_card")],
+            [InlineKeyboardButton(text=cls.texts['pay_crypto_bot_btn'], callback_data="pay_cryptopay")],
             [InlineKeyboardButton(text=cls.texts['back'], callback_data=data)]
         ]
         return InlineKeyboardMarkup(inline_keyboard=keyboard)
