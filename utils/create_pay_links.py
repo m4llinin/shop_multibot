@@ -26,12 +26,12 @@ async def create_cryptopay_link(cart: Cart):
     rates = await client.get_exchange_rates()
     rate_ton_rub = None
     for rate in rates:
-        if rate.source == "TON" and rate.target == "RUB":
+        if rate.source == "USDT" and rate.target == "RUB":
             rate_ton_rub = rate.rate
 
     invoice = await client.create_invoice(
         amount=cart.good.price * cart.extra_charge * cart.count / rate_ton_rub,
-        asset="TON",
+        asset="USDT",
         accepted_assets=["TON", "USDT", "BTC"],
         payload=f"{cart.order_id}",
         allow_anonymous=False
