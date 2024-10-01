@@ -111,7 +111,7 @@ async def handler_prodamus_update_balance(request: web.Request) -> web.Response:
             elif quantity.split("=")[0] == "customer_extra":
                 shop_name = quantity.split("=")[1]
             elif quantity.split("=")[0] == "sum":
-                amount = int(quantity.split("=")[1])
+                amount = float(quantity.split("=")[1])
 
         if status == "success" and order_id and shop_name and amount:
             texts = await load_texts()
