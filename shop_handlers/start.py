@@ -14,8 +14,22 @@ async def start(message: Message, state: FSMContext):
     split_text = message.text.split(' ')
     shop = await Database.MainBot.get_shop(message.bot.id)
 
+    link = None
+    if len(split_text) == 2 and "ad_" in split_text[1]:
+        link = split_text[1].replace("ad_", "")
+        url_link = await Database.Link.get_link(link)
+        await Database.Link.update_all_visits(link)
+        if url_link and not (user_id in url_link.unique_visits):
+            if not url_link.unique_visits:
+                unique_visits = [user_id]
+            else:
+                unique_visits = url_link.unique_visits
+                unique_visits.append(user_id)
+
+            await Database.Link.update_unique_visits(link, unique_visits)
+
     referral_id = None
-    if len(split_text) == 2 and not ("good" in split_text[1]):
+    if len(split_text) == 2 and not ("good" in split_text[1]) and not ("ad_" in split_text[1]):
         if int(split_text[1]) != message.chat.id:
             referral_id = int(split_text[1])
 
@@ -23,7 +37,7 @@ async def start(message: Message, state: FSMContext):
         status_channel = await message.bot.get_chat_member(chat_id=int(shop.channel), user_id=user_id)
         if status_channel.status == "left" or status_channel.status == "kicked":
             channel = await message.bot.get_chat(shop.channel)
-            await state.update_data(referral_id=referral_id)
+            await state.update_data(referral_id=referral_id, link=link)
             return message.answer_photo(photo=FSInputFile("./photos/hello_shop_bot.jpeg"),
                                         caption=texts['subscribe_channel'],
                                         reply_markup=await InlineKeyboardShop.subscribe(channel.invite_link),
@@ -45,7 +59,7 @@ async def start(message: Message, state: FSMContext):
                                                                                   f"category_{good.category_id}"),
                                     parse_mode=ParseMode.HTML)
 
-    await Database.ShopBot.insert_user(user_id=user_id, referral_id=referral_id, shop_id=shop.id)
+    await Database.ShopBot.insert_user(user_id=user_id, referral_id=referral_id, shop_id=shop.id, code=link)
     return await message.answer_photo(photo=FSInputFile("./photos/hello_shop_bot.jpeg"), caption=texts['start_shop'],
                                       reply_markup=await RelpyKeyboardShop.start_kb(),
                                       parse_mode=ParseMode.HTML, disable_web_page_preview=True)
@@ -55,7 +69,9 @@ async def start_clb(callback: CallbackQuery, state: FSMContext):
     texts = await load_texts()
     user_id = callback.message.chat.id
     shop = await Database.MainBot.get_shop(callback.bot.id)
-    referral_id = (await state.get_data()).get('referral_id', None)
+    data = await state.get_data()
+    referral_id = data.get('referral_id', None)
+    link = data.get('link', None)
 
     await callback.message.delete()
 
@@ -68,7 +84,7 @@ async def start_clb(callback: CallbackQuery, state: FSMContext):
                                                  reply_markup=await InlineKeyboardShop.subscribe(channel.invite_link),
                                                  parse_mode=ParseMode.HTML)
 
-    await Database.ShopBot.insert_user(user_id=user_id, referral_id=referral_id, shop_id=shop.id)
+    await Database.ShopBot.insert_user(user_id=user_id, referral_id=referral_id, shop_id=shop.id, code=link)
     return await callback.message.answer_photo(photo=FSInputFile("./photos/hello_shop_bot.jpeg"),
                                                caption=texts['start_shop'],
                                                reply_markup=await RelpyKeyboardShop.start_kb(),

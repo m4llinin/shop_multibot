@@ -125,3 +125,7 @@ class EditGood(StatesGroup):
     price = State()
     count = State()
     product = State()
+
+
+class AddLink(StatesGroup):
+    name = State()

@@ -4,6 +4,7 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 from database.schemas.Category import Category
 from database.schemas.Good import Good
+from database.schemas.Link import Link
 from database.schemas.Shop import Shop
 from database.schemas.Subcategory import Subcategory
 
@@ -192,7 +193,28 @@ class InlineKeyboardMain:
              InlineKeyboardButton(text=cls.texts['statistics'], callback_data=f"statistics_1_{shop_id}")],
             [InlineKeyboardButton(text=cls.texts['mailing'], callback_data=f"mailing_{shop_id}"),
              InlineKeyboardButton(text=cls.texts['settings'], callback_data=f"settings_{shop_id}")],
+            [InlineKeyboardButton(text=cls.texts['links_btn'], callback_data=f"links")],
             [InlineKeyboardButton(text=cls.texts['back'], callback_data="my_shops")]
+        ]
+        return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+    @classmethod
+    async def list_links(cls, shop_id: int, list_links: list[Link]):
+        keyboard = [
+            [InlineKeyboardButton(text=cls.texts['add_link_btn'], callback_data=f"add_link")]
+        ]
+
+        for link in list_links:
+            keyboard.append([InlineKeyboardButton(text=link.name, callback_data=f"add_link_{link.id}")])
+
+        keyboard.append([InlineKeyboardButton(text=cls.texts['back'], callback_data=f"shop_{shop_id}")])
+        return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+    @classmethod
+    async def link(cls, link_id: int):
+        keyboard = [
+            [InlineKeyboardButton(text=cls.texts['del_link'], callback_data=f"del_link_{link_id}")],
+            [InlineKeyboardButton(text=cls.texts['back'], callback_data=f"links")]
         ]
         return InlineKeyboardMarkup(inline_keyboard=keyboard)
 

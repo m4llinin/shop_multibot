@@ -53,6 +53,9 @@ async def handler_prodamus_request(request: web.Request) -> web.Response:
                 await Database.ShopBot.update_user_balance(referral.id, referral.balance + order.total_price * 0.05,
                                                            shop.id)
 
+            if user.link:
+                await Database.Link.update_profit_link(user.link, order.total_price)
+
             await Database.ShopBot.update_order_status(order_id, "paid")
             await Database.MainBot.update_owner_balance(shop.owner_id, order.total_price)
 
@@ -136,6 +139,9 @@ async def handler_prodamus_update_balance(request: web.Request) -> web.Response:
                 await Database.ShopBot.update_user_balance(referral.id, referral.balance + order.total_price * 0.05,
                                                            shop.id)
 
+            if user.link:
+                await Database.Link.update_profit_link(user.link, order.total_price)
+
             await Database.ShopBot.update_order_status(order_id, "paid")
             await Database.ShopBot.update_user_balance(user.id, user.balance + amount, shop.id)
             await Database.MainBot.update_owner_balance(shop.owner_id, amount)
@@ -205,6 +211,9 @@ async def cryptopay_invoice_paid(update: Update, app) -> None:
         if referral:
             await Database.ShopBot.update_user_balance(referral.id, referral.balance + order.total_price * 0.05,
                                                        shop.id)
+
+        if user.link:
+            await Database.Link.update_profit_link(user.link, order.total_price)
 
         await Database.ShopBot.update_order_status(order_id, "paid")
         await Database.MainBot.update_owner_balance(shop.owner_id, order.total_price)

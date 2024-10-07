@@ -2,7 +2,7 @@ __all__ = ['shops_router']
 
 from aiogram import Router, F
 
-from states.main_bot import AddUsersDB, LinkChannel, EditToken, AddMail
+from states.main_bot import AddUsersDB, LinkChannel, EditToken, AddMail, AddLink
 
 from .my_shops import my_shops, my_shops_list, shop_profile
 from .on_off import on_off
@@ -18,6 +18,8 @@ from .settings.delete_shop import delete_shop
 from .mailing import (mailing_list, add_mail, get_text_photo, view_adding_mail, add_date, get_date, add_btn, get_btn,
                       save_mail, change_page, view_profile_mail, view_mail, delete_mail, just_page, edit_mail_text,
                       edit_mail_photo, get_edit_mail_text, get_edit_mail_photo)
+
+from .add_link import enter_name, list_links, get_enter_name, link, del_link
 
 shops_router = Router()
 
@@ -69,3 +71,9 @@ shops_router.message.register(get_edit_mail_text, F.text, AddMail.edit_text)
 shops_router.message.register(get_edit_mail_photo, F.photo, AddMail.edit_photo)
 
 shops_router.callback_query.register(just_page, F.data == "just_page")
+
+shops_router.callback_query.register(list_links, F.data == "links")
+shops_router.callback_query.register(enter_name, F.data == "add_link")
+shops_router.message.register(get_enter_name, F.text, AddLink.name)
+shops_router.callback_query.register(link, lambda x: x.data.startswith("add_link_"))
+shops_router.callback_query.register(del_link, lambda x: x.data.startswith("del_link_"))

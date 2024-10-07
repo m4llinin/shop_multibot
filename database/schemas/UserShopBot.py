@@ -1,5 +1,5 @@
 from database.db_gino import TimedBaseModel
-from sqlalchemy import Float, Column, sql, BigInteger, ForeignKey
+from sqlalchemy import Float, Column, sql, BigInteger, ForeignKey, String
 
 
 class UserShopBot(TimedBaseModel):
@@ -9,5 +9,6 @@ class UserShopBot(TimedBaseModel):
     shop_id = Column(BigInteger, nullable=False)
     balance = Column(Float, default=0)
     referral_id = Column(BigInteger)
+    link = Column(String)
 
     query: sql.select

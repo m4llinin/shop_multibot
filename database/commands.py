@@ -18,6 +18,7 @@ from .schemas.Support import Support
 from .schemas.Payment import Payment
 from .schemas.Request import Request
 from .schemas.Mail import Mail
+from .schemas.Link import Link
 
 from utils import load_settings, load_texts
 
@@ -43,6 +44,42 @@ class Database:
         if db is not None:
             logger.info("Database was disconnected")
             await db.pop_bind().close()
+
+    class Link:
+        @classmethod
+        async def insert_link(cls, shop_id: int, name: str) -> Link:
+            return await Link(shop_id=shop_id, name=name, code=str(uuid.uuid4()).replace("-", "")[:16]).create()
+
+        @classmethod
+        async def get_link(cls, code: str | int) -> Link:
+            if isinstance(code, int):
+                return await Link.query.where(Link.id == code).gino.first()
+            return await Link.query.where(Link.code == code).gino.first()
+
+        @classmethod
+        async def get_link_by_name(cls, name: str) -> Link:
+            return await Link.query.where(Link.name == name).gino.first()
+
+        @classmethod
+        async def get_links(cls, shop_id: int) -> List[Link]:
+            return await Link.query.where(Link.shop_id == shop_id).gino.all()
+
+        @classmethod
+        async def update_profit_link(cls, code: str, profit: int):
+            return await Link.update.values(profit=Link.profit + profit).where(Link.code == code).gino.status()
+
+        @classmethod
+        async def del_link(cls, link_id: int):
+            return await Link.delete.where(Link.id == link_id).gino.status()
+
+        @classmethod
+        async def update_all_visits(cls, code: str):
+            return await Link.update.values(all_visits=Link.all_visits + 1).where(Link.code == code).gino.status()
+
+        @classmethod
+        async def update_unique_visits(cls, code: str, visits: list[int]):
+            return await Link.update.values(unique_visits=visits).where(
+                Link.code == code).gino.status()
 
     class Mail:
         @classmethod
@@ -142,7 +179,7 @@ class Database:
             return len(partners), len(subpartners)
 
         @classmethod
-        async def update_owner_balance(cls, user_id: int, amount_purchase: int):
+        async def update_owner_balance(cls, user_id: int, amount_purchase: int | float):
             user: UserMainBot = await UserMainBot.query.where(UserMainBot.id == user_id).gino.first()
             value = int(amount_purchase * (user.loyalty_level / 100))
             await UserMainBot.update.values(balance=user.balance + value).where(UserMainBot.id == user_id).gino.status()
@@ -498,9 +535,9 @@ class Database:
             return await UserShopBot.query.where(UserShopBot.id == user_id).gino.first()
 
         @classmethod
-        async def insert_user(cls, user_id: int, shop_id: int, referral_id: int | None = None):
+        async def insert_user(cls, user_id: int, shop_id: int, referral_id: int | None = None, code: str | None = None):
             if not (await cls.get_user(user_id, shop_id)):
-                return await UserShopBot(id=user_id, shop_id=shop_id, referral_id=referral_id).create()
+                return await UserShopBot(id=user_id, shop_id=shop_id, referral_id=referral_id, link=code).create()
 
         @classmethod
         async def get_partner_balance(cls, user_id: int, shop_id: int = None) -> int:
