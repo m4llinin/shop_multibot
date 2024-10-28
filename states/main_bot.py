@@ -112,6 +112,7 @@ class AddInfobase(StatesGroup):
 class EditCategory(StatesGroup):
     name = State()
     description = State()
+    weight = State()
 
 
 class EditSubcategory(StatesGroup):

@@ -15,8 +15,11 @@ class InlineKeyboardShop:
     @classmethod
     async def categories(cls, callback: str, categories: list[Category]):
         keyboard = []
-        for category in categories:
-            keyboard.append([InlineKeyboardButton(text=category.name, callback_data=f"{callback}_{category.id}")])
+        for index, category in zip(range(len(categories)), categories):
+            if index % 3 == 0 or index % 3 == 1:
+                keyboard.append([InlineKeyboardButton(text=category.name, callback_data=f"{callback}_{category.id}")])
+            else:
+                keyboard[-1].append(InlineKeyboardButton(text=category.name, callback_data=f"{callback}_{category.id}"))
         return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
     @classmethod

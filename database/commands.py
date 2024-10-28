@@ -260,6 +260,12 @@ class Database:
                 Category.name == category_name).gino.status()
 
         @classmethod
+        async def update_weight_category(cls, category_name: str | int, index: int = 0) -> Any:
+            if isinstance(category_name, int):
+                return await Category.update.values(weight=index).where(Category.id == category_name).gino.status()
+            return await Category.update.values(weigth=index).where(Category.name == category_name).gino.status()
+
+        @classmethod
         async def get_category_by_name(cls, category_name: str) -> Any:
             return await Category.query.where(Category.name == category_name).gino.first()
 
@@ -486,7 +492,9 @@ class Database:
     class ShopBot:
         @classmethod
         async def get_categories(cls):
-            return await Category.query.gino.all()
+            result = await Category.query.gino.all()
+            result.sort(key=lambda x: x.weight, reverse=True)
+            return result
 
         @classmethod
         async def get_category_by_id(cls, category_id: int) -> Any:

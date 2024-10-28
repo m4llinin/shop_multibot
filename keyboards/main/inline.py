@@ -125,8 +125,11 @@ class InlineKeyboardMain:
     @classmethod
     async def categories(cls, callback: str, categories: list[Category], data: str):
         keyboard = []
-        for category in categories:
-            keyboard.append([InlineKeyboardButton(text=category.name, callback_data=f"{callback}_{category.id}")])
+        for index, category in zip(range(len(categories)), categories):
+            if index % 3 == 0 or index % 3 == 1:
+                keyboard.append([InlineKeyboardButton(text=category.name, callback_data=f"{callback}_{category.id}")])
+            else:
+                keyboard[-1].append(InlineKeyboardButton(text=category.name, callback_data=f"{callback}_{category.id}"))
         keyboard.append([InlineKeyboardButton(text=cls.texts['back'], callback_data=data)])
         return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
@@ -689,6 +692,7 @@ class InlineKeyboardMain:
             [InlineKeyboardButton(text=cls.texts['edit_name_btn'], callback_data=f"edit_name_{category_id}")],
             [InlineKeyboardButton(text=cls.texts['edit_description_btn'],
                                   callback_data=f"edit_description_{category_id}")],
+            [InlineKeyboardButton(text=cls.texts['edit_weight_btn'], callback_data=f"edit_weight_{category_id}")],
             [InlineKeyboardButton(text=cls.texts['back'], callback_data=f"category_{category_id}")]
         ]
         return InlineKeyboardMarkup(inline_keyboard=keyboard)

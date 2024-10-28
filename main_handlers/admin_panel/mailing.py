@@ -198,7 +198,7 @@ async def admin_get_loop(message: Message, state: FSMContext):
     data = await state.get_data()
     mail: MailData = data.get("mail")
 
-    loop = re.match(r"\d{2}:\d{2}", message.text)
+    loop = re.match(r"\d+:\d+", message.text)
     if not loop:
         return await message.answer(text=texts['fail_loop'])
 

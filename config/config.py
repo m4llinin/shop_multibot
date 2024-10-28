@@ -14,7 +14,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from dotenv import load_dotenv
 
 load_dotenv()
-# bl.basic_colorized_config(level=logging.DEBUG")
+# bl.basic_colorized_config(level=logging.DEBUG)
 logging.basicConfig(level=logging.INFO, filename="logs.log", filemode="w",
                     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 

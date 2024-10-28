@@ -32,6 +32,7 @@ async def view_subcategory(callback: CallbackQuery, state: FSMContext):
         await callback.message.delete()
         await state.update_data(category_id=category_id)
         return await callback.message.answer(text=texts['subcategories'].format(category_name=category.name,
+                                                                                category_position=category.weight,
                                                                                 category_description=category.description if category.description else ""),
                                              reply_markup=await InlineKeyboardMain.subcategories("subcategory",
                                                                                                  subcategories,
@@ -42,6 +43,7 @@ async def view_subcategory(callback: CallbackQuery, state: FSMContext):
         await callback.message.delete()
         await state.update_data(category_id=category_id)
         return await callback.message.answer(text=texts['subcategories'].format(category_name=category.name,
+                                                                                category_position=category.weight,
                                                                                 category_description=category.description if category.description else ""),
                                              reply_markup=await InlineKeyboardMain.goods("good",
                                                                                          goods,
@@ -50,6 +52,7 @@ async def view_subcategory(callback: CallbackQuery, state: FSMContext):
 
     await callback.message.delete()
     return await callback.message.answer(text=texts['subcategories'].format(category_name=category.name,
+                                                                            category_position=category.weight,
                                                                             category_description=category.description if category.description else ""),
                                          reply_markup=await InlineKeyboardMain.goods("good",
                                                                                      goods,
