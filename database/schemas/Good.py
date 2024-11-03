@@ -12,5 +12,6 @@ class Good(TimedBaseModel):
     description = Column(String)
     count = Column(Integer, default=0)
     price = Column(Integer)
+    weight = Column(Integer, default=0)
 
     query: sql.select

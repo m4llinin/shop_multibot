@@ -47,6 +47,16 @@ async def view_subcategory(callback: CallbackQuery, state: FSMContext):
         text = texts['subcategories'][:24] + texts['subcategories'][71:]
         await callback.message.delete()
         await state.update_data(category_id=category_id)
+
+        if category.photo:
+            return await callback.message.answer_photo(photo=FSInputFile(category.photo),
+                                                       caption=text.format(category_name=category.name,
+                                                                           category_description=category.description
+                                                                           if category.description else ""),
+                                                       reply_markup=await InlineKeyboardShop.subcategories(
+                                                           "subcategory", subcategories, "view_category"),
+                                                       parse_mode=ParseMode.HTML)
+
         return await callback.message.answer(text=text.format(category_name=category.name,
                                                               category_description=category.description if category.description else ""),
                                              reply_markup=await InlineKeyboardShop.subcategories("subcategory",
@@ -59,6 +69,18 @@ async def view_subcategory(callback: CallbackQuery, state: FSMContext):
         extra_charge = (shop.extra_charge / 100) + 1 if shop.extra_charge != 0 else 1
         await callback.message.delete()
         await state.update_data(category_id=category_id)
+
+        if category.photo:
+            return await callback.message.answer_photo(photo=FSInputFile(category.photo),
+                                                       caption=text.format(category_name=category.name,
+                                                                           category_description=category.description
+                                                                           if category.description else ""),
+                                                       reply_markup=await InlineKeyboardShop.goods("good",
+                                                                                                   goods,
+                                                                                                   extra_charge,
+                                                                                                   f"view_category"),
+                                                       parse_mode=ParseMode.HTML)
+
         return await callback.message.answer(text=text.format(category_name=category.name,
                                                               category_description=category.description if category.description else ""),
                                              reply_markup=await InlineKeyboardShop.goods("good",

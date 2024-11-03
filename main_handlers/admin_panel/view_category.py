@@ -1,5 +1,5 @@
 from aiogram.fsm.context import FSMContext
-from aiogram.types import CallbackQuery
+from aiogram.types import CallbackQuery, FSInputFile
 from database.commands import Database
 from utils import load_texts
 from keyboards import InlineKeyboardMain
@@ -31,9 +31,22 @@ async def view_subcategory(callback: CallbackQuery, state: FSMContext):
     if subcategories:
         await callback.message.delete()
         await state.update_data(category_id=category_id)
+
+        if category.photo:
+            return await callback.message.answer_photo(photo=FSInputFile(category.photo),
+                                                       caption=texts['subcategories'].format(
+                                                           category_name=category.name,
+                                                           category_position=category.weight,
+                                                           category_description=category.description
+                                                           if category.description else ""),
+                                                       reply_markup=await InlineKeyboardMain.subcategories(
+                                                           "subcategory", subcategories, "view_category",
+                                                           category_id))
+
         return await callback.message.answer(text=texts['subcategories'].format(category_name=category.name,
                                                                                 category_position=category.weight,
-                                                                                category_description=category.description if category.description else ""),
+                                                                                category_description=category.description
+                                                                                if category.description else ""),
                                              reply_markup=await InlineKeyboardMain.subcategories("subcategory",
                                                                                                  subcategories,
                                                                                                  "view_category",
@@ -42,21 +55,45 @@ async def view_subcategory(callback: CallbackQuery, state: FSMContext):
     if goods:
         await callback.message.delete()
         await state.update_data(category_id=category_id)
+
+        if category.photo:
+            return await callback.message.answer_photo(photo=FSInputFile(category.photo),
+                                                       caption=texts['subcategories'].format(
+                                                           category_name=category.name,
+                                                           category_position=category.weight,
+                                                           category_description=category.description
+                                                           if category.description else ""),
+                                                       reply_markup=await InlineKeyboardMain.goods("good", goods,
+                                                                                                   f"view_category",
+                                                                                                   category_id=category_id))
+
         return await callback.message.answer(text=texts['subcategories'].format(category_name=category.name,
                                                                                 category_position=category.weight,
-                                                                                category_description=category.description if category.description else ""),
+                                                                                category_description=category.description
+                                                                                if category.description else ""),
                                              reply_markup=await InlineKeyboardMain.goods("good",
                                                                                          goods,
                                                                                          f"view_category",
                                                                                          category_id=category_id))
 
     await callback.message.delete()
+
+    if category.photo:
+        return await callback.message.answer_photo(photo=FSInputFile(category.photo),
+                                                   caption=texts['subcategories'].format(
+                                                       category_name=category.name,
+                                                       category_position=category.weight,
+                                                       category_description=category.description
+                                                       if category.description else ""),
+                                                   reply_markup=await InlineKeyboardMain.goods("good", goods,
+                                                                                               f"view_category",
+                                                                                               category_id=category_id))
+
     return await callback.message.answer(text=texts['subcategories'].format(category_name=category.name,
                                                                             category_position=category.weight,
-                                                                            category_description=category.description if category.description else ""),
-                                         reply_markup=await InlineKeyboardMain.goods("good",
-                                                                                     goods,
-                                                                                     f"view_category",
+                                                                            category_description=category.description
+                                                                            if category.description else ""),
+                                         reply_markup=await InlineKeyboardMain.goods("good", goods, f"view_category",
                                                                                      category_id=category_id))
 
 

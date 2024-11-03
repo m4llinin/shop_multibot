@@ -113,6 +113,7 @@ class EditCategory(StatesGroup):
     name = State()
     description = State()
     weight = State()
+    photo = State()
 
 
 class EditSubcategory(StatesGroup):
@@ -126,7 +127,17 @@ class EditGood(StatesGroup):
     price = State()
     count = State()
     product = State()
+    weight = State()
 
 
 class AddLink(StatesGroup):
     name = State()
+
+
+class UpdateBalance(StatesGroup):
+    username = State()
+    balance = State()
+
+
+class Ban(StatesGroup):
+    username = State()

@@ -16,6 +16,7 @@ from database.commands import Database
 from utils import handler_prodamus_request, handler_prodamus_update_balance
 
 from utils import recover_mails
+from middleware.ban import BlockedUserMessageMiddleware, BlockedUserCallbackMiddleware
 
 logger = logging.getLogger(__name__)
 
@@ -45,9 +46,6 @@ async def on_shutdown_app(application: web.Application):
 def main():
     main_dispatcher.startup.register(on_startup)
     main_dispatcher.shutdown.register(on_shutdown)
-    register_main_handler(main_dispatcher)
-
-    register_shop_handler(multibot_dispatcher)
 
     app = web.Application()
     SimpleRequestHandler(dispatcher=main_dispatcher, bot=main_bot).register(app, path=MAIN_BOT_PATH)
@@ -64,6 +62,13 @@ def main():
 
     app.on_startup.append(on_startup_app)
     app.on_shutdown.append(on_shutdown_app)
+
+    register_main_handler(main_dispatcher)
+    register_shop_handler(multibot_dispatcher)
+    main_dispatcher.message.outer_middleware(BlockedUserMessageMiddleware())
+    main_dispatcher.callback_query.outer_middleware(BlockedUserCallbackMiddleware())
+    multibot_dispatcher.message.outer_middleware(BlockedUserMessageMiddleware())
+    multibot_dispatcher.callback_query.outer_middleware(BlockedUserCallbackMiddleware())
 
     web.run_app(app, host=WEB_SERVER_HOST, port=WEB_SERVER_PORT)
 

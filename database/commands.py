@@ -142,6 +142,15 @@ class Database:
 
     class MainBot:
         @classmethod
+        async def update_photo_category(cls, category_id: int, photo: str = None):
+            return await Category.update.values(photo=photo).where(Category.id == category_id).gino.status()
+
+        @classmethod
+        async def ban_user(cls, user_id: int, status: bool):
+            await UserMainBot.update.values(is_ban=status).where(UserMainBot.id == user_id).gino.status()
+            await UserShopBot.update.values(is_ban=status).where(UserShopBot.id == user_id).gino.status()
+
+        @classmethod
         async def get_all_orders_status(cls, status: str, start: datetime = None, end: datetime = None) -> list[Order]:
             if start is None and end is None:
                 return await Order.query.where(Order.status == status).gino.all()
@@ -264,6 +273,10 @@ class Database:
             if isinstance(category_name, int):
                 return await Category.update.values(weight=index).where(Category.id == category_name).gino.status()
             return await Category.update.values(weigth=index).where(Category.name == category_name).gino.status()
+
+        @classmethod
+        async def update_good_weight(cls, good_id: int, index: int = 0) -> Any:
+            return await Good.update.values(weight=index).where(Good.id == good_id).gino.status()
 
         @classmethod
         async def get_category_by_name(cls, category_name: str) -> Any:
@@ -493,7 +506,7 @@ class Database:
         @classmethod
         async def get_categories(cls):
             result = await Category.query.gino.all()
-            result.sort(key=lambda x: x.weight, reverse=True)
+            result.sort(key=lambda x: x.weight)
             return result
 
         @classmethod
@@ -506,8 +519,10 @@ class Database:
 
         @classmethod
         async def get_goods(cls, category_id: int, subcategory_id: int = 0):
-            return await Good.query.where(Good.category_id == category_id).where(
+            result = await Good.query.where(Good.category_id == category_id).where(
                 Good.subcategory_id == subcategory_id).gino.all()
+            result.sort(key=lambda x: x.weight)
+            return result
 
         @classmethod
         async def get_good_by_id(cls, good_id: int):

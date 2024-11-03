@@ -6,9 +6,10 @@ from aiogram import Router, F
 
 from utils import load_texts
 from states.main_bot import AddCategory, AddSubcategory, AddGoods, EditCount, LinkChannelAdmin, ChangeStatus, \
-    AddAdminMail
+    AddAdminMail, UpdateBalance, Ban
 
 from .admin import admin_panel, admin_panel_clb
+from .ban import ban, successful_ban
 
 from .view_category import view_category, view_subcategory, view_good_list, view_good
 from .add_category import add_category, get_name_category, get_description_category
@@ -27,6 +28,8 @@ from .mailing import (admin_add_btn, admin_get_btn, admin_add_mail, admin_mailin
                       admin_view_adding_mail, admin_change_page, admin_get_text_photo, admin_save_mail, admin_view_mail,
                       admin_view_profile_mail, admin_delete_mail, admin_add_loop, admin_get_loop, edit_mail_photo,
                       edit_mail_text, get_edit_mail_text, get_edit_mail_photo)
+
+from .update_balance import (update_balance_user, update_balance_username, update_balance)
 
 from .infobase import router as infobase_router
 from .edit import router as edit_router
@@ -94,6 +97,13 @@ def register_handlers_admin_panel(router: Router):
     router.callback_query.register(edit_mail_text, F.data == f"edit_admin_mail_text")
     router.message.register(get_edit_mail_text, F.text, AddAdminMail.edit_text)
     router.message.register(get_edit_mail_photo, F.photo, AddAdminMail.edit_photo)
+
+    router.callback_query.register(update_balance_user, F.data == "update_balance_user")
+    router.message.register(update_balance_username, F.text, UpdateBalance.username)
+    router.message.register(update_balance, F.text, UpdateBalance.balance)
+
+    router.callback_query.register(ban, F.data == "ban")
+    router.message.register(successful_ban, F.text, Ban.username)
 
     router.include_router(edit_router)
     router.include_router(infobase_router)

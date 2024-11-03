@@ -1,3 +1,6 @@
+import os
+import sys
+
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, CallbackQuery
 
@@ -51,7 +54,6 @@ async def get_edit_description_category(message: Message, state: FSMContext):
     data = await state.get_data()
     await state.set_state(None)
 
-    print(message.html_text)
     await Database.MainBot.update_description_category(data.get("category_id"), message.html_text)
     return await message.answer(text=texts['get_edit_description_category'],
                                 reply_markup=await InlineKeyboardMain.ready(f"edit_category_{data.get('category_id')}"))
@@ -80,3 +82,39 @@ async def get_edit_weight_category(message: Message, state: FSMContext):
     except:
         await message.answer(text=texts['bad_price'],
                              reply_markup=await InlineKeyboardMain.back(f"edit_category_{data.get('category_id')}"))
+
+
+async def edit_photo_category(callback: CallbackQuery, state: FSMContext):
+    texts = await load_texts()
+    await state.update_data(category_id=int(callback.data.split("_")[2]))
+    await state.set_state(EditCategory.photo)
+    await callback.message.delete()
+    return await callback.message.answer(text=texts['edit_photo_category'],
+                                         reply_markup=await InlineKeyboardMain.photo_category(
+                                             f"edit_category_{int(callback.data.split('_')[2])}"))
+
+
+async def delete_photo_category(callback: CallbackQuery, state: FSMContext):
+    texts = await load_texts()
+    data = await state.get_data()
+    category_id = data.get("category_id")
+    category = await Database.ShopBot.get_category_by_id(category_id)
+
+    await Database.MainBot.update_photo_category(category_id)
+    os.remove(category.photo)
+    await state.set_state(None)
+    await callback.message.delete()
+    await callback.message.answer(text=texts['successful_delete_photo'],
+                                  reply_markup=await InlineKeyboardMain.ready(f"edit_category_{category_id}"))
+
+
+async def get_edit_photo_category(message: Message, state: FSMContext):
+    texts = await load_texts()
+    data = await state.get_data()
+    category_id = data.get("category_id")
+
+    await message.bot.download(message.photo[-1].file_id, f"./photos/category/{message.photo[-1].file_id}.jpg")
+    await Database.MainBot.update_photo_category(category_id, f"./photos/category/{message.photo[-1].file_id}.jpg")
+    await state.set_state(None)
+    await message.answer(text=texts['get_edit_photo_category'],
+                         reply_markup=await InlineKeyboardMain.ready(f"edit_category_{category_id}"))

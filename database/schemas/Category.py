@@ -8,5 +8,6 @@ class Category(TimedBaseModel):
     name = Column(String, nullable=False)
     description = Column(String)
     weight = Column(Integer, nullable=False, default=0)
+    photo = Column(String)
 
     query: sql.select

@@ -62,6 +62,14 @@ class InlineKeyboardMain:
         return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
     @classmethod
+    async def photo_category(cls, data: str):
+        keyboard = [
+            [InlineKeyboardButton(text=cls.texts['delete_photo'], callback_data="delete_photo")],
+            [InlineKeyboardButton(text=cls.texts['back'], callback_data=data)],
+        ]
+        return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+    @classmethod
     async def ready(cls, data: str):
         keyboard = [
             [InlineKeyboardButton(text=cls.texts['ready'], callback_data=data)],
@@ -94,6 +102,9 @@ class InlineKeyboardMain:
             keyboard.append([InlineKeyboardButton(text=cls.texts['mailing_lists'], callback_data='admin_mailing_list')])
             keyboard.append([InlineKeyboardButton(text=cls.texts['change_status'], callback_data='change_status')])
             keyboard.append([InlineKeyboardButton(text=cls.texts['edit_infobase_btn'], callback_data='edit_infobase')])
+            keyboard.append(
+                [InlineKeyboardButton(text=cls.texts['update_balance_user_btn'], callback_data='update_balance_user')])
+            keyboard.append([InlineKeyboardButton(text=cls.texts['ban_btn'], callback_data='ban')])
 
             channel_text = cls.texts['unlink_btn'] if is_linked else cls.texts['link_btn']
             keyboard.append([InlineKeyboardButton(text=channel_text, callback_data='link_channel')])
@@ -119,6 +130,8 @@ class InlineKeyboardMain:
                                               callback_data=f'edit_good_price_{good_id}')])
         keyboard.append([InlineKeyboardButton(text=cls.texts['edit_product_btn'],
                                               callback_data=f'edit_good_product_{good_id}')])
+        keyboard.append([InlineKeyboardButton(text=cls.texts['edit_weight_btn'],
+                                              callback_data=f'edit_good_weight_{good_id}')])
         keyboard.append([InlineKeyboardButton(text=cls.texts['back'], callback_data=data)])
         return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
@@ -693,6 +706,7 @@ class InlineKeyboardMain:
             [InlineKeyboardButton(text=cls.texts['edit_description_btn'],
                                   callback_data=f"edit_description_{category_id}")],
             [InlineKeyboardButton(text=cls.texts['edit_weight_btn'], callback_data=f"edit_weight_{category_id}")],
+            [InlineKeyboardButton(text=cls.texts['edit_photo_btn'], callback_data=f"edit_photo_{category_id}")],
             [InlineKeyboardButton(text=cls.texts['back'], callback_data=f"category_{category_id}")]
         ]
         return InlineKeyboardMarkup(inline_keyboard=keyboard)

@@ -63,7 +63,6 @@ async def send_mail(mail_id: int):
                                                    parse_mode=ParseMode.HTML)
                         send += 1
                     except Exception as e:
-                        logger.error(e)
                         fail += 1
     except Exception as e:
         logger.error(e)

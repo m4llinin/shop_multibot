@@ -51,6 +51,28 @@ async def get_edit_good_price(message: Message, state: FSMContext):
         return await message.answer(text=texts['bad_price'])
 
 
+async def edit_good_weight(callback: CallbackQuery, state: FSMContext):
+    texts = await load_texts()
+    await state.set_state(EditGood.weight)
+    await state.update_data(good_id=int(callback.data.split("_")[3]))
+    await callback.message.delete()
+    return await callback.message.answer(text=texts['edit_good_weight'],
+                                         reply_markup=await InlineKeyboardMain.back(
+                                             f'good_{callback.data.split("_")[3]}'))
+
+
+async def get_edit_good_weight(message: Message, state: FSMContext):
+    texts = await load_texts()
+    data = await state.get_data()
+    try:
+        await Database.MainBot.update_good_weight(data.get("good_id"), int(message.text))
+        await state.set_state(None)
+        return await message.answer(text=texts['edit_weight_category'].format(message.text),
+                                    reply_markup=await InlineKeyboardMain.ready(f"good_{data.get('good_id')}"))
+    except ValueError:
+        return await message.answer(text=texts['bad_price'])
+
+
 async def edit_good_name(callback: CallbackQuery, state: FSMContext):
     texts = await load_texts()
     await state.update_data(good_id=int(callback.data.split("_")[3]))
