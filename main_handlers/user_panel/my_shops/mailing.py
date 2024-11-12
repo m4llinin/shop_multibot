@@ -300,7 +300,7 @@ async def get_edit_mail_text(message: Message, state: FSMContext):
     mail: Mail = data.get("mail")
 
     await state.set_state(None)
-    await Database.Mail.edit_text_mail(mail.id, message.text)
+    await Database.Mail.edit_text_mail(mail.id, message.html_text)
     await message.answer(text=texts['successful_edit'], reply_markup=await InlineKeyboardMain.ready(f"mail_{mail.id}"))
 
 
